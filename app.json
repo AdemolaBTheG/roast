@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "boilerplate",
-    "slug": "boilerplate",
+    "name": "roast",
+    "slug": "roast",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "boilerplate",
+    "scheme": "roast",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.boilerplate.app"
+      "supportsTablet": false,
+      "bundleIdentifier": "group.flingex.roast.app"
     },
     "android": {
       "adaptiveIcon": {
@@ -45,7 +45,15 @@
       "expo-sharing",
       "expo-sqlite",
       "expo-web-browser",
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "16.0"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
