@@ -1,0 +1,137 @@
+{
+  "navigation": {
+    "settings": "設定",
+    "add": "追加",
+    "back": "戻る",
+    "actions": "操作",
+    "roast": "ロースト"
+  },
+  "common": {
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "copied": "コピー完了",
+    "error": "エラー",
+    "pro": "Pro",
+    "free": "無料",
+    "selected": "選択中"
+  },
+  "add": {
+    "tabs": {
+      "text": "テキスト",
+      "image": "画像"
+    },
+    "sections": {
+      "target": "対象",
+      "configuration": "設定"
+    },
+    "placeholder": "ここにcringeを貼り付け（任意）...",
+    "tapToChange": "タップして変更",
+    "uploadOptional": "スクショまたは写真をアップロード（任意）",
+    "variantCount": "バリエーション数",
+    "cta": {
+      "default": "ローストを生成",
+      "processingImage": "画像を処理中...",
+      "generating": "ローストを生成中..."
+    },
+    "alerts": {
+      "generationFailedTitle": "生成に失敗しました",
+      "generationFailedEmpty": "モデルがロースト文を返しませんでした。",
+      "generationFailedGeneric": "ローストを生成できませんでした。",
+      "imageErrorTitle": "画像エラー",
+      "imageErrorBody": "画像を処理できませんでした。",
+      "chooseAudienceTitle": "対象を選択",
+      "chooseAudienceBody": "生成前に対象を選んでください。"
+    }
+  },
+  "home": {
+    "burn": {
+      "playful": "ライト",
+      "savage": "辛口",
+      "unhinged": "全開"
+    },
+    "status": {
+      "generating": "ローストを生成中...",
+      "loading": "ローストを読み込み中...",
+      "loadError": "履歴を読み込めませんでした。",
+      "empty": "まだローストがありません。追加から生成してください。"
+    }
+  },
+  "item": {
+    "alerts": {
+      "shareImageFailed": "共有用画像の作成に失敗しました。",
+      "shareTextFailed": "ロースト文を共有できませんでした。",
+      "copiedBody": "ローストをクリップボードにコピーしました。",
+      "favoriteFailed": "お気に入りを更新できませんでした。",
+      "deleteFailedTitle": "削除に失敗しました",
+      "deleteFailedBody": "このローストを今は削除できません。"
+    },
+    "delete": {
+      "title": "ローストを削除しますか？",
+      "body": "この操作でローストと全バリエーションが完全に削除されます。"
+    },
+    "menu": {
+      "actions": "操作",
+      "actionsTitle": "ロースト操作",
+      "copyRoast": "ローストをコピー",
+      "shareText": "テキスト共有",
+      "favorite": "お気に入り",
+      "unfavorite": "お気に入り解除",
+      "deleteRoast": "ローストを削除"
+    },
+    "status": {
+      "loading": "ローストを読み込み中...",
+      "notFound": "ローストが見つかりません。",
+      "noVariants": "ローストが生成されていません。"
+    },
+    "labels": {
+      "for": "対象",
+      "shareImage": "画像を共有",
+      "copy": "コピー",
+      "shareTitle": "ロースト",
+      "brand": "RoastAI",
+      "playful": "ライト",
+      "savage": "辛口",
+      "unhinged": "全開"
+    }
+  },
+  "settings": {
+    "sections": {
+      "account": "アカウント",
+      "language": "言語",
+      "data": "データ",
+      "support": "サポート",
+      "legal": "法的情報"
+    },
+    "rows": {
+      "manageSubscription": "サブスクを管理",
+      "upgradeToPro": "Proにアップグレード",
+      "clearHistory": "履歴を削除",
+      "rateApp": "アプリを評価",
+      "contactSupport": "サポートに連絡",
+      "terms": "利用規約",
+      "privacy": "プライバシーポリシー"
+    },
+    "proCard": {
+      "title": "Proにする",
+      "subtitle": "無制限ローストとプレミアムモードを解放。"
+    },
+    "alerts": {
+      "cannotOpenLinkTitle": "リンクを開けません",
+      "unavailableTitle": "利用できません",
+      "unavailableBody": "サブスク設定を開けませんでした。",
+      "clearHistoryTitle": "履歴を削除",
+      "clearHistoryBody": "この端末の保存済みローストをすべて削除します。",
+      "clearHistoryErrorTitle": "履歴を削除できませんでした",
+      "clearHistoryErrorBody": "もう一度お試しください。"
+    }
+  },
+  "languages": {
+    "en": "英語",
+    "de": "ドイツ語",
+    "fr": "フランス語",
+    "es": "スペイン語",
+    "ja": "日本語",
+    "pt": "ポルトガル語",
+    "it": "イタリア語"
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "navigation": {
+    "settings": "Einstellungen",
+    "add": "Hinzufugen",
+    "back": "Zuruck",
+    "actions": "Aktionen",
+    "roast": "Roast"
+  },
+  "common": {
+    "cancel": "Abbrechen",
+    "delete": "Loschen",
+    "copied": "Kopiert",
+    "error": "Fehler",
+    "pro": "Pro",
+    "free": "Kostenlos",
+    "selected": "Ausgewahlt"
+  },
+  "add": {
+    "tabs": {
+      "text": "Text",
+      "image": "Bild"
+    },
+    "sections": {
+      "target": "Ziel",
+      "configuration": "Konfiguration"
+    },
+    "placeholder": "Fuge hier den Cringe ein (optional)...",
+    "tapToChange": "Tippen zum Andern",
+    "uploadOptional": "Screenshot oder Foto hochladen (optional)",
+    "variantCount": "Anzahl Varianten",
+    "cta": {
+      "default": "Roast generieren",
+      "processingImage": "Bild wird verarbeitet...",
+      "generating": "Roast wird generiert..."
+    },
+    "alerts": {
+      "generationFailedTitle": "Generierung fehlgeschlagen",
+      "generationFailedEmpty": "Das Modell hat keinen Roast-Text zuruckgegeben.",
+      "generationFailedGeneric": "Roast konnte nicht generiert werden.",
+      "imageErrorTitle": "Bildfehler",
+      "imageErrorBody": "Bild konnte nicht verarbeitet werden.",
+      "chooseAudienceTitle": "Zielgruppe wahlen",
+      "chooseAudienceBody": "Wahle vor dem Generieren eine Zielgruppe."
+    }
+  },
+  "home": {
+    "burn": {
+      "playful": "Verspielt",
+      "savage": "Scharf",
+      "unhinged": "Entfesselt"
+    },
+    "status": {
+      "generating": "Roast wird generiert...",
+      "loading": "Roasts werden geladen...",
+      "loadError": "Roast-Verlauf konnte nicht geladen werden.",
+      "empty": "Noch keine Roasts. Erstelle einen uber Hinzufugen."
+    }
+  },
+  "item": {
+    "alerts": {
+      "shareImageFailed": "Bild konnte zum Teilen nicht erfasst werden.",
+      "shareTextFailed": "Roast-Text konnte nicht geteilt werden.",
+      "copiedBody": "Roast in die Zwischenablage kopiert.",
+      "favoriteFailed": "Favorit konnte nicht aktualisiert werden.",
+      "deleteFailedTitle": "Loschen fehlgeschlagen",
+      "deleteFailedBody": "Dieser Roast konnte gerade nicht geloscht werden."
+    },
+    "delete": {
+      "title": "Roast loschen?",
+      "body": "Dadurch werden der Roast und alle Varianten dauerhaft entfernt."
+    },
+    "menu": {
+      "actions": "Aktionen",
+      "actionsTitle": "Roast-Aktionen",
+      "copyRoast": "Roast kopieren",
+      "shareText": "Text teilen",
+      "favorite": "Favorit",
+      "unfavorite": "Favorit entfernen",
+      "deleteRoast": "Roast loschen"
+    },
+    "status": {
+      "loading": "Roast wird geladen...",
+      "notFound": "Roast nicht gefunden.",
+      "noVariants": "Keine Roasts generiert."
+    },
+    "labels": {
+      "for": "FUR",
+      "shareImage": "Bild teilen",
+      "copy": "Kopieren",
+      "shareTitle": "Roast",
+      "brand": "RoastAI",
+      "playful": "VERSPIELT",
+      "savage": "SCHARF",
+      "unhinged": "ENTFESSELT"
+    }
+  },
+  "settings": {
+    "sections": {
+      "account": "Konto",
+      "language": "Sprache",
+      "data": "Daten",
+      "support": "Support",
+      "legal": "Rechtliches"
+    },
+    "rows": {
+      "manageSubscription": "Abo verwalten",
+      "upgradeToPro": "Auf Pro upgraden",
+      "clearHistory": "Roast-Verlauf loschen",
+      "rateApp": "App bewerten",
+      "contactSupport": "Support kontaktieren",
+      "terms": "Nutzungsbedingungen",
+      "privacy": "Datenschutz"
+    },
+    "proCard": {
+      "title": "Go Pro",
+      "subtitle": "Schalte unbegrenzte Roasts und Premium-Modi frei."
+    },
+    "alerts": {
+      "cannotOpenLinkTitle": "Link kann nicht geoffnet werden",
+      "unavailableTitle": "Nicht verfugbar",
+      "unavailableBody": "Abo-Einstellungen konnten gerade nicht geoffnet werden.",
+      "clearHistoryTitle": "Roast-Verlauf loschen",
+      "clearHistoryBody": "Alle gespeicherten Roasts auf diesem Gerat werden dauerhaft geloscht.",
+      "clearHistoryErrorTitle": "Verlauf konnte nicht geloscht werden",
+      "clearHistoryErrorBody": "Bitte versuche es erneut."
+    }
+  },
+  "languages": {
+    "en": "Englisch",
+    "de": "Deutsch",
+    "fr": "Franzosisch",
+    "es": "Spanisch",
+    "ja": "Japanisch",
+    "pt": "Portugiesisch",
+    "it": "Italienisch"
+  }
+}

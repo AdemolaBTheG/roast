@@ -1,0 +1,137 @@
+{
+  "navigation": {
+    "settings": "Ajustes",
+    "add": "Agregar",
+    "back": "Atras",
+    "actions": "Acciones",
+    "roast": "Roast"
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "copied": "Copiado",
+    "error": "Error",
+    "pro": "Pro",
+    "free": "Gratis",
+    "selected": "Seleccionado"
+  },
+  "add": {
+    "tabs": {
+      "text": "Texto",
+      "image": "Imagen"
+    },
+    "sections": {
+      "target": "Objetivo",
+      "configuration": "Configuracion"
+    },
+    "placeholder": "Pega el cringe aqui (opcional)...",
+    "tapToChange": "Toca para cambiar",
+    "uploadOptional": "Sube captura o foto (opcional)",
+    "variantCount": "Cantidad de variantes",
+    "cta": {
+      "default": "Generar roast",
+      "processingImage": "Procesando imagen...",
+      "generating": "Generando roast..."
+    },
+    "alerts": {
+      "generationFailedTitle": "Fallo la generacion",
+      "generationFailedEmpty": "El modelo no devolvio texto de roast.",
+      "generationFailedGeneric": "No se pudo generar el roast.",
+      "imageErrorTitle": "Error de imagen",
+      "imageErrorBody": "No se pudo procesar la imagen.",
+      "chooseAudienceTitle": "Elige audiencia",
+      "chooseAudienceBody": "Selecciona una audiencia antes de generar."
+    }
+  },
+  "home": {
+    "burn": {
+      "playful": "Suave",
+      "savage": "Salvaje",
+      "unhinged": "Desatado"
+    },
+    "status": {
+      "generating": "Generando roast...",
+      "loading": "Cargando roasts...",
+      "loadError": "No se pudo cargar el historial.",
+      "empty": "Aun no hay roasts. Genera uno desde Agregar."
+    }
+  },
+  "item": {
+    "alerts": {
+      "shareImageFailed": "No se pudo capturar la imagen para compartir.",
+      "shareTextFailed": "No se pudo compartir el texto del roast.",
+      "copiedBody": "Roast copiado al portapapeles.",
+      "favoriteFailed": "No se pudo actualizar favorito.",
+      "deleteFailedTitle": "Error al eliminar",
+      "deleteFailedBody": "No se pudo eliminar este roast ahora."
+    },
+    "delete": {
+      "title": "Eliminar roast?",
+      "body": "Esto eliminara el roast y todas sus variantes permanentemente."
+    },
+    "menu": {
+      "actions": "Acciones",
+      "actionsTitle": "Acciones del roast",
+      "copyRoast": "Copiar roast",
+      "shareText": "Compartir texto",
+      "favorite": "Favorito",
+      "unfavorite": "Quitar favorito",
+      "deleteRoast": "Eliminar roast"
+    },
+    "status": {
+      "loading": "Cargando roast...",
+      "notFound": "Roast no encontrado.",
+      "noVariants": "No se generaron roasts."
+    },
+    "labels": {
+      "for": "PARA",
+      "shareImage": "Compartir imagen",
+      "copy": "Copiar",
+      "shareTitle": "Roast",
+      "brand": "RoastAI",
+      "playful": "SUAVE",
+      "savage": "SALVAJE",
+      "unhinged": "DESATADO"
+    }
+  },
+  "settings": {
+    "sections": {
+      "account": "Cuenta",
+      "language": "Idioma",
+      "data": "Datos",
+      "support": "Soporte",
+      "legal": "Legal"
+    },
+    "rows": {
+      "manageSubscription": "Gestionar suscripcion",
+      "upgradeToPro": "Mejorar a Pro",
+      "clearHistory": "Borrar historial",
+      "rateApp": "Calificar app",
+      "contactSupport": "Contactar soporte",
+      "terms": "Terminos del servicio",
+      "privacy": "Politica de privacidad"
+    },
+    "proCard": {
+      "title": "Hazte Pro",
+      "subtitle": "Desbloquea roasts ilimitados y modos premium."
+    },
+    "alerts": {
+      "cannotOpenLinkTitle": "No se puede abrir el enlace",
+      "unavailableTitle": "No disponible",
+      "unavailableBody": "No se pudo abrir la configuracion de suscripcion.",
+      "clearHistoryTitle": "Borrar historial",
+      "clearHistoryBody": "Esto eliminara permanentemente todos los roasts guardados en este dispositivo.",
+      "clearHistoryErrorTitle": "No se pudo borrar el historial",
+      "clearHistoryErrorBody": "Intentalo de nuevo."
+    }
+  },
+  "languages": {
+    "en": "Ingles",
+    "de": "Aleman",
+    "fr": "Frances",
+    "es": "Espanol",
+    "ja": "Japones",
+    "pt": "Portugues",
+    "it": "Italiano"
+  }
+}

@@ -1,5 +1,5 @@
 import { useDbStore } from '@/stores/dbStore';
-import { SplashScreen } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { OneSignal } from 'react-native-onesignal';
@@ -8,17 +8,17 @@ import Purchases from 'react-native-purchases';
 const rc_apple_api_key = process.env.EXPO_PUBLIC_RC_APPLE_API_KEY || '';
 const onesignal_app_id = process.env.EXPO_PUBLIC_ONESIGNAL_APP_ID || '';
 
+// Keep the splash screen visible while we load critical resources.
+SplashScreen.setOptions({ duration: 600, fade: true });
+SplashScreen.preventAutoHideAsync().catch(() => {});
+
 export function useAppInitialization() {
     const [isReady, setIsReady] = useState(false);
     const { initializeDb } = useDbStore();
 
     useEffect(() => {
-        SplashScreen.preventAutoHideAsync().catch(() => { });
-        initializeDb();
-    }, [initializeDb]);
-
-    useEffect(() => {
         let userObserver: any | null = null;
+        let cancelled = false;
 
         const configurePurchases = async () => {
             if (Platform.OS === 'ios' && rc_apple_api_key) {
@@ -63,19 +63,34 @@ export function useAppInitialization() {
         };
 
         (async () => {
-            await configurePurchases();
-            await initOneSignal();
-            await syncIdsToRevenueCat();
-            attachObserver();
-            setIsReady(true);
+            try {
+                await initializeDb();
+                await configurePurchases();
+                await initOneSignal();
+                await syncIdsToRevenueCat();
+                attachObserver();
+            } catch (e) {
+                console.warn('App initialization failed', e);
+            } finally {
+                if (!cancelled) {
+                    setIsReady(true);
+                }
+            }
         })();
 
         return () => {
+            cancelled = true;
             if (userObserver) {
                 OneSignal.User.removeEventListener?.('change', userObserver);
             }
         };
-    }, []);
+    }, [initializeDb]);
+
+    useEffect(() => {
+        if (isReady) {
+            SplashScreen.hideAsync().catch(() => {});
+        }
+    }, [isReady]);
 
     return { isReady };
 }

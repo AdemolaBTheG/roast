@@ -1,0 +1,137 @@
+{
+  "navigation": {
+    "settings": "Settings",
+    "add": "Add",
+    "back": "Back",
+    "actions": "Actions",
+    "roast": "Roast"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "copied": "Copied",
+    "error": "Error",
+    "pro": "Pro",
+    "free": "Free",
+    "selected": "Selected"
+  },
+  "add": {
+    "tabs": {
+      "text": "Text",
+      "image": "Image"
+    },
+    "sections": {
+      "target": "Target",
+      "configuration": "Configuration"
+    },
+    "placeholder": "Paste the cringe here (optional)...",
+    "tapToChange": "Tap to change",
+    "uploadOptional": "Upload screenshot or photo (optional)",
+    "variantCount": "Variant Count",
+    "cta": {
+      "default": "Generate Roast",
+      "processingImage": "Processing image...",
+      "generating": "Generating roast..."
+    },
+    "alerts": {
+      "generationFailedTitle": "Generation Failed",
+      "generationFailedEmpty": "Model returned no roast text.",
+      "generationFailedGeneric": "Could not generate roast.",
+      "imageErrorTitle": "Image Error",
+      "imageErrorBody": "Could not process image.",
+      "chooseAudienceTitle": "Choose Audience",
+      "chooseAudienceBody": "Pick one audience before generating."
+    }
+  },
+  "home": {
+    "burn": {
+      "playful": "Playful",
+      "savage": "Savage",
+      "unhinged": "Unhinged"
+    },
+    "status": {
+      "generating": "Generating roast...",
+      "loading": "Loading roasts...",
+      "loadError": "Could not load roast history.",
+      "empty": "No roasts yet. Generate one from Add."
+    }
+  },
+  "item": {
+    "alerts": {
+      "shareImageFailed": "Failed to capture image for sharing.",
+      "shareTextFailed": "Could not share roast text.",
+      "copiedBody": "Roast copied to clipboard.",
+      "favoriteFailed": "Could not update favorite.",
+      "deleteFailedTitle": "Delete Failed",
+      "deleteFailedBody": "Could not delete this roast right now."
+    },
+    "delete": {
+      "title": "Delete roast?",
+      "body": "This removes the roast and all of its variants permanently."
+    },
+    "menu": {
+      "actions": "Actions",
+      "actionsTitle": "Roast Actions",
+      "copyRoast": "Copy Roast",
+      "shareText": "Share Text",
+      "favorite": "Favorite",
+      "unfavorite": "Unfavorite",
+      "deleteRoast": "Delete Roast"
+    },
+    "status": {
+      "loading": "Loading roast...",
+      "notFound": "Roast not found.",
+      "noVariants": "No roasts generated."
+    },
+    "labels": {
+      "for": "FOR",
+      "shareImage": "Share Image",
+      "copy": "Copy",
+      "shareTitle": "Roast",
+      "brand": "RoastAI",
+      "playful": "PLAYFUL",
+      "savage": "SAVAGE",
+      "unhinged": "UNHINGED"
+    }
+  },
+  "settings": {
+    "sections": {
+      "account": "Account",
+      "language": "Language",
+      "data": "Data",
+      "support": "Support",
+      "legal": "Legal"
+    },
+    "rows": {
+      "manageSubscription": "Manage Subscription",
+      "upgradeToPro": "Upgrade to Pro",
+      "clearHistory": "Clear Roast History",
+      "rateApp": "Rate App",
+      "contactSupport": "Contact Support",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy"
+    },
+    "proCard": {
+      "title": "Go Pro",
+      "subtitle": "Unlock unlimited roasts and premium burn modes."
+    },
+    "alerts": {
+      "cannotOpenLinkTitle": "Cannot open link",
+      "unavailableTitle": "Unavailable",
+      "unavailableBody": "Could not open subscription settings right now.",
+      "clearHistoryTitle": "Clear Roast History",
+      "clearHistoryBody": "This will permanently delete all saved roasts from this device.",
+      "clearHistoryErrorTitle": "Could not clear history",
+      "clearHistoryErrorBody": "Please try again."
+    }
+  },
+  "languages": {
+    "en": "English",
+    "de": "German",
+    "fr": "French",
+    "es": "Spanish",
+    "ja": "Japanese",
+    "pt": "Portuguese",
+    "it": "Italian"
+  }
+}

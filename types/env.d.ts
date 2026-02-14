@@ -6,5 +6,7 @@ declare namespace NodeJS {
         EXPO_PUBLIC_ONESIGNAL_APP_ID: string;
         EXPO_PUBLIC_POSTHOG_API_KEY: string;
         EXPO_PUBLIC_POSTHOG_HOST: string;
+        EXPO_PUBLIC_ROAST_API_URL: string;
+        EXPO_PUBLIC_ROAST_API_BEARER: string;
     }
 }

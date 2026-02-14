@@ -1,0 +1,137 @@
+{
+  "navigation": {
+    "settings": "Impostazioni",
+    "add": "Aggiungi",
+    "back": "Indietro",
+    "actions": "Azioni",
+    "roast": "Roast"
+  },
+  "common": {
+    "cancel": "Annulla",
+    "delete": "Elimina",
+    "copied": "Copiato",
+    "error": "Errore",
+    "pro": "Pro",
+    "free": "Gratis",
+    "selected": "Selezionato"
+  },
+  "add": {
+    "tabs": {
+      "text": "Testo",
+      "image": "Immagine"
+    },
+    "sections": {
+      "target": "Target",
+      "configuration": "Configurazione"
+    },
+    "placeholder": "Incolla qui il cringe (opzionale)...",
+    "tapToChange": "Tocca per cambiare",
+    "uploadOptional": "Carica screenshot o foto (opzionale)",
+    "variantCount": "Numero varianti",
+    "cta": {
+      "default": "Genera roast",
+      "processingImage": "Elaborazione immagine...",
+      "generating": "Generazione roast..."
+    },
+    "alerts": {
+      "generationFailedTitle": "Generazione fallita",
+      "generationFailedEmpty": "Il modello non ha restituito testo.",
+      "generationFailedGeneric": "Impossibile generare il roast.",
+      "imageErrorTitle": "Errore immagine",
+      "imageErrorBody": "Impossibile elaborare l immagine.",
+      "chooseAudienceTitle": "Scegli il pubblico",
+      "chooseAudienceBody": "Scegli un pubblico prima di generare."
+    }
+  },
+  "home": {
+    "burn": {
+      "playful": "Leggero",
+      "savage": "Cattivo",
+      "unhinged": "Fuori controllo"
+    },
+    "status": {
+      "generating": "Generazione roast...",
+      "loading": "Caricamento roast...",
+      "loadError": "Impossibile caricare la cronologia.",
+      "empty": "Nessun roast ancora. Generane uno da Aggiungi."
+    }
+  },
+  "item": {
+    "alerts": {
+      "shareImageFailed": "Impossibile acquisire l immagine da condividere.",
+      "shareTextFailed": "Impossibile condividere il testo del roast.",
+      "copiedBody": "Roast copiato negli appunti.",
+      "favoriteFailed": "Impossibile aggiornare il preferito.",
+      "deleteFailedTitle": "Eliminazione fallita",
+      "deleteFailedBody": "Impossibile eliminare questo roast ora."
+    },
+    "delete": {
+      "title": "Eliminare il roast?",
+      "body": "Questo rimuove definitivamente il roast e tutte le sue varianti."
+    },
+    "menu": {
+      "actions": "Azioni",
+      "actionsTitle": "Azioni roast",
+      "copyRoast": "Copia roast",
+      "shareText": "Condividi testo",
+      "favorite": "Preferito",
+      "unfavorite": "Rimuovi preferito",
+      "deleteRoast": "Elimina roast"
+    },
+    "status": {
+      "loading": "Caricamento roast...",
+      "notFound": "Roast non trovato.",
+      "noVariants": "Nessun roast generato."
+    },
+    "labels": {
+      "for": "PER",
+      "shareImage": "Condividi immagine",
+      "copy": "Copia",
+      "shareTitle": "Roast",
+      "brand": "RoastAI",
+      "playful": "LEGGERO",
+      "savage": "CATTIVO",
+      "unhinged": "FUORI CONTROLLO"
+    }
+  },
+  "settings": {
+    "sections": {
+      "account": "Account",
+      "language": "Lingua",
+      "data": "Dati",
+      "support": "Supporto",
+      "legal": "Legale"
+    },
+    "rows": {
+      "manageSubscription": "Gestisci abbonamento",
+      "upgradeToPro": "Passa a Pro",
+      "clearHistory": "Cancella cronologia",
+      "rateApp": "Valuta app",
+      "contactSupport": "Contatta supporto",
+      "terms": "Termini di servizio",
+      "privacy": "Privacy policy"
+    },
+    "proCard": {
+      "title": "Passa a Pro",
+      "subtitle": "Sblocca roast illimitati e modalita premium."
+    },
+    "alerts": {
+      "cannotOpenLinkTitle": "Impossibile aprire il link",
+      "unavailableTitle": "Non disponibile",
+      "unavailableBody": "Impossibile aprire le impostazioni dell abbonamento.",
+      "clearHistoryTitle": "Cancella cronologia",
+      "clearHistoryBody": "Questo eliminera definitivamente tutti i roast salvati su questo dispositivo.",
+      "clearHistoryErrorTitle": "Impossibile cancellare la cronologia",
+      "clearHistoryErrorBody": "Riprova."
+    }
+  },
+  "languages": {
+    "en": "Inglese",
+    "de": "Tedesco",
+    "fr": "Francese",
+    "es": "Spagnolo",
+    "ja": "Giapponese",
+    "pt": "Portoghese",
+    "it": "Italiano"
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "navigation": {
+    "settings": "Parametres",
+    "add": "Ajouter",
+    "back": "Retour",
+    "actions": "Actions",
+    "roast": "Roast"
+  },
+  "common": {
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "copied": "Copie",
+    "error": "Erreur",
+    "pro": "Pro",
+    "free": "Gratuit",
+    "selected": "Selectionne"
+  },
+  "add": {
+    "tabs": {
+      "text": "Texte",
+      "image": "Image"
+    },
+    "sections": {
+      "target": "Cible",
+      "configuration": "Configuration"
+    },
+    "placeholder": "Colle le cringe ici (optionnel)...",
+    "tapToChange": "Appuyer pour changer",
+    "uploadOptional": "Importer capture ou photo (optionnel)",
+    "variantCount": "Nombre de variantes",
+    "cta": {
+      "default": "Generer un roast",
+      "processingImage": "Traitement de l image...",
+      "generating": "Generation du roast..."
+    },
+    "alerts": {
+      "generationFailedTitle": "Echec de generation",
+      "generationFailedEmpty": "Le modele n a renvoye aucun texte.",
+      "generationFailedGeneric": "Impossible de generer le roast.",
+      "imageErrorTitle": "Erreur d image",
+      "imageErrorBody": "Impossible de traiter l image.",
+      "chooseAudienceTitle": "Choisir l audience",
+      "chooseAudienceBody": "Selectionne une audience avant de generer."
+    }
+  },
+  "home": {
+    "burn": {
+      "playful": "Leger",
+      "savage": "Sauvage",
+      "unhinged": "Dechaine"
+    },
+    "status": {
+      "generating": "Generation du roast...",
+      "loading": "Chargement des roasts...",
+      "loadError": "Impossible de charger l historique.",
+      "empty": "Aucun roast pour l instant. Genere-en un depuis Ajouter."
+    }
+  },
+  "item": {
+    "alerts": {
+      "shareImageFailed": "Echec de capture de l image a partager.",
+      "shareTextFailed": "Impossible de partager le texte du roast.",
+      "copiedBody": "Roast copie dans le presse-papiers.",
+      "favoriteFailed": "Impossible de mettre a jour le favori.",
+      "deleteFailedTitle": "Echec de suppression",
+      "deleteFailedBody": "Impossible de supprimer ce roast pour le moment."
+    },
+    "delete": {
+      "title": "Supprimer ce roast ?",
+      "body": "Cela supprimera definitivement le roast et toutes ses variantes."
+    },
+    "menu": {
+      "actions": "Actions",
+      "actionsTitle": "Actions du roast",
+      "copyRoast": "Copier le roast",
+      "shareText": "Partager le texte",
+      "favorite": "Favori",
+      "unfavorite": "Retirer des favoris",
+      "deleteRoast": "Supprimer le roast"
+    },
+    "status": {
+      "loading": "Chargement du roast...",
+      "notFound": "Roast introuvable.",
+      "noVariants": "Aucun roast genere."
+    },
+    "labels": {
+      "for": "POUR",
+      "shareImage": "Partager l image",
+      "copy": "Copier",
+      "shareTitle": "Roast",
+      "brand": "RoastAI",
+      "playful": "LEGER",
+      "savage": "SAUVAGE",
+      "unhinged": "DECHAINE"
+    }
+  },
+  "settings": {
+    "sections": {
+      "account": "Compte",
+      "language": "Langue",
+      "data": "Donnees",
+      "support": "Support",
+      "legal": "Legal"
+    },
+    "rows": {
+      "manageSubscription": "Gerer l abonnement",
+      "upgradeToPro": "Passer a Pro",
+      "clearHistory": "Effacer l historique",
+      "rateApp": "Noter l app",
+      "contactSupport": "Contacter le support",
+      "terms": "Conditions d utilisation",
+      "privacy": "Politique de confidentialite"
+    },
+    "proCard": {
+      "title": "Passe Pro",
+      "subtitle": "Debloque des roasts illimites et des modes premium."
+    },
+    "alerts": {
+      "cannotOpenLinkTitle": "Impossible d ouvrir le lien",
+      "unavailableTitle": "Indisponible",
+      "unavailableBody": "Impossible d ouvrir les reglages d abonnement.",
+      "clearHistoryTitle": "Effacer l historique",
+      "clearHistoryBody": "Tous les roasts enregistres sur cet appareil seront supprimes definitivement.",
+      "clearHistoryErrorTitle": "Impossible d effacer l historique",
+      "clearHistoryErrorBody": "Veuillez reessayer."
+    }
+  },
+  "languages": {
+    "en": "Anglais",
+    "de": "Allemand",
+    "fr": "Francais",
+    "es": "Espagnol",
+    "ja": "Japonais",
+    "pt": "Portugais",
+    "it": "Italien"
+  }
+}
