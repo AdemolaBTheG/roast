@@ -8,6 +8,8 @@
     "scheme": "roast",
     "userInterfaceStyle": "automatic",
     "ios": {
+      "icon": "./assets/images/roast.icon",
+
       "supportsTablet": false,
       "bundleIdentifier": "group.flingex.roast.app",
       "infoPlist": {
