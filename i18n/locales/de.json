@@ -1,19 +1,19 @@
 {
   "navigation": {
     "settings": "Einstellungen",
-    "add": "Hinzufugen",
-    "back": "Zuruck",
+    "add": "Hinzuf\u00fcgen",
+    "back": "Zur\u00fcck",
     "actions": "Aktionen",
     "roast": "Roast"
   },
   "common": {
     "cancel": "Abbrechen",
-    "delete": "Loschen",
+    "delete": "L\u00f6schen",
     "copied": "Kopiert",
     "error": "Fehler",
     "pro": "Pro",
     "free": "Kostenlos",
-    "selected": "Ausgewahlt"
+    "selected": "Ausgew\u00e4hlt"
   },
   "add": {
     "tabs": {
@@ -24,8 +24,8 @@
       "target": "Ziel",
       "configuration": "Konfiguration"
     },
-    "placeholder": "Fuge hier den Cringe ein (optional)...",
-    "tapToChange": "Tippen zum Andern",
+    "placeholder": "F\u00fcge hier den Cringe ein (optional)...",
+    "tapToChange": "Tippen zum \u00c4ndern",
     "uploadOptional": "Screenshot oder Foto hochladen (optional)",
     "variantCount": "Anzahl Varianten",
     "cta": {
@@ -35,12 +35,19 @@
     },
     "alerts": {
       "generationFailedTitle": "Generierung fehlgeschlagen",
-      "generationFailedEmpty": "Das Modell hat keinen Roast-Text zuruckgegeben.",
+      "generationFailedEmpty": "Das Modell hat keinen Roast-Text zur\u00fcckgegeben.",
       "generationFailedGeneric": "Roast konnte nicht generiert werden.",
       "imageErrorTitle": "Bildfehler",
       "imageErrorBody": "Bild konnte nicht verarbeitet werden.",
-      "chooseAudienceTitle": "Zielgruppe wahlen",
-      "chooseAudienceBody": "Wahle vor dem Generieren eine Zielgruppe."
+      "chooseAudienceTitle": "Zielgruppe w\u00e4hlen",
+      "chooseAudienceBody": "W\u00e4hle vor dem Generieren eine Zielgruppe."
+    },
+    "prompts": {
+      "noTarget": "Es wurde kein spezifisches Ziel angegeben. Erstelle einen eigenst\u00e4ndigen Roast."
+    },
+    "actionSheet": {
+      "takePhoto": "Foto aufnehmen",
+      "chooseFromLibrary": "Aus Mediathek w\u00e4hlen"
     }
   },
   "home": {
@@ -53,7 +60,7 @@
       "generating": "Roast wird generiert...",
       "loading": "Roasts werden geladen...",
       "loadError": "Roast-Verlauf konnte nicht geladen werden.",
-      "empty": "Noch keine Roasts. Erstelle einen uber Hinzufugen."
+      "empty": "Noch keine Roasts. Erstelle einen \u00fcber Hinzuf\u00fcgen."
     }
   },
   "item": {
@@ -62,11 +69,13 @@
       "shareTextFailed": "Roast-Text konnte nicht geteilt werden.",
       "copiedBody": "Roast in die Zwischenablage kopiert.",
       "favoriteFailed": "Favorit konnte nicht aktualisiert werden.",
-      "deleteFailedTitle": "Loschen fehlgeschlagen",
-      "deleteFailedBody": "Dieser Roast konnte gerade nicht geloscht werden."
+      "deleteFailedTitle": "L\u00f6schen fehlgeschlagen",
+      "deleteFailedBody": "Dieser Roast konnte gerade nicht gel\u00f6scht werden.",
+      "shareBonusTitle": "+3 Roasts verdient!",
+      "shareBonusBody": "Danke f\u00fcrs Teilen! Du hast 3 Bonus-Roasts erhalten."
     },
     "delete": {
-      "title": "Roast loschen?",
+      "title": "Roast l\u00f6schen?",
       "body": "Dadurch werden der Roast und alle Varianten dauerhaft entfernt."
     },
     "menu": {
@@ -76,7 +85,7 @@
       "shareText": "Text teilen",
       "favorite": "Favorit",
       "unfavorite": "Favorit entfernen",
-      "deleteRoast": "Roast loschen"
+      "deleteRoast": "Roast l\u00f6schen"
     },
     "status": {
       "loading": "Roast wird geladen...",
@@ -84,8 +93,9 @@
       "noVariants": "Keine Roasts generiert."
     },
     "labels": {
-      "for": "FUR",
+      "for": "F\u00dcR",
       "shareImage": "Bild teilen",
+      "shareBonus": "+3 Roasts",
       "copy": "Kopieren",
       "shareTitle": "Roast",
       "brand": "RoastAI",
@@ -105,33 +115,37 @@
     "rows": {
       "manageSubscription": "Abo verwalten",
       "upgradeToPro": "Auf Pro upgraden",
-      "clearHistory": "Roast-Verlauf loschen",
+      "clearHistory": "Roast-Verlauf l\u00f6schen",
       "rateApp": "App bewerten",
       "contactSupport": "Support kontaktieren",
       "terms": "Nutzungsbedingungen",
       "privacy": "Datenschutz"
     },
-    "proCard": {
-      "title": "Go Pro",
-      "subtitle": "Schalte unbegrenzte Roasts und Premium-Modi frei."
+    "creditsCard": {
+      "title": "Roasts kaufen",
+      "subtitle": "Du hast noch {{count}} Roasts. Tippe, um mehr zu erhalten."
     },
     "alerts": {
-      "cannotOpenLinkTitle": "Link kann nicht geoffnet werden",
-      "unavailableTitle": "Nicht verfugbar",
-      "unavailableBody": "Abo-Einstellungen konnten gerade nicht geoffnet werden.",
-      "clearHistoryTitle": "Roast-Verlauf loschen",
-      "clearHistoryBody": "Alle gespeicherten Roasts auf diesem Gerat werden dauerhaft geloscht.",
-      "clearHistoryErrorTitle": "Verlauf konnte nicht geloscht werden",
+      "cannotOpenLinkTitle": "Link kann nicht ge\u00f6ffnet werden",
+      "unavailableTitle": "Nicht verf\u00fcgbar",
+      "unavailableBody": "Abo-Einstellungen konnten gerade nicht ge\u00f6ffnet werden.",
+      "clearHistoryTitle": "Roast-Verlauf l\u00f6schen",
+      "clearHistoryBody": "Alle gespeicherten Roasts auf diesem Ger\u00e4t werden dauerhaft gel\u00f6scht.",
+      "clearHistoryErrorTitle": "Verlauf konnte nicht gel\u00f6scht werden",
       "clearHistoryErrorBody": "Bitte versuche es erneut."
     }
   },
   "languages": {
     "en": "Englisch",
     "de": "Deutsch",
-    "fr": "Franzosisch",
+    "fr": "Franz\u00f6sisch",
     "es": "Spanisch",
     "ja": "Japanisch",
     "pt": "Portugiesisch",
     "it": "Italienisch"
+  },
+  "credits": {
+    "unlimited": "Unbegrenzt",
+    "roastsCount": "{{count}} Roasts"
   }
 }

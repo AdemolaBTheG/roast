@@ -17,10 +17,10 @@ export type AppLanguage = (typeof SUPPORTED_LANGUAGES)[number]
 export const LANGUAGE_LABELS: Record<AppLanguage, string> = {
   en: 'English',
   de: 'Deutsch',
-  fr: 'Francais',
-  es: 'Espanol',
-  ja: '日本語',
-  pt: 'Portugues',
+  fr: 'Fran\u00e7ais',
+  es: 'Espa\u00f1ol',
+  ja: '\u65e5\u672c\u8a9e',
+  pt: 'Portugu\u00eas',
   it: 'Italiano',
 }
 

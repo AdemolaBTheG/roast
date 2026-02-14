@@ -10,6 +10,7 @@ import {
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { ImageFormat, makeImageFromView } from '@shopify/react-native-skia'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import * as Burnt from 'burnt'
 import * as Clipboard from 'expo-clipboard'
 import * as FileSystem from 'expo-file-system/legacy'
 import {
@@ -51,6 +52,7 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { AppTheme } from '@/constants/theme'
+import { useSubscription } from '@/context/SubscriptionContext'
 import {
   deleteRoastById,
   getRoastById,
@@ -58,6 +60,7 @@ import {
   updateRoastSelectedVariantIndex,
   type RoastWithVariants,
 } from '@/services/roast-db'
+import { useCreditStore } from '@/stores/creditStore'
 import { useDbStore } from '@/stores/dbStore'
 
 // --- HELPER FUNCTIONS ---
@@ -193,6 +196,8 @@ export default function RoastItemScreen() {
   const queryClient = useQueryClient()
   const { db } = useDbStore()
   const { t } = useTranslation()
+  const { isPro } = useSubscription()
+  const hasClaimedShareBonus = useCreditStore((state) => state.hasClaimedShareBonus)
   const params = useLocalSearchParams<{ id?: string; celebrate?: string }>()
   const roastId = parseRoastId(params.id)
   
@@ -375,11 +380,29 @@ export default function RoastItemScreen() {
         mimeType: 'image/png',
         dialogTitle: t('item.labels.shareImage'),
       })
+
+      // 5. Award 3 bonus credits for sharing (one-time global bonus)
+      if (roast) {
+        const granted = useCreditStore.getState().grantShareBonus()
+        if (granted) {
+          Burnt.toast({
+            title: t('item.alerts.shareBonusTitle'),
+            message: t('item.alerts.shareBonusBody'),
+            preset: 'done',
+            haptic: 'success',
+          })
+        }
+      }
     } catch (error) {
       console.error('Snapshot failed:', error)
-      Alert.alert(t('common.error'), t('item.alerts.shareImageFailed'))
+      Burnt.toast({
+        title: t('common.error'),
+        message: t('item.alerts.shareImageFailed'),
+        preset: 'error',
+        haptic: 'error',
+      })
     }
-  }, [isDeleting, t])
+  }, [isDeleting, roast, t])
 
   const handleShareTextPress = useCallback(async () => {
     if (!currentVariant || isDeleting) return
@@ -394,7 +417,12 @@ export default function RoastItemScreen() {
         title: t('item.labels.shareTitle'),
       })
     } catch {
-      Alert.alert(t('common.error'), t('item.alerts.shareTextFailed'))
+      Burnt.toast({
+        title: t('common.error'),
+        message: t('item.alerts.shareTextFailed'),
+        preset: 'error',
+        haptic: 'error',
+      })
     }
   }, [currentVariant, isDeleting, t])
 
@@ -406,10 +434,12 @@ export default function RoastItemScreen() {
     }
 
     await Clipboard.setStringAsync(currentVariant.content)
-    if (Platform.OS === 'ios') {
-      void notificationAsync(NotificationFeedbackType.Success)
-    }
-    Alert.alert(t('common.copied'), t('item.alerts.copiedBody'))
+    Burnt.toast({
+      title: t('common.copied'),
+      message: t('item.alerts.copiedBody'),
+      preset: 'done',
+      haptic: 'success',
+    })
   }, [currentVariant, isDeleting, t])
 
   const handleFavoritePress = useCallback(async () => {
@@ -439,7 +469,12 @@ export default function RoastItemScreen() {
       await setRoastVariantFavorite(db, variantId, nextFavorite)
       await refetch()
     } catch {
-      Alert.alert(t('common.error'), t('item.alerts.favoriteFailed'))
+      Burnt.toast({
+        title: t('common.error'),
+        message: t('item.alerts.favoriteFailed'),
+        preset: 'error',
+        haptic: 'error',
+      })
       await refetch() // Revert
     } finally {
       setIsTogglingFavorite(false)
@@ -467,7 +502,12 @@ export default function RoastItemScreen() {
         navigation.goBack()
       }
     } catch {
-      Alert.alert(t('item.alerts.deleteFailedTitle'), t('item.alerts.deleteFailedBody'))
+      Burnt.toast({
+        title: t('item.alerts.deleteFailedTitle'),
+        message: t('item.alerts.deleteFailedBody'),
+        preset: 'error',
+        haptic: 'error',
+      })
     } finally {
       setIsDeleting(false)
     }
@@ -815,18 +855,45 @@ export default function RoastItemScreen() {
               style={{ flex: 1, alignItems: 'center' }}
             >
               <HStack spacing={12} modifiers={[frame({ width: Math.max(120, cardWidth - 72) })]}>
-                <IOSButton
-                  onPress={() => void handleSharePress()}
-                  label={t('item.labels.shareImage')}
-                  systemImage="square.and.arrow.up"
-                  modifiers={[
-                    buttonStyle('glassProminent'),
-                    controlSize('large'),
-                    tint(AppTheme.colors.primary),
-                    frame({ minWidth: Math.max(120, Math.min(200, cardWidth - 180)) }),
-                    disabled(isDeleting),
-                  ]}
-                />
+                <View style={{ position: 'relative' }}>
+                  <IOSButton
+                    onPress={() => void handleSharePress()}
+                    label={t('item.labels.shareImage')}
+                    systemImage="square.and.arrow.up"
+                    modifiers={[
+                      buttonStyle('glassProminent'),
+                      controlSize('large'),
+                      tint(AppTheme.colors.primary),
+                      frame({ minWidth: Math.max(120, Math.min(200, cardWidth - 180)) }),
+                      disabled(isDeleting),
+                    ]}
+                  />
+                  {!isPro && !hasClaimedShareBonus && (
+                    <View
+                      pointerEvents="none"
+                      style={{
+                        position: 'absolute',
+                        top: -8,
+                        right: -4,
+                        backgroundColor: AppTheme.colors.primary,
+                        paddingHorizontal: 6,
+                        paddingVertical: 2,
+                        borderRadius: 10,
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF',
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.15,
+                        shadowRadius: 2,
+                        elevation: 3,
+                      }}
+                    >
+                      <Text style={{ color: '#FFFFFF', fontSize: 10, fontWeight: '900' }}>
+                        {t('item.labels.shareBonus')}
+                      </Text>
+                    </View>
+                  )}
+                </View>
                 <IOSButton
                   onPress={() => void handleCopyPress()}
                   label={t('item.labels.copy')}
@@ -896,6 +963,21 @@ export default function RoastItemScreen() {
               <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>
                 {t('item.labels.shareImage')}
               </Text>
+              {!isPro && !hasClaimedShareBonus && (
+                <View
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                    paddingHorizontal: 6,
+                    paddingVertical: 2,
+                    borderRadius: 8,
+                    marginLeft: 4,
+                  }}
+                >
+                  <Text style={{ color: 'white', fontSize: 11, fontWeight: '900' }}>
+                    {t('item.labels.shareBonus')}
+                  </Text>
+                </View>
+              )}
             </PressableScale>
 
             <PressableScale 

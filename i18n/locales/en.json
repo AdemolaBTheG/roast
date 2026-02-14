@@ -41,6 +41,13 @@
       "imageErrorBody": "Could not process image.",
       "chooseAudienceTitle": "Choose Audience",
       "chooseAudienceBody": "Pick one audience before generating."
+    },
+    "prompts": {
+      "noTarget": "No specific target was provided. Generate a standalone roast."
+    },
+    "actionSheet": {
+      "takePhoto": "Take Photo",
+      "chooseFromLibrary": "Choose from Library"
     }
   },
   "home": {
@@ -63,7 +70,9 @@
       "copiedBody": "Roast copied to clipboard.",
       "favoriteFailed": "Could not update favorite.",
       "deleteFailedTitle": "Delete Failed",
-      "deleteFailedBody": "Could not delete this roast right now."
+      "deleteFailedBody": "Could not delete this roast right now.",
+      "shareBonusTitle": "+3 Roasts Earned!",
+      "shareBonusBody": "Thanks for sharing! You earned 3 bonus roasts."
     },
     "delete": {
       "title": "Delete roast?",
@@ -86,6 +95,7 @@
     "labels": {
       "for": "FOR",
       "shareImage": "Share Image",
+      "shareBonus": "+3 Roasts",
       "copy": "Copy",
       "shareTitle": "Roast",
       "brand": "RoastAI",
@@ -111,9 +121,9 @@
       "terms": "Terms of Service",
       "privacy": "Privacy Policy"
     },
-    "proCard": {
-      "title": "Go Pro",
-      "subtitle": "Unlock unlimited roasts and premium burn modes."
+    "creditsCard": {
+      "title": "Buy Roasts",
+      "subtitle": "You have {{count}} roasts remaining. Tap to get more."
     },
     "alerts": {
       "cannotOpenLinkTitle": "Cannot open link",
@@ -133,5 +143,9 @@
     "ja": "Japanese",
     "pt": "Portuguese",
     "it": "Italian"
+  },
+  "credits": {
+    "unlimited": "Unlimited",
+    "roastsCount": "{{count}} Roasts"
   }
 }

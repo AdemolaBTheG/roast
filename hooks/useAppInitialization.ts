@@ -1,3 +1,4 @@
+import { useCreditStore } from '@/stores/creditStore';
 import { useDbStore } from '@/stores/dbStore';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
@@ -21,12 +22,36 @@ export function useAppInitialization() {
         let cancelled = false;
 
         const configurePurchases = async () => {
-            if (Platform.OS === 'ios' && rc_apple_api_key) {
-                Purchases.configure({ apiKey: rc_apple_api_key });
-                const configured = await Purchases.isConfigured();
-                if (configured) {
-                    await Purchases.enableAdServicesAttributionTokenCollection();
+            if (rc_apple_api_key) {
+                if (Platform.OS === 'ios') {
+                    Purchases.configure({ apiKey: rc_apple_api_key });
+                    const configured = await Purchases.isConfigured();
+                    if (configured) {
+                        await Purchases.enableAdServicesAttributionTokenCollection();
+                    }
                 }
+            } else {
+                console.warn('RevenueCat API key is missing. Analytics and purchases will be disabled.');
+            }
+        };
+
+        const restoreCreditsFromRC = async () => {
+            try {
+                const isConfigured = await Purchases.isConfigured();
+                if (!isConfigured) return;
+
+                const customerInfo = await Purchases.getCustomerInfo();
+                const txns = customerInfo.nonSubscriptionTransactions ?? [];
+                if (txns.length > 0) {
+                    useCreditStore.getState().restoreCredits(
+                        txns.map((tx) => ({
+                            productIdentifier: tx.productIdentifier,
+                            transactionIdentifier: tx.transactionIdentifier,
+                        }))
+                    );
+                }
+            } catch (e) {
+                console.warn('Credit restore from RevenueCat failed', e);
             }
         };
 
@@ -35,6 +60,7 @@ export function useAppInitialization() {
                 OneSignal.initialize(onesignal_app_id);
             }
         };
+
 
         const syncIdsToRevenueCat = async () => {
             try {
@@ -66,6 +92,7 @@ export function useAppInitialization() {
             try {
                 await initializeDb();
                 await configurePurchases();
+                await restoreCreditsFromRC();
                 await initOneSignal();
                 await syncIdsToRevenueCat();
                 attachObserver();

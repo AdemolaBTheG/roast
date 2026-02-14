@@ -1,9 +1,9 @@
 import { SubscriptionProvider } from "@/context/SubscriptionContext";
 import { useAppInitialization } from "@/hooks/useAppInitialization";
 import { useSubscriptionStatus } from "@/hooks/useSubscriptionStatus";
+import "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
-import "@/i18n";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { enableScreens } from "react-native-screens";
@@ -31,6 +31,8 @@ export default function RootLayout() {
               <Stack.Screen name="(item)" options={{ headerShown: false,presentation:'modal' }} />
               <Stack.Screen name="(settings)" options={{ headerShown: false }} />
               <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+              <Stack.Screen name="(paywalls)" options={{ headerShown: false,presentation:'fullScreenModal' }} />
+
             </Stack>
           </KeyboardProvider>
         </QueryClientProvider>

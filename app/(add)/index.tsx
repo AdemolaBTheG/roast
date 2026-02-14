@@ -1,11 +1,15 @@
+﻿import { useSubscription } from '@/context/SubscriptionContext'
 import { useGenerateRoast } from '@/hooks/useGenerateRoast'
 import { ROAST_AUDIENCES, type RoastAudience } from '@/services/roast-api'
 import { saveRoastGeneration } from '@/services/roast-db'
+import { useCreditStore } from '@/stores/creditStore'
 import { useDbStore } from '@/stores/dbStore'
 import { Button, Host, Text as IOSText, Picker, Slider } from '@expo/ui/swift-ui'
 import { buttonStyle, controlSize, font, frame, padding, pickerStyle, tag, tint } from '@expo/ui/swift-ui/modifiers'
 import { Ionicons } from '@expo/vector-icons'
 import { Canvas, Fill, Shader, Skia, useClock } from '@shopify/react-native-skia'
+import { useQueryClient } from '@tanstack/react-query'
+import * as Burnt from 'burnt'
 import { Directory, File, Paths } from 'expo-file-system'
 import { isLiquidGlassAvailable } from 'expo-glass-effect'
 import { impactAsync, selectionAsync } from 'expo-haptics'
@@ -18,7 +22,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   ActionSheetIOS,
-  Alert,
   Platform,
   ScrollView,
   StyleProp,
@@ -57,7 +60,6 @@ type RoastCountOption = (typeof roastCountOptions)[number]
 const MAX_UPLOAD_DIMENSION = 1280
 const IMAGE_UPLOAD_QUALITY = 0.72
 const ROAST_IMAGE_DIRECTORY_NAME = 'roast-images'
-const TARGET_FREE_GENERATION_PROMPT = 'No specific target was provided. Generate a standalone roast.'
 const MANIPULATOR_FALLBACK_SOURCE =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=='
 
@@ -243,7 +245,12 @@ function AudienceChip({ option, isSelected, onPress }: AudienceChipProps) {
 export default function Index() {
   const router = useRouter()
   const { db } = useDbStore()
+  const queryClient = useQueryClient()
   const { t } = useTranslation()
+  const targetFreeGenerationPrompt = t('add.prompts.noTarget')
+  const { isPro } = useSubscription()
+  const credits = useCreditStore((s) => s.credits)
+  const deductCredit = useCreditStore((s) => s.deductCredit)
   
   // State
   const [selectedTag, setSelectedTag] = useState<'text' | 'image'>('text')
@@ -302,7 +309,12 @@ export default function Index() {
       const variants = data.roasts?.map((v) => v.trim()).filter(Boolean) ?? (data.roast?.trim() ? [data.roast.trim()] : [])
       
       if (variants.length === 0) {
-        Alert.alert(t('add.alerts.generationFailedTitle'), t('add.alerts.generationFailedEmpty'))
+        Burnt.toast({
+          title: t('add.alerts.generationFailedTitle'),
+          message: t('add.alerts.generationFailedEmpty'),
+          preset: 'error',
+          haptic: 'error',
+        })
         return
       }
 
@@ -310,7 +322,7 @@ export default function Index() {
 
       const imageUri = variables.inputType === 'image' ? image?.uri ?? null : null
       const persistedInputText =
-        variables.inputType === 'text' && variables.text !== TARGET_FREE_GENERATION_PROMPT
+        variables.inputType === 'text' && variables.text !== targetFreeGenerationPrompt
           ? variables.text
           : null
       const savedRoastId = await saveRoastGeneration(db, {
@@ -326,22 +338,32 @@ export default function Index() {
 
       if (!savedRoastId) return
 
+      // Deduct 1 credit after successful generation (Pro users skip)
+      if (!isPro) {
+        deductCredit()
+      }
+
+      // Invalidate list so home screen picks up the new roast
+      queryClient.invalidateQueries({ queryKey: ['roast-history'] })
+
       router.replace({
         pathname: '/(item)/[id]',
         params: { id: savedRoastId.toString(), celebrate: '1' },
       })
     },
     onError: (error) =>
-      Alert.alert(
-        t('add.alerts.generationFailedTitle'),
-        error.message || t('add.alerts.generationFailedGeneric')
-      ),
+      Burnt.toast({
+        title: t('add.alerts.generationFailedTitle'),
+        message: error.message || t('add.alerts.generationFailedGeneric'),
+        preset: 'error',
+        haptic: 'error',
+      }),
   })
 
   const isGenerating = generateRoastMutation.isPending
   const isPreparingImage = pendingImageAsset !== null
   const isBusy = isGenerating || isPreparingImage
-  const isGenerateReady = Boolean(selectedAudience) && !isBusy
+  const isGenerateReady = !isBusy
 
   useEffect(() => {
     if (isGenerateReady) {
@@ -388,7 +410,12 @@ export default function Index() {
           setImage({ uri: persistentUri, base64: savedImage.base64, mimeType: 'image/jpeg' })
         }
       } catch {
-        if (!isCancelled) Alert.alert(t('add.alerts.imageErrorTitle'), t('add.alerts.imageErrorBody'))
+        if (!isCancelled) Burnt.toast({
+          title: t('add.alerts.imageErrorTitle'),
+          message: t('add.alerts.imageErrorBody'),
+          preset: 'error',
+          haptic: 'error',
+        })
       } finally {
         if (!isCancelled) setPendingImageAsset(null)
       }
@@ -414,7 +441,14 @@ export default function Index() {
     
     if (Platform.OS === 'ios') {
         ActionSheetIOS.showActionSheetWithOptions(
-          { options: ['Cancel', 'Take Photo', 'Choose from Library'], cancelButtonIndex: 0 },
+          {
+            options: [
+              t('common.cancel'),
+              t('add.actionSheet.takePhoto'),
+              t('add.actionSheet.chooseFromLibrary'),
+            ],
+            cancelButtonIndex: 0,
+          },
           (buttonIndex) => {
             if (buttonIndex === 1) ImagePicker.launchCameraAsync({ mediaTypes: ['images'], allowsEditing: true, quality: 0.85 }).then(r => !r.canceled && setPendingImageAsset(r.assets[0]))
             if (buttonIndex === 2) ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], allowsEditing: true, quality: 0.85 }).then(r => !r.canceled && setPendingImageAsset(r.assets[0]))
@@ -427,23 +461,40 @@ export default function Index() {
 
   const handleGeneratePress = () => {
     if (isGenerating || isPreparingImage) return
-    if (!selectedAudience) {
-      return Alert.alert(t('add.alerts.chooseAudienceTitle'), t('add.alerts.chooseAudienceBody'))
+    const resolvedAudience: AudienceOption = selectedAudience ?? 'Stranger'
+
+    // Gate: Pro users bypass, otherwise check credits
+    if (!isPro && credits < 1) {
+      router.push('/(paywalls)')
+      return
     }
     
     if (selectedTag === 'text') {
-      const text = inputText.trim() || TARGET_FREE_GENERATION_PROMPT
-      generateRoastMutation.mutate({ inputType: 'text', text, audience: selectedAudience, burnLevel: burnPercent, count: roastCount })
+      const text = inputText.trim() || targetFreeGenerationPrompt
+      generateRoastMutation.mutate({
+        inputType: 'text',
+        text,
+        audience: resolvedAudience,
+        burnLevel: burnPercent,
+        count: roastCount,
+      })
     } else {
       if (image?.base64) {
-        generateRoastMutation.mutate({ inputType: 'image', imageBase64: image.base64, imageMimeType: image.mimeType || 'image/jpeg', audience: selectedAudience, burnLevel: burnPercent, count: roastCount })
+        generateRoastMutation.mutate({
+          inputType: 'image',
+          imageBase64: image.base64,
+          imageMimeType: image.mimeType || 'image/jpeg',
+          audience: resolvedAudience,
+          burnLevel: burnPercent,
+          count: roastCount,
+        })
         return
       }
 
       generateRoastMutation.mutate({
         inputType: 'text',
-        text: TARGET_FREE_GENERATION_PROMPT,
-        audience: selectedAudience,
+        text: targetFreeGenerationPrompt,
+        audience: resolvedAudience,
         burnLevel: burnPercent,
         count: roastCount,
       })

@@ -30,6 +30,16 @@ const AUDIENCES = new Set([
   'Self',
   'Stranger',
 ]);
+const SUPPORTED_LANGUAGES = new Set(['en', 'de', 'fr', 'es', 'ja', 'pt', 'it']);
+const LANGUAGE_NAMES = {
+  en: 'English',
+  de: 'German',
+  fr: 'French',
+  es: 'Spanish',
+  ja: 'Japanese',
+  pt: 'Portuguese',
+  it: 'Italian',
+};
 
 const rateWindowMs = 60_000;
 const rateMap = new Map();
@@ -119,6 +129,25 @@ function clampRoastCount(value) {
   return Math.min(MAX_ROAST_COUNT, Math.max(1, Math.round(value)));
 }
 
+function normalizeLanguage(value) {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  // Handles values like: "de-DE,de;q=0.9"
+  const firstSegment = trimmed.split(',')[0];
+  const withoutQuality = firstSegment.split(';')[0];
+  const lowered = withoutQuality.toLowerCase().replace('_', '-');
+  const base = lowered.split('-')[0];
+  const mapped = base === 'jp' ? 'ja' : base;
+
+  return SUPPORTED_LANGUAGES.has(mapped) ? mapped : null;
+}
+
+function resolveLanguage(bodyLanguage, acceptLanguageHeader) {
+  return normalizeLanguage(bodyLanguage) || normalizeLanguage(acceptLanguageHeader) || 'en';
+}
+
 function buildStyleTone(burnLevel, audience) {
   if (burnLevel <= 20) return `gentle and playful, kind to ${audience}`;
   if (burnLevel <= 40) return `light and witty, friendly to ${audience}`;
@@ -131,6 +160,8 @@ function buildPrompt(input) {
   const burnLevel = Math.round(input.burnLevel);
   const tone = buildStyleTone(burnLevel, input.audience);
   const roastCount = clampRoastCount(input.count);
+  const language = resolveLanguage(input.language, null);
+  const languageName = LANGUAGE_NAMES[language] || LANGUAGE_NAMES.en;
 
   const rules = [
     `You are writing ${roastCount} different roasts.`,
@@ -139,6 +170,7 @@ function buildPrompt(input) {
     'Do not include hate speech, slurs, threats, or sexual content.',
     'Do not target protected characteristics.',
     'If user input is too sensitive, return a playful toned-down roast.',
+    `Write all roast text in ${languageName}.`,
     `Return ONLY valid minified JSON with this exact shape: {"roasts":["..."]}.`,
     `The "roasts" array must contain exactly ${roastCount} strings.`,
   ].join('\n');
@@ -160,6 +192,7 @@ function buildPrompt(input) {
     `Audience: ${input.audience}`,
     `Burn level (0-100): ${burnLevel}`,
     `Tone: ${tone}`,
+    `Output language: ${languageName} (${language})`,
     '',
     subjectBlock,
   ].join('\n');
@@ -168,6 +201,8 @@ function buildPrompt(input) {
 function buildTopUpPrompt(input, existingRoasts, missingCount) {
   const burnLevel = Math.round(input.burnLevel);
   const tone = buildStyleTone(burnLevel, input.audience);
+  const language = resolveLanguage(input.language, null);
+  const languageName = LANGUAGE_NAMES[language] || LANGUAGE_NAMES.en;
   const existing = existingRoasts.map((value, index) => `${index + 1}. ${value}`).join('\n');
 
   return [
@@ -176,12 +211,14 @@ function buildTopUpPrompt(input, existingRoasts, missingCount) {
     'Do not repeat or closely paraphrase existing roasts.',
     'Do not include hate speech, slurs, threats, or sexual content.',
     'Do not target protected characteristics.',
+    `Write all roast text in ${languageName}.`,
     `Return ONLY valid minified JSON with this exact shape: {"roasts":["..."]}.`,
     `The "roasts" array must contain exactly ${missingCount} strings.`,
     '',
     `Audience: ${input.audience}`,
     `Burn level (0-100): ${burnLevel}`,
     `Tone: ${tone}`,
+    `Output language: ${languageName} (${language})`,
     '',
     'Already generated roasts:',
     existing || '(none)',
@@ -392,10 +429,11 @@ async function callGemini(generateRequest, requestId) {
   throw new Error(`Unexpected Gemini failure [${requestId}]`);
 }
 
-function validatePayload(body) {
+function validatePayload(body, acceptLanguageHeader) {
   const inputType = body?.inputType;
   const audience = body?.audience;
   const burnLevel = Number(body?.burnLevel);
+  const language = resolveLanguage(body?.language, acceptLanguageHeader);
   const text = typeof body?.text === 'string' ? body.text.trim() : '';
   const imageUrl = typeof body?.imageUrl === 'string' ? body.imageUrl.trim() : '';
   const imageBase64 =
@@ -450,6 +488,7 @@ function validatePayload(body) {
       imageUrl,
       imageBase64,
       imageMimeType,
+      language,
     },
   };
 }
@@ -545,7 +584,11 @@ async function handleGenerate(req, res, requestId) {
     return;
   }
 
-  const validated = validatePayload(body);
+  const acceptLanguageHeader =
+    typeof req.headers['accept-language'] === 'string'
+      ? req.headers['accept-language']
+      : '';
+  const validated = validatePayload(body, acceptLanguageHeader);
   if (!validated.ok) {
     badRequest(res, validated.error, requestId);
     return;
@@ -571,6 +614,7 @@ async function handleGenerate(req, res, requestId) {
       model: GEMINI_MODEL,
       audience: validated.value.audience,
       burnLevel: Math.round(validated.value.burnLevel),
+      language: validated.value.language,
       createdAt: nowIso(),
     });
   } catch (error) {

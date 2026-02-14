@@ -41,6 +41,13 @@
       "imageErrorBody": "画像を処理できませんでした。",
       "chooseAudienceTitle": "対象を選択",
       "chooseAudienceBody": "生成前に対象を選んでください。"
+    },
+    "prompts": {
+      "noTarget": "?????????????????????????????"
+    },
+    "actionSheet": {
+      "takePhoto": "?????",
+      "chooseFromLibrary": "?????????"
     }
   },
   "home": {
@@ -63,7 +70,9 @@
       "copiedBody": "ローストをクリップボードにコピーしました。",
       "favoriteFailed": "お気に入りを更新できませんでした。",
       "deleteFailedTitle": "削除に失敗しました",
-      "deleteFailedBody": "このローストを今は削除できません。"
+      "deleteFailedBody": "このローストを今は削除できません。",
+      "shareBonusTitle": "+3 ロースト獲得！",
+      "shareBonusBody": "シェアありがとう！3回分のボーナスローストを獲得しました。"
     },
     "delete": {
       "title": "ローストを削除しますか？",
@@ -86,6 +95,7 @@
     "labels": {
       "for": "対象",
       "shareImage": "画像を共有",
+      "shareBonus": "+3 ロースト",
       "copy": "コピー",
       "shareTitle": "ロースト",
       "brand": "RoastAI",
@@ -111,9 +121,9 @@
       "terms": "利用規約",
       "privacy": "プライバシーポリシー"
     },
-    "proCard": {
-      "title": "Proにする",
-      "subtitle": "無制限ローストとプレミアムモードを解放。"
+    "creditsCard": {
+      "title": "ローストを購入",
+      "subtitle": "残り{{count}}回のローストがあります。タップして追加購入。"
     },
     "alerts": {
       "cannotOpenLinkTitle": "リンクを開けません",
@@ -133,5 +143,9 @@
     "ja": "日本語",
     "pt": "ポルトガル語",
     "it": "イタリア語"
+  },
+  "credits": {
+    "unlimited": "無制限",
+    "roastsCount": "{{count}} ロースト"
   }
 }

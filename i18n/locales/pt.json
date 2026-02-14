@@ -41,6 +41,13 @@
       "imageErrorBody": "Nao foi possivel processar a imagem.",
       "chooseAudienceTitle": "Escolha o publico",
       "chooseAudienceBody": "Selecione um publico antes de gerar."
+    },
+    "prompts": {
+      "noTarget": "Nenhum alvo especifico foi fornecido. Gere um roast independente."
+    },
+    "actionSheet": {
+      "takePhoto": "Tirar foto",
+      "chooseFromLibrary": "Escolher da biblioteca"
     }
   },
   "home": {
@@ -63,7 +70,9 @@
       "copiedBody": "Roast copiado para a area de transferencia.",
       "favoriteFailed": "Nao foi possivel atualizar favorito.",
       "deleteFailedTitle": "Falha ao excluir",
-      "deleteFailedBody": "Nao foi possivel excluir este roast agora."
+      "deleteFailedBody": "Nao foi possivel excluir este roast agora.",
+      "shareBonusTitle": "+3 Roasts ganhos!",
+      "shareBonusBody": "Obrigado por compartilhar! Voce ganhou 3 roasts bonus."
     },
     "delete": {
       "title": "Excluir roast?",
@@ -86,6 +95,7 @@
     "labels": {
       "for": "PARA",
       "shareImage": "Compartilhar imagem",
+      "shareBonus": "+3 Roasts",
       "copy": "Copiar",
       "shareTitle": "Roast",
       "brand": "RoastAI",
@@ -111,9 +121,9 @@
       "terms": "Termos de servico",
       "privacy": "Politica de privacidade"
     },
-    "proCard": {
-      "title": "Vire Pro",
-      "subtitle": "Desbloqueie roasts ilimitados e modos premium."
+    "creditsCard": {
+      "title": "Comprar roasts",
+      "subtitle": "Voce tem {{count}} roasts restantes. Toque para obter mais."
     },
     "alerts": {
       "cannotOpenLinkTitle": "Nao foi possivel abrir o link",
@@ -133,5 +143,9 @@
     "ja": "Japones",
     "pt": "Portugues",
     "it": "Italiano"
+  },
+  "credits": {
+    "unlimited": "Ilimitado",
+    "roastsCount": "{{count}} Roasts"
   }
 }

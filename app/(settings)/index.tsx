@@ -1,5 +1,4 @@
 import { AppTheme } from '@/constants/theme'
-import { useSubscription } from '@/context/SubscriptionContext'
 import {
   SUPPORTED_LANGUAGES,
   getCurrentAppLanguage,
@@ -7,10 +6,14 @@ import {
   type AppLanguage,
 } from '@/i18n'
 import { clearRoastHistory } from '@/services/roast-db'
+import { useCreditStore } from '@/stores/creditStore'
 import { useDbStore } from '@/stores/dbStore'
+import { Host, Text as IOSText, Picker } from '@expo/ui/swift-ui'
+import { frame, pickerStyle, tag } from '@expo/ui/swift-ui/modifiers'
 import { Ionicons } from '@expo/vector-icons'
 import { Canvas, LinearGradient, Rect, vec } from '@shopify/react-native-skia'
 import { useQueryClient } from '@tanstack/react-query'
+import * as Burnt from 'burnt'
 import * as Haptics from 'expo-haptics'
 import * as Linking from 'expo-linking'
 import { router } from 'expo-router'
@@ -19,7 +22,6 @@ import { PressableScale } from 'pressto'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Alert, SectionList, Text, View } from 'react-native'
-import RevenueCatUI from 'react-native-purchases-ui'
 import { Easing, useDerivedValue, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated'
 
 const TERMS_URL = 'https://www.brainnotes.app/terms'
@@ -30,10 +32,11 @@ type SettingsRow = {
   id: string
   label: string
   icon: keyof typeof Ionicons.glyphMap
-  onPress: () => void | Promise<void>
+  onPress?: () => void | Promise<void>
   value?: string
   destructive?: boolean
   external?: boolean
+  rowType?: 'button' | 'language-picker'
 }
 
 type SettingsSection = {
@@ -44,31 +47,27 @@ type SettingsSection = {
 export default function SettingsScreen() {
   const { db } = useDbStore()
   const queryClient = useQueryClient()
-  const { isPro } = useSubscription()
+  const credits = useCreditStore((s) => s.credits)
   const { t } = useTranslation()
-  const [proCardSize, setProCardSize] = React.useState({ width: 0, height: 0 })
+  const [cardSize, setCardSize] = React.useState({ width: 0, height: 0 })
   const [currentLanguage, setCurrentLanguage] = React.useState<AppLanguage>(getCurrentAppLanguage())
 
   const openLink = async (url: string) => {
     const canOpen = await Linking.canOpenURL(url)
     if (!canOpen) {
-      Alert.alert(t('settings.alerts.cannotOpenLinkTitle'), url)
+      Burnt.toast({
+        title: t('settings.alerts.cannotOpenLinkTitle'),
+        message: url,
+        preset: 'error',
+        haptic: 'error',
+      })
       return
     }
     await Linking.openURL(url)
   }
 
-  const handleManageSubscription = async () => {
-    if (!isPro) {
-      router.push('/(paywalls)')
-      return
-    }
-
-    try {
-      await RevenueCatUI.presentCustomerCenter()
-    } catch {
-      Alert.alert(t('settings.alerts.unavailableTitle'), t('settings.alerts.unavailableBody'))
-    }
+  const handleBuyCredits = () => {
+    router.push('/(paywalls)')
   }
 
   const handleRateApp = async () => {
@@ -102,11 +101,18 @@ export default function SettingsScreen() {
                 await queryClient.invalidateQueries({ queryKey: ['roast-history'] })
                 await queryClient.invalidateQueries({ queryKey: ['roast-item'] })
                 await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+                Burnt.toast({
+                  title: t('settings.alerts.clearHistoryTitle'),
+                  preset: 'done',
+                  haptic: 'success',
+                })
               } catch {
-                Alert.alert(
-                  t('settings.alerts.clearHistoryErrorTitle'),
-                  t('settings.alerts.clearHistoryErrorBody')
-                )
+                Burnt.toast({
+                  title: t('settings.alerts.clearHistoryErrorTitle'),
+                  message: t('settings.alerts.clearHistoryErrorBody'),
+                  preset: 'error',
+                  haptic: 'error',
+                })
               }
             })()
           },
@@ -117,32 +123,22 @@ export default function SettingsScreen() {
 
   const handleLanguageChange = async (nextLanguage: AppLanguage) => {
     if (nextLanguage === currentLanguage) return
+    await Haptics.selectionAsync()
     await setAppLanguage(nextLanguage)
     setCurrentLanguage(nextLanguage)
   }
 
   const sections: SettingsSection[] = [
     {
-      title: t('settings.sections.account'),
+      title: t('settings.sections.language'),
       data: [
         {
-          id: 'subscription',
-          label: isPro ? t('settings.rows.manageSubscription') : t('settings.rows.upgradeToPro'),
-          icon: isPro ? 'sparkles' : 'diamond',
-          value: isPro ? t('common.pro') : t('common.free'),
-          onPress: handleManageSubscription,
+          id: 'language-picker',
+          label: t('settings.sections.language'),
+          icon: 'language',
+          rowType: 'language-picker',
         },
       ],
-    },
-    {
-      title: t('settings.sections.language'),
-      data: SUPPORTED_LANGUAGES.map((lang) => ({
-        id: `language-${lang}`,
-        label: t(`languages.${lang}`),
-        icon: 'language',
-        value: currentLanguage === lang ? t('common.selected') : undefined,
-        onPress: () => handleLanguageChange(lang),
-      })),
     },
     {
       title: t('settings.sections.data'),
@@ -195,6 +191,7 @@ export default function SettingsScreen() {
   ]
 
   const onRowPress = async (item: SettingsRow) => {
+    if (!item.onPress) return
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     await item.onPress()
   }
@@ -211,82 +208,73 @@ export default function SettingsScreen() {
           paddingBottom: AppTheme.spacing.xxl,
         }}
         ListHeaderComponent={
-          !isPro ? (
-            <PressableScale
-              onPress={() => {
-                void onRowPress({
-                  id: 'upgrade-card',
-                  label: t('settings.rows.upgradeToPro'),
-                  icon: 'sparkles',
-                  onPress: handleManageSubscription,
-                })
+          <PressableScale
+            onPress={handleBuyCredits}
+            style={{
+              marginTop: AppTheme.spacing.sm,
+              marginBottom: AppTheme.spacing.sm,
+            }}
+          >
+            <View
+              onLayout={(event) => {
+                const next = event.nativeEvent.layout
+                if (next.width !== cardSize.width || next.height !== cardSize.height) {
+                  setCardSize({ width: next.width, height: next.height })
+                }
               }}
               style={{
-                marginTop: AppTheme.spacing.sm,
-                marginBottom: AppTheme.spacing.sm,
+                position: 'relative',
+                borderRadius: AppTheme.borderRadius.xl,
+                borderCurve: 'continuous',
+                overflow: 'hidden',
+                padding: AppTheme.spacing.lg,
+                backgroundColor: AppTheme.colors.primary,
+                boxShadow: '0px 14px 28px rgba(234, 88, 12, 0.28)',
+                gap: AppTheme.spacing.xs,
               }}
             >
-              <View
-                onLayout={(event) => {
-                  const next = event.nativeEvent.layout
-                  if (next.width !== proCardSize.width || next.height !== proCardSize.height) {
-                    setProCardSize({ width: next.width, height: next.height })
-                  }
-                }}
-                style={{
-                  position: 'relative',
-                  borderRadius: AppTheme.borderRadius.xl,
-                  borderCurve: 'continuous',
-                  overflow: 'hidden',
-                  padding: AppTheme.spacing.lg,
-                  backgroundColor: AppTheme.colors.primary,
-                  boxShadow: '0px 14px 28px rgba(234, 88, 12, 0.28)',
-                  gap: AppTheme.spacing.xs,
-                }}
-              >
-                {proCardSize.width > 0 && proCardSize.height > 0 ? (
+              {cardSize.width > 0 && cardSize.height > 0 ? (
+                <View
+                  pointerEvents="none"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                  }}
+                >
+                  <AnimatedGradientRect
+                    width={cardSize.width}
+                    height={cardSize.height}
+                  />
+                </View>
+              ) : null}
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: AppTheme.spacing.sm }}>
                   <View
-                    pointerEvents="none"
                     style={{
-                      position: 'absolute',
-                      top: 0,
-                      right: 0,
-                      bottom: 0,
-                      left: 0,
+                      width: 36,
+                      height: 36,
+                      borderRadius: 18,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: 'rgba(255,255,255,0.22)',
                     }}
                   >
-                    <AnimatedGradientRect
-                      width={proCardSize.width}
-                      height={proCardSize.height}
-                    />
+                    <Ionicons name="flame" size={18} color="#FFFFFF" />
                   </View>
-                ) : null}
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: AppTheme.spacing.sm }}>
-                    <View
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 18,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: 'rgba(255,255,255,0.22)',
-                      }}
-                    >
-                      <Ionicons name="sparkles" size={18} color="#FFFFFF" />
-                    </View>
-                    <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '700' }}>
-                      {t('settings.proCard.title')}
-                    </Text>
-                  </View>
-                  <Ionicons name="chevron-forward" size={18} color="rgba(255,255,255,0.92)" />
+                  <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '700' }}>
+                    {t('settings.creditsCard.title')}
+                  </Text>
                 </View>
-                <Text style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13 }}>
-                  {t('settings.proCard.subtitle')}
-                </Text>
+                <Ionicons name="chevron-forward" size={18} color="rgba(255,255,255,0.92)" />
               </View>
-            </PressableScale>
-          ) : null
+              <Text style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13 }}>
+                {t('settings.creditsCard.subtitle', { count: credits })}
+              </Text>
+            </View>
+          </PressableScale>
         }
         renderSectionHeader={({ section }) => (
           <Text
@@ -308,6 +296,72 @@ export default function SettingsScreen() {
           const isLast = index === section.data.length - 1
           const iconTint = item.destructive ? AppTheme.colors.danger : AppTheme.colors.primary
           const iconBg = item.destructive ? 'rgba(239, 68, 68, 0.12)' : 'rgba(234, 88, 12, 0.12)'
+
+          if (item.rowType === 'language-picker') {
+            return (
+              <View
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderTopLeftRadius: index === 0 ? AppTheme.borderRadius.lg : 0,
+                  borderTopRightRadius: index === 0 ? AppTheme.borderRadius.lg : 0,
+                  borderBottomLeftRadius: isLast ? AppTheme.borderRadius.lg : 0,
+                  borderBottomRightRadius: isLast ? AppTheme.borderRadius.lg : 0,
+                  borderCurve: 'continuous',
+                }}
+              >
+                <View
+                  style={{
+                    minHeight: 58,
+                    paddingHorizontal: AppTheme.spacing.md,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: AppTheme.spacing.sm }}>
+                    <View
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 10,
+                        borderCurve: 'continuous',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: iconBg,
+                      }}
+                    >
+                      <Ionicons name={item.icon} size={18} color={iconTint} />
+                    </View>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: '500',
+                        color: AppTheme.colors.text.primary,
+                      }}
+                    >
+                      {item.label}
+                    </Text>
+                  </View>
+
+                  <Host matchContents useViewportSizeMeasurement style={{ alignItems: 'flex-end' }}>
+                    <Picker<AppLanguage>
+                      modifiers={[pickerStyle('menu'), frame({ width: 170 })]}
+                      selection={currentLanguage}
+                      onSelectionChange={(selection) => {
+                        void handleLanguageChange(selection)
+                      }}
+                    >
+                      {SUPPORTED_LANGUAGES.map((lang) => (
+                        <IOSText key={lang} modifiers={[tag(lang)]}>
+                          {t(`languages.${lang}`)}
+                        </IOSText>
+                      ))}
+                    </Picker>
+                  </Host>
+                </View>
+              </View>
+            )
+          }
 
           return (
             <PressableScale

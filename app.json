@@ -9,7 +9,10 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "group.flingex.roast.app"
+      "bundleIdentifier": "group.flingex.roast.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Location is used to support features that may require it, such as localized services."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -39,6 +42,12 @@
           }
         }
       ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The roast app accesses your photos to take pictures of your colleagues and roast them"
+        }
+      ],
       "expo-font",
       "expo-image",
       "expo-secure-store",
@@ -50,7 +59,7 @@
         "expo-build-properties",
         {
           "ios": {
-            "deploymentTarget": "16.0"
+            "deploymentTarget": "16.2"
           }
         }
       ]

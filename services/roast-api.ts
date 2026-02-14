@@ -1,3 +1,5 @@
+import { getCurrentAppLanguage, type AppLanguage } from '@/i18n'
+
 export const ROAST_AUDIENCES = [
   'Bestie',
   'Sibling',
@@ -16,6 +18,7 @@ export type RoastGenerateRequest =
       audience: RoastAudience
       burnLevel: number
       count?: number
+      language?: AppLanguage
     }
   | {
       inputType: 'image'
@@ -24,6 +27,7 @@ export type RoastGenerateRequest =
       audience: RoastAudience
       burnLevel: number
       count?: number
+      language?: AppLanguage
     }
 
 export type RoastGenerateResponse = {
@@ -32,6 +36,7 @@ export type RoastGenerateResponse = {
   roasts?: string[]
   roastCount?: number
   requestedCount?: number
+  language?: AppLanguage
   model: string
   audience: RoastAudience
   burnLevel: number
@@ -49,13 +54,17 @@ export async function generateRoastRequest(
   }
 
   const baseUrl = roastApiBaseUrl.replace(/\/+$/, '')
+  const language = payload.language ?? getCurrentAppLanguage()
+  const requestPayload = { ...payload, language }
+
   const response = await fetch(`${baseUrl}/v1/roasts/generate`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Accept-Language': language,
       ...(roastApiBearer ? { Authorization: `Bearer ${roastApiBearer}` } : {}),
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(requestPayload),
   })
 
   const rawBody = await response.text()
