@@ -12,12 +12,32 @@
       "supportsTablet": false,
       "bundleIdentifier": "group.flingex.roast.app",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Location is used to support features that may require it, such as localized services."
+        "NSLocationWhenInUseUsageDescription": "Location is used to support features that may require it, such as localized services.",
+        "CFBundleLocalizations": [
+          "en",
+          "de",
+          "fr",
+          "es",
+          "ja",
+          "pt",
+          "it",
+          "en",
+          "de",
+          "fr",
+          "es",
+          "ja",
+          "pt",
+          "it"
+        ],
+        "ITSAppUsesNonExemptEncryption": false
       },
-       "entitlements": {
+      "entitlements": {
         "aps-environment": "production",
         "com.apple.security.application-groups": [
-          "group.flingex.roast.onesignal"
+          "group.flingex.roast.onesignal",
+          "group.group.flingex.roast.app",
+          "group.flingex.roast.onesignal",
+          "group.group.flingex.roast.app"
         ]
       }
     },
@@ -29,7 +49,10 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "output": "static",
@@ -94,7 +117,7 @@
           }
         }
       ],
-       [
+      [
         "onesignal-expo-plugin",
         {
           "mode": "production"
@@ -112,6 +135,34 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "targetName": "expo-sharing-extension",
+                  "bundleIdentifier": "group.flingex.roast.app.expo-sharing-extension",
+                  "entitlements": []
+                },
+                {
+                  "targetName": "OneSignalNotificationServiceExtension",
+                  "bundleIdentifier": "group.flingex.roast.app.OneSignalNotificationServiceExtension",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.group.flingex.roast.app.onesignal"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "projectId": "e134cd92-cdfd-4d9c-bd4c-ac721e780c1d"
+      }
     }
   }
 }
