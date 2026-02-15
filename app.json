@@ -9,11 +9,16 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/images/roast.icon",
-
       "supportsTablet": false,
       "bundleIdentifier": "group.flingex.roast.app",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Location is used to support features that may require it, such as localized services."
+      },
+       "entitlements": {
+        "aps-environment": "production",
+        "com.apple.security.application-groups": [
+          "group.flingex.roast.onesignal"
+        ]
       }
     },
     "android": {
@@ -56,13 +61,51 @@
       "expo-sharing",
       "expo-sqlite",
       "expo-web-browser",
-      "expo-localization",
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": [
+              "en",
+              "de",
+              "fr",
+              "es",
+              "ja",
+              "pt",
+              "it"
+            ],
+            "android": [
+              "en",
+              "de",
+              "fr",
+              "es",
+              "ja",
+              "pt",
+              "it"
+            ]
+          }
+        }
+      ],
       [
         "expo-build-properties",
         {
           "ios": {
             "deploymentTarget": "16.2"
           }
+        }
+      ],
+       [
+        "onesignal-expo-plugin",
+        {
+          "mode": "production"
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "roast",
+          "organization": "ademola-kevin-bello"
         }
       ]
     ],

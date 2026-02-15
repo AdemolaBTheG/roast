@@ -22,6 +22,7 @@ import {
 } from 'expo-haptics'
 import { Image } from 'expo-image'
 import { useLocalSearchParams, useNavigation } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 import * as Sharing from 'expo-sharing'
 import { PressableScale } from 'pressto'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -196,6 +197,7 @@ export default function RoastItemScreen() {
   const queryClient = useQueryClient()
   const { db } = useDbStore()
   const { t } = useTranslation()
+  const posthog = usePostHog()
   const { isPro } = useSubscription()
   const hasClaimedShareBonus = useCreditStore((state) => state.hasClaimedShareBonus)
   const params = useLocalSearchParams<{ id?: string; celebrate?: string }>()
@@ -242,6 +244,19 @@ export default function RoastItemScreen() {
   const maxVariantIndex = Math.max(0, variants.length - 1)
   const currentVariant = variants[currentIndex] ?? null
   const burnMeta = getBurnMeta(roast?.burnLevel ?? 0, t)
+
+  useEffect(() => {
+    if (!roast) return
+
+    posthog?.capture('screen_viewed', {
+      screen_name: 'item',
+      roast_id: roast.id,
+      audience: roast.audience,
+      input_type: roast.inputType,
+      variant_count: variants.length,
+      burn_level: roast.burnLevel,
+    })
+  }, [posthog, roast, variants.length])
 
   useEffect(() => {
     favoriteFlags.value = variants.map((variant) => (variant.isFavorite ? 1 : 0))
@@ -380,6 +395,11 @@ export default function RoastItemScreen() {
         mimeType: 'image/png',
         dialogTitle: t('item.labels.shareImage'),
       })
+      posthog?.capture('roast_shared_image', {
+        roast_id: roast?.id ?? null,
+        variant_id: currentVariant?.id ?? null,
+        had_share_bonus_badge: !isPro && !hasClaimedShareBonus,
+      })
 
       // 5. Award 3 bonus credits for sharing (one-time global bonus)
       if (roast) {
@@ -402,7 +422,7 @@ export default function RoastItemScreen() {
         haptic: 'error',
       })
     }
-  }, [isDeleting, roast, t])
+  }, [currentVariant?.id, hasClaimedShareBonus, isDeleting, isPro, posthog, roast, t])
 
   const handleShareTextPress = useCallback(async () => {
     if (!currentVariant || isDeleting) return
@@ -467,6 +487,11 @@ export default function RoastItemScreen() {
 
     try {
       await setRoastVariantFavorite(db, variantId, nextFavorite)
+      posthog?.capture('roast_favorite_toggled', {
+        roast_id: roast.id,
+        variant_id: variantId,
+        is_favorite: nextFavorite,
+      })
       await refetch()
     } catch {
       Burnt.toast({
@@ -479,7 +504,7 @@ export default function RoastItemScreen() {
     } finally {
       setIsTogglingFavorite(false)
     }
-  }, [currentVariant, db, isDeleting, isTogglingFavorite, queryClient, refetch, roast, roastQueryKey, t])
+  }, [currentVariant, db, isDeleting, isTogglingFavorite, posthog, queryClient, refetch, roast, roastQueryKey, t])
 
   const runDeleteRoast = useCallback(async () => {
     if (!db || !roast || isDeleting) return
@@ -493,6 +518,9 @@ export default function RoastItemScreen() {
       await deleteRoastById(db, roast.id)
       queryClient.removeQueries({ queryKey: roastQueryKey })
       await queryClient.invalidateQueries({ queryKey: ['roast-history'] })
+      posthog?.capture('roast_deleted', {
+        roast_id: roast.id,
+      })
 
       if (Platform.OS === 'ios') {
         void notificationAsync(NotificationFeedbackType.Success)
@@ -511,7 +539,7 @@ export default function RoastItemScreen() {
     } finally {
       setIsDeleting(false)
     }
-  }, [db, isDeleting, navigation, queryClient, roast, roastQueryKey, t])
+  }, [db, isDeleting, navigation, posthog, queryClient, roast, roastQueryKey, t])
 
   const confirmDeleteRoast = useCallback(() => {
     if (!roast || isDeleting) return

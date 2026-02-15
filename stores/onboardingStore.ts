@@ -1,53 +1,39 @@
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-import zustandStorage from "./storage";
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import zustandStorage from './storage';
 
-
-
+type QuizAnswers = Record<string, string>;
 
 interface OnboardingState {
-  // onboarding flags
   hasSeenStoreReview: boolean;
   isOnboardingCompleted: boolean;
-
-
-
-
-
-
+  quizAnswers: QuizAnswers;
   setHasSeenStoreReview: (value: boolean) => void;
   setOnboardingCompleted: (completed: boolean) => void;
-
-
-  // helper to clear data after onboarding
+  setQuizAnswer: (questionId: string, answerId: string) => void;
+  resetQuizAnswers: () => void;
 }
 
 export const useOnboardingStore = create<OnboardingState>()(
   persist(
     (set) => ({
-      // flags
       hasSeenStoreReview: false,
       isOnboardingCompleted: false,
-      treat: null,
-      userSettings: {
-        quitDate: null,
-        cigarettesPerDay: 0,
-        cigsPerPack: 20,
-        costPerPack: 0,
-        currencySymbol: "$",
-      },
-
-      // flag setters
+      quizAnswers: {},
       setHasSeenStoreReview: (value) => set({ hasSeenStoreReview: value }),
-      setOnboardingCompleted: (completed) =>
-        set({ isOnboardingCompleted: completed }),
-
-
-
+      setOnboardingCompleted: (completed) => set({ isOnboardingCompleted: completed }),
+      setQuizAnswer: (questionId, answerId) =>
+        set((state) => ({
+          quizAnswers: {
+            ...state.quizAnswers,
+            [questionId]: answerId,
+          },
+        })),
+      resetQuizAnswers: () => set({ quizAnswers: {} }),
     }),
     {
-      name: "onboarding-storage",
+      name: 'onboarding-storage',
       storage: createJSONStorage(() => zustandStorage),
-    }
-  )
+    },
+  ),
 );

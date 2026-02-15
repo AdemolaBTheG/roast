@@ -34,17 +34,22 @@ export const useCreditStore = create<CreditState>()(
           return
         }
 
-        // Idempotency: don't double-grant the same transaction
-        if (transactionId && get().claimedTransactionIds.includes(transactionId)) {
-          return
-        }
+        set((state) => {
+          // Only grant consumables when we can uniquely identify the transaction.
+          if (!transactionId) {
+            console.warn(`Missing transaction ID for product ${productId}; skipping direct credit grant.`)
+            return state
+          }
 
-        set((state) => ({
-          credits: state.credits + amount,
-          claimedTransactionIds: transactionId
-            ? [...state.claimedTransactionIds, transactionId]
-            : state.claimedTransactionIds,
-        }))
+          if (state.claimedTransactionIds.includes(transactionId)) {
+            return state
+          }
+
+          return {
+            credits: state.credits + amount,
+            claimedTransactionIds: [...state.claimedTransactionIds, transactionId],
+          }
+        })
       },
 
       deductCredit: () => {
@@ -70,24 +75,30 @@ export const useCreditStore = create<CreditState>()(
        * haven't already been claimed locally.
        */
       restoreCredits: (transactions) => {
-        const { claimedTransactionIds } = get()
-        let creditsToAdd = 0
-        const newClaimedIds: string[] = []
+        set((state) => {
+          const claimedIds = new Set(state.claimedTransactionIds)
+          let creditsToAdd = 0
 
-        for (const tx of transactions) {
-          if (claimedTransactionIds.includes(tx.transactionIdentifier)) continue
-          const amount = CREDIT_PACKAGES[tx.productIdentifier]
-          if (!amount) continue
-          creditsToAdd += amount
-          newClaimedIds.push(tx.transactionIdentifier)
-        }
+          for (const tx of transactions) {
+            const txId = tx.transactionIdentifier
+            if (!txId || claimedIds.has(txId)) continue
 
-        if (creditsToAdd > 0) {
-          set((state) => ({
+            const amount = CREDIT_PACKAGES[tx.productIdentifier]
+            if (!amount) continue
+
+            creditsToAdd += amount
+            claimedIds.add(txId)
+          }
+
+          if (creditsToAdd <= 0) {
+            return state
+          }
+
+          return {
             credits: state.credits + creditsToAdd,
-            claimedTransactionIds: [...state.claimedTransactionIds, ...newClaimedIds],
-          }))
-        }
+            claimedTransactionIds: Array.from(claimedIds),
+          }
+        })
       },
     }),
     {

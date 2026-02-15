@@ -6,6 +6,7 @@ import { LegendList } from '@legendapp/list'
 import { useQuery } from '@tanstack/react-query'
 import { Image } from 'expo-image'
 import { useFocusEffect, useRouter } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 import { PressableScale } from 'pressto'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -32,6 +33,7 @@ function getBurnMeta(burnLevel: number, t: (key: string) => string) {
 
 export default function Index() {
   const router = useRouter()
+  const posthog = usePostHog()
   const { t } = useTranslation()
   const { db } = useDbStore()
   const {
@@ -50,10 +52,14 @@ export default function Index() {
 
   useFocusEffect(
     React.useCallback(() => {
+      posthog?.capture('screen_viewed', {
+        screen_name: 'home',
+      })
+
       if (db) {
         void refetch()
       }
-    }, [db, refetch])
+    }, [db, posthog, refetch])
   )
 
   return (
@@ -76,12 +82,18 @@ export default function Index() {
         return (
        <PressableScale
 
-  onPress={() =>
-    router.push({
-      pathname: '/(item)/[id]',
-      params: { id: item.id.toString() },
-    })
-  }
+	  onPress={() => {
+	    posthog?.capture('home_roast_opened', {
+	      roast_id: item.id,
+	      audience: item.audience,
+	      input_type: item.inputType,
+	      variant_count: item.variants.length,
+	    })
+	    router.push({
+	      pathname: '/(item)/[id]',
+	      params: { id: item.id.toString() },
+	    })
+	  }}
 >
   <View
     style={{
@@ -205,18 +217,75 @@ export default function Index() {
             alignItems: 'center',
           }}
         >
-          <Text
+          <View
             style={{
-              color: AppTheme.colors.text.secondary,
-              fontSize: AppTheme.typography.size.base,
+              width: '100%',
+              borderRadius: AppTheme.borderRadius.lg,
+              borderCurve: 'continuous',
+              backgroundColor: '#FFFFFF',
+              padding: AppTheme.spacing.lg,
+              alignItems: 'center',
+              gap: AppTheme.spacing.md,
             }}
           >
-            {isLoading
-              ? t('home.status.loading')
-              : isError
-                ? t('home.status.loadError')
-                : t('home.status.empty')}
-          </Text>
+            <View
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 24,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'rgba(234, 88, 12, 0.12)',
+              }}
+            >
+              <Ionicons
+                name={isError ? 'alert-circle-outline' : 'sparkles-outline'}
+                size={24}
+                color={AppTheme.colors.primary}
+              />
+            </View>
+
+            <Text
+              selectable
+              style={{
+                color: AppTheme.colors.text.secondary,
+                fontSize: AppTheme.typography.size.base,
+                textAlign: 'center',
+                lineHeight: AppTheme.typography.lineHeight.base,
+              }}
+            >
+              {isLoading
+                ? t('home.status.loading')
+                : isError
+                  ? t('home.status.loadError')
+                  : t('home.status.empty')}
+            </Text>
+
+            {!isLoading && !isError ? (
+              <PressableScale
+                onPress={() => router.push('/(add)')}
+                style={{
+                  minHeight: 48,
+                  paddingHorizontal: AppTheme.spacing.lg,
+                  borderRadius: AppTheme.borderRadius.md,
+                  borderCurve: 'continuous',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: AppTheme.colors.primary,
+                }}
+              >
+                <Text
+                  style={{
+                    color: AppTheme.colors.text.inverse,
+                    fontSize: AppTheme.typography.size.base,
+                    fontWeight: AppTheme.typography.weight.semibold,
+                  }}
+                >
+                  {t('navigation.add')}
+                </Text>
+              </PressableScale>
+            ) : null}
+          </View>
         </View>
       }
     />

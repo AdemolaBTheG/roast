@@ -7,7 +7,7 @@ import {
 
 type UseGenerateRoastOptions = {
   onSuccess?: (data: RoastGenerateResponse, variables: RoastGenerateRequest) => void
-  onError?: (error: Error) => void
+  onError?: (error: Error, variables: RoastGenerateRequest) => void
 }
 
 export function useGenerateRoast(options?: UseGenerateRoastOptions) {

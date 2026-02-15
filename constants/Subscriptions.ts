@@ -9,4 +9,5 @@ export const CREDIT_PACKAGES: Record<string, number> = {
   'small': 15,
   'medium': 60,
   'large': 200,
+  'promo': 30,
 }

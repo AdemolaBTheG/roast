@@ -7,7 +7,11 @@ import { OneSignal } from 'react-native-onesignal';
 import Purchases from 'react-native-purchases';
 
 const rc_apple_api_key = process.env.EXPO_PUBLIC_RC_APPLE_API_KEY || '';
-const onesignal_app_id = process.env.EXPO_PUBLIC_ONESIGNAL_APP_ID || '';
+// Support both env names to avoid silent misconfiguration during migration.
+const onesignal_app_id =
+    process.env.EXPO_PUBLIC_ONESIGNAL_APP_ID ||
+    process.env.EXPO_PUBLIC_ONESIGNAL_API_KEY ||
+    '';
 
 // Keep the splash screen visible while we load critical resources.
 SplashScreen.setOptions({ duration: 600, fade: true });

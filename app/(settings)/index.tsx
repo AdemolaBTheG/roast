@@ -17,16 +17,18 @@ import * as Burnt from 'burnt'
 import * as Haptics from 'expo-haptics'
 import * as Linking from 'expo-linking'
 import { router } from 'expo-router'
-import * as StoreReview from 'expo-store-review'
+import { usePostHog } from 'posthog-react-native'
 import { PressableScale } from 'pressto'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Alert, SectionList, Text, View } from 'react-native'
+import RevenueCatUI from 'react-native-purchases-ui'
 import { Easing, useDerivedValue, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated'
 
-const TERMS_URL = 'https://www.brainnotes.app/terms'
-const PRIVACY_URL = 'https://www.brainnotes.app/privacy'
-const SUPPORT_EMAIL = 'support@brainnotes.app'
+const TERMS_URL = 'https://ajar-prune-18d.notion.site/Roast-App-Terms-Of-Service-30799fdd69fc804280bfd3137654cb1e?pvs=73'
+const PRIVACY_URL = 'https://ajar-prune-18d.notion.site/Roast-App-Privacy-Policy-30799fdd69fc80d6841dd5a8f142508b?pvs=73'
+const SUPPORT_EMAIL = 'hahaderbre@gmail.com'
+const ituneItemsId = "6759192087";
 
 type SettingsRow = {
   id: string
@@ -47,10 +49,17 @@ type SettingsSection = {
 export default function SettingsScreen() {
   const { db } = useDbStore()
   const queryClient = useQueryClient()
+  const posthog = usePostHog()
   const credits = useCreditStore((s) => s.credits)
   const { t } = useTranslation()
   const [cardSize, setCardSize] = React.useState({ width: 0, height: 0 })
   const [currentLanguage, setCurrentLanguage] = React.useState<AppLanguage>(getCurrentAppLanguage())
+
+  React.useEffect(() => {
+    posthog?.capture('screen_viewed', {
+      screen_name: 'settings',
+    })
+  }, [posthog])
 
   const openLink = async (url: string) => {
     const canOpen = await Linking.canOpenURL(url)
@@ -71,17 +80,14 @@ export default function SettingsScreen() {
   }
 
   const handleRateApp = async () => {
-    const canReview = await StoreReview.hasAction()
-    if (canReview) {
-      await StoreReview.requestReview()
-      return
-    }
+    Linking.openURL(
+        `itms-apps://itunes.apple.com/app/viewContentsUserReviews/id${ituneItemsId}?action=write-review`
+      );
 
-    await openLink('https://www.brainnotes.app')
   }
 
   const handleContactSupport = async () => {
-    await openLink(`mailto:${SUPPORT_EMAIL}?subject=Brainnotes%20Support`)
+    await RevenueCatUI.presentCustomerCenter();
   }
 
   const handleClearHistory = () => {
@@ -126,6 +132,10 @@ export default function SettingsScreen() {
     await Haptics.selectionAsync()
     await setAppLanguage(nextLanguage)
     setCurrentLanguage(nextLanguage)
+    posthog?.capture('settings_language_changed', {
+      from_language: currentLanguage,
+      to_language: nextLanguage,
+    })
   }
 
   const sections: SettingsSection[] = [

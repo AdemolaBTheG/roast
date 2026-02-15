@@ -1,19 +1,20 @@
 {
   "navigation": {
     "settings": "Einstellungen",
-    "add": "Hinzuf\u00fcgen",
-    "back": "Zur\u00fcck",
+    "add": "Hinzufügen",
+    "back": "Zurück",
     "actions": "Aktionen",
     "roast": "Roast"
   },
   "common": {
     "cancel": "Abbrechen",
-    "delete": "L\u00f6schen",
+    "delete": "Löschen",
     "copied": "Kopiert",
     "error": "Fehler",
     "pro": "Pro",
     "free": "Kostenlos",
-    "selected": "Ausgew\u00e4hlt"
+    "selected": "Ausgewählt",
+    "openSettings": "Open Settings"
   },
   "add": {
     "tabs": {
@@ -24,8 +25,8 @@
       "target": "Ziel",
       "configuration": "Konfiguration"
     },
-    "placeholder": "F\u00fcge hier den Cringe ein (optional)...",
-    "tapToChange": "Tippen zum \u00c4ndern",
+    "placeholder": "Füge hier den Cringe ein (optional)...",
+    "tapToChange": "Tippen zum Ändern",
     "uploadOptional": "Screenshot oder Foto hochladen (optional)",
     "variantCount": "Anzahl Varianten",
     "cta": {
@@ -35,19 +36,31 @@
     },
     "alerts": {
       "generationFailedTitle": "Generierung fehlgeschlagen",
-      "generationFailedEmpty": "Das Modell hat keinen Roast-Text zur\u00fcckgegeben.",
+      "generationFailedEmpty": "Das Modell hat keinen Roast-Text zurückgegeben.",
       "generationFailedGeneric": "Roast konnte nicht generiert werden.",
       "imageErrorTitle": "Bildfehler",
       "imageErrorBody": "Bild konnte nicht verarbeitet werden.",
-      "chooseAudienceTitle": "Zielgruppe w\u00e4hlen",
-      "chooseAudienceBody": "W\u00e4hle vor dem Generieren eine Zielgruppe."
+      "chooseAudienceTitle": "Zielgruppe wählen",
+      "chooseAudienceBody": "Wähle vor dem Generieren eine Zielgruppe.",
+      "cameraPermissionTitle": "Camera Permission Needed",
+      "cameraPermissionBody": "Please allow camera access in Settings to take photos.",
+      "photoPermissionTitle": "Photo Library Permission Needed",
+      "photoPermissionBody": "Please allow photo library access in Settings to choose images."
     },
     "prompts": {
-      "noTarget": "Es wurde kein spezifisches Ziel angegeben. Erstelle einen eigenst\u00e4ndigen Roast."
+      "noTarget": "Es wurde kein spezifisches Ziel angegeben. Erstelle einen eigenständigen Roast."
     },
     "actionSheet": {
       "takePhoto": "Foto aufnehmen",
-      "chooseFromLibrary": "Aus Mediathek w\u00e4hlen"
+      "chooseFromLibrary": "Aus Mediathek wählen"
+    },
+    "audiences": {
+      "bestie": "Bestie",
+      "sibling": "Geschwister",
+      "ex": "Ex",
+      "coworker": "Kollege",
+      "self": "Ich",
+      "stranger": "Fremde Person"
     }
   },
   "home": {
@@ -60,7 +73,7 @@
       "generating": "Roast wird generiert...",
       "loading": "Roasts werden geladen...",
       "loadError": "Roast-Verlauf konnte nicht geladen werden.",
-      "empty": "Noch keine Roasts. Erstelle einen \u00fcber Hinzuf\u00fcgen."
+      "empty": "Noch keine Roasts. Erstelle einen über Hinzufügen."
     }
   },
   "item": {
@@ -69,13 +82,13 @@
       "shareTextFailed": "Roast-Text konnte nicht geteilt werden.",
       "copiedBody": "Roast in die Zwischenablage kopiert.",
       "favoriteFailed": "Favorit konnte nicht aktualisiert werden.",
-      "deleteFailedTitle": "L\u00f6schen fehlgeschlagen",
-      "deleteFailedBody": "Dieser Roast konnte gerade nicht gel\u00f6scht werden.",
+      "deleteFailedTitle": "Löschen fehlgeschlagen",
+      "deleteFailedBody": "Dieser Roast konnte gerade nicht gelöscht werden.",
       "shareBonusTitle": "+3 Roasts verdient!",
-      "shareBonusBody": "Danke f\u00fcrs Teilen! Du hast 3 Bonus-Roasts erhalten."
+      "shareBonusBody": "Danke fürs Teilen! Du hast 3 Bonus-Roasts erhalten."
     },
     "delete": {
-      "title": "Roast l\u00f6schen?",
+      "title": "Roast löschen?",
       "body": "Dadurch werden der Roast und alle Varianten dauerhaft entfernt."
     },
     "menu": {
@@ -85,7 +98,7 @@
       "shareText": "Text teilen",
       "favorite": "Favorit",
       "unfavorite": "Favorit entfernen",
-      "deleteRoast": "Roast l\u00f6schen"
+      "deleteRoast": "Roast löschen"
     },
     "status": {
       "loading": "Roast wird geladen...",
@@ -93,7 +106,7 @@
       "noVariants": "Keine Roasts generiert."
     },
     "labels": {
-      "for": "F\u00dcR",
+      "for": "FÜR",
       "shareImage": "Bild teilen",
       "shareBonus": "+3 Roasts",
       "copy": "Kopieren",
@@ -115,7 +128,7 @@
     "rows": {
       "manageSubscription": "Abo verwalten",
       "upgradeToPro": "Auf Pro upgraden",
-      "clearHistory": "Roast-Verlauf l\u00f6schen",
+      "clearHistory": "Roast-Verlauf löschen",
       "rateApp": "App bewerten",
       "contactSupport": "Support kontaktieren",
       "terms": "Nutzungsbedingungen",
@@ -126,19 +139,111 @@
       "subtitle": "Du hast noch {{count}} Roasts. Tippe, um mehr zu erhalten."
     },
     "alerts": {
-      "cannotOpenLinkTitle": "Link kann nicht ge\u00f6ffnet werden",
-      "unavailableTitle": "Nicht verf\u00fcgbar",
-      "unavailableBody": "Abo-Einstellungen konnten gerade nicht ge\u00f6ffnet werden.",
-      "clearHistoryTitle": "Roast-Verlauf l\u00f6schen",
-      "clearHistoryBody": "Alle gespeicherten Roasts auf diesem Ger\u00e4t werden dauerhaft gel\u00f6scht.",
-      "clearHistoryErrorTitle": "Verlauf konnte nicht gel\u00f6scht werden",
+      "cannotOpenLinkTitle": "Link kann nicht geöffnet werden",
+      "unavailableTitle": "Nicht verfügbar",
+      "unavailableBody": "Abo-Einstellungen konnten gerade nicht geöffnet werden.",
+      "clearHistoryTitle": "Roast-Verlauf löschen",
+      "clearHistoryBody": "Alle gespeicherten Roasts auf diesem Gerät werden dauerhaft gelöscht.",
+      "clearHistoryErrorTitle": "Verlauf konnte nicht gelöscht werden",
       "clearHistoryErrorBody": "Bitte versuche es erneut."
+    }
+  },
+  "onboarding": {
+    "notifications": {
+      "title": "Verpasse nie den perfekten Roast",
+      "subtitle": "Aktiviere Benachrichtigungen und wir senden dir Impulse genau dann, wenn du sie brauchst.",
+      "continue": "Weiter",
+      "item_0": {
+        "title": "Roast bereit",
+        "body": "Dein naechster Konter ist nur einen Tipp entfernt.",
+        "time": "Jetzt"
+      },
+      "item_1": {
+        "title": "Halte deine Serie",
+        "body": "Probiere heute einen neuen savage Roast Prompt.",
+        "time": "2m"
+      },
+      "item_2": {
+        "title": "Frische Ideen",
+        "body": "Neue Style Packs sind da fuer schnelle Burns.",
+        "time": "5m"
+      }
+    },
+    "carousel": {
+      "title": "Welcome to Roast",
+      "subtitle": "Snap it, paste it, and get instant burns with style.",
+      "cta": "Build My Profile",
+      "slides": {
+        "scan": "Scan anything in seconds",
+        "ai": "Get AI analysis instantly",
+        "confidence": "Roast with confidence",
+        "breakdown": "Break down every detail",
+        "crew": "Built for your whole crew"
+      }
+    },
+    "rating": {
+      "title": "You are all set",
+      "subtitle": "Thanks for setting up Roast. Your quick rating helps us keep improving.",
+      "continue": "Continue"
+    },
+    "quiz": {
+      "q1": {
+        "title": "What's your biggest roast struggle?",
+        "subtitle": "Build your roast style in 30 seconds.",
+        "cta": "This is me",
+        "options": {
+          "blank_replies": "I blank on replies",
+          "too_harsh": "I go too far",
+          "repetitive": "My jokes feel repetitive",
+          "too_slow": "It takes too long"
+        }
+      },
+      "q2": {
+        "title": "Where do you use roasts most?",
+        "cta": "Next",
+        "options": {
+          "group_chat": "Group chats",
+          "comments": "Comments",
+          "dm": "DMs",
+          "irl": "IRL banter"
+        }
+      },
+      "q3": {
+        "title": "Pick your default intensity",
+        "subtitle": "You stay in control. You can always switch tone later.",
+        "cta": "Lock it in",
+        "options": {
+          "playful": "Playful",
+          "savage": "Savage",
+          "unhinged": "Unhinged"
+        }
+      },
+      "q4": {
+        "title": "What result do you want this week?",
+        "subtitle": "Pick one outcome and we will optimize for it right away.",
+        "cta": "Unlock my setup",
+        "options": {
+          "never_blank": "Never blank on replies",
+          "more_reactions": "Get more reactions",
+          "funny_not_toxic": "Stay funny, not toxic",
+          "save_time": "Save time"
+        }
+      },
+      "dynamic": {
+        "q1_pain": {
+          "blank_replies": "Good call. We'll focus on instant comebacks so you're never stuck.",
+          "too_harsh": "Great choice. We'll keep your roasts sharp without crossing the line.",
+          "repetitive": "Nice. We'll keep your burns fresh so your style never feels recycled.",
+          "too_slow": "Perfect. We'll optimize for speed so you can roast in seconds.",
+          "default": "We'll tune Roast to your style in a few quick taps."
+        }
+      }
     }
   },
   "languages": {
     "en": "Englisch",
     "de": "Deutsch",
-    "fr": "Franz\u00f6sisch",
+    "fr": "Französisch",
     "es": "Spanisch",
     "ja": "Japanisch",
     "pt": "Portugiesisch",

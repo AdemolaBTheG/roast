@@ -16,11 +16,14 @@ import { impactAsync, selectionAsync } from 'expo-haptics'
 import { Image } from 'expo-image'
 import { SaveFormat, useImageManipulator } from 'expo-image-manipulator'
 import * as ImagePicker from 'expo-image-picker'
+import * as Linking from 'expo-linking'
 import { useRouter } from 'expo-router'
+import { usePostHog } from 'posthog-react-native'
 import { PressableScale } from 'pressto'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
+  Alert,
   ActionSheetIOS,
   Platform,
   ScrollView,
@@ -55,6 +58,17 @@ const AnimatedScrollView = Animated.createAnimatedComponent(KeyboardAwareScrollV
 // --- CONSTANTS ---
 const audienceOptions = ROAST_AUDIENCES
 type AudienceOption = RoastAudience
+const audienceTranslationKeyMap: Record<
+  AudienceOption,
+  'bestie' | 'sibling' | 'ex' | 'coworker' | 'self' | 'stranger'
+> = {
+  Bestie: 'bestie',
+  Sibling: 'sibling',
+  Ex: 'ex',
+  Coworker: 'coworker',
+  Self: 'self',
+  Stranger: 'stranger',
+}
 const roastCountOptions = [1, 3, 5] as const
 type RoastCountOption = (typeof roastCountOptions)[number]
 const MAX_UPLOAD_DIMENSION = 1280
@@ -70,7 +84,7 @@ type SelectedImage = {
   mimeType?: string | null
 }
 type AudienceChipProps = {
-  option: AudienceOption
+  label: string
   isSelected: boolean
   onPress: () => void
 }
@@ -188,7 +202,7 @@ function SectionHeader({ title, rightText }: { title: string; rightText?: string
 }
 
 // 3. Refined Audience Chip (Pill Style)
-function AudienceChip({ option, isSelected, onPress }: AudienceChipProps) {
+function AudienceChip({ label, isSelected, onPress }: AudienceChipProps) {
   const selectionProgress = useSharedValue(isSelected ? 1 : 0)
 
   useEffect(() => {
@@ -235,7 +249,7 @@ function AudienceChip({ option, isSelected, onPress }: AudienceChipProps) {
             animatedTextStyle,
           ]}
         >
-          {option}
+          {label}
         </Animated.Text>
       </Animated.View>
     </PressableScale>
@@ -246,8 +260,11 @@ export default function Index() {
   const router = useRouter()
   const { db } = useDbStore()
   const queryClient = useQueryClient()
+  const posthog = usePostHog()
   const { t } = useTranslation()
   const targetFreeGenerationPrompt = t('add.prompts.noTarget')
+  const getAudienceLabel = (audience: AudienceOption) =>
+    t(`add.audiences.${audienceTranslationKeyMap[audience]}`)
   const { isPro } = useSubscription()
   const credits = useCreditStore((s) => s.credits)
   const deductCredit = useCreditStore((s) => s.deductCredit)
@@ -277,6 +294,12 @@ export default function Index() {
   const burnColor = burnPercent < 30 ? '#34D399' : burnPercent < 75 ? '#F59E0B' : '#EF4444'
   const burnProgress = useSharedValue(sliderValue)
   const ctaPulse = useSharedValue(1)
+
+  useEffect(() => {
+    posthog?.capture('screen_viewed', {
+      screen_name: 'add',
+    })
+  }, [posthog])
 
   useEffect(() => {
     burnProgress.value = withTiming(sliderValue, { duration: 180 })
@@ -309,6 +332,14 @@ export default function Index() {
       const variants = data.roasts?.map((v) => v.trim()).filter(Boolean) ?? (data.roast?.trim() ? [data.roast.trim()] : [])
       
       if (variants.length === 0) {
+        posthog?.capture('roast_generation_failed', {
+          stage: 'model_response',
+          reason: 'empty_variants',
+          input_type: variables.inputType,
+          audience: variables.audience,
+          burn_level: variables.burnLevel,
+          requested_count: variables.count ?? 1,
+        })
         Burnt.toast({
           title: t('add.alerts.generationFailedTitle'),
           message: t('add.alerts.generationFailedEmpty'),
@@ -336,7 +367,29 @@ export default function Index() {
         variants,
       })
 
-      if (!savedRoastId) return
+      if (!savedRoastId) {
+        posthog?.capture('roast_generation_failed', {
+          stage: 'local_persistence',
+          reason: 'save_roast_failed',
+          request_id: data.requestId,
+          input_type: variables.inputType,
+          audience: variables.audience,
+          burn_level: variables.burnLevel,
+          requested_count: variables.count ?? 1,
+          variant_count: variants.length,
+        })
+        return
+      }
+
+      posthog?.capture('roast_generation_succeeded', {
+        request_id: data.requestId,
+        input_type: variables.inputType,
+        audience: data.audience,
+        burn_level: data.burnLevel,
+        requested_count: variables.count ?? 1,
+        variant_count: variants.length,
+        model: data.model,
+      })
 
       // Deduct 1 credit after successful generation (Pro users skip)
       if (!isPro) {
@@ -351,13 +404,22 @@ export default function Index() {
         params: { id: savedRoastId.toString(), celebrate: '1' },
       })
     },
-    onError: (error) =>
+    onError: (error, variables) => {
+      posthog?.capture('roast_generation_failed', {
+        stage: 'api_request',
+        reason: error.message || 'unknown_error',
+        input_type: variables.inputType,
+        audience: variables.audience,
+        burn_level: variables.burnLevel,
+        requested_count: variables.count ?? 1,
+      })
       Burnt.toast({
         title: t('add.alerts.generationFailedTitle'),
         message: error.message || t('add.alerts.generationFailedGeneric'),
         preset: 'error',
         haptic: 'error',
-      }),
+      })
+    },
   })
 
   const isGenerating = generateRoastMutation.isPending
@@ -435,6 +497,70 @@ export default function Index() {
     setSliderValue(val)
   }
 
+  const promptOpenSettingsAlert = (title: string, message: string) => {
+    Alert.alert(title, message, [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('common.openSettings'),
+        onPress: () => {
+          void Linking.openSettings()
+        },
+      },
+    ])
+  }
+
+  const ensureCameraPermission = async () => {
+    const permission = await ImagePicker.requestCameraPermissionsAsync()
+    if (permission.granted) return true
+
+    promptOpenSettingsAlert(
+      t('add.alerts.cameraPermissionTitle'),
+      t('add.alerts.cameraPermissionBody')
+    )
+    return false
+  }
+
+  const ensureMediaLibraryPermission = async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    if (permission.granted) return true
+
+    promptOpenSettingsAlert(
+      t('add.alerts.photoPermissionTitle'),
+      t('add.alerts.photoPermissionBody')
+    )
+    return false
+  }
+
+  const pickFromCamera = async () => {
+    const hasPermission = await ensureCameraPermission()
+    if (!hasPermission) return
+
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      quality: 0.85,
+    })
+
+    if (!result.canceled) {
+      setPendingImageAsset(result.assets[0])
+    }
+  }
+
+  const pickFromLibrary = async () => {
+    const hasPermission = await ensureMediaLibraryPermission()
+    if (!hasPermission) return
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      quality: 0.85,
+    })
+
+    if (!result.canceled) {
+      setPendingImageAsset(result.assets[0])
+    }
+  }
+
   const handleImagePress = async () => {
     if (isBusy) return
     impactAsync()
@@ -450,12 +576,20 @@ export default function Index() {
             cancelButtonIndex: 0,
           },
           (buttonIndex) => {
-            if (buttonIndex === 1) ImagePicker.launchCameraAsync({ mediaTypes: ['images'], allowsEditing: true, quality: 0.85 }).then(r => !r.canceled && setPendingImageAsset(r.assets[0]))
-            if (buttonIndex === 2) ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], allowsEditing: true, quality: 0.85 }).then(r => !r.canceled && setPendingImageAsset(r.assets[0]))
+            if (buttonIndex === 1) void pickFromCamera()
+            if (buttonIndex === 2) void pickFromLibrary()
           }
         )
     } else {
-        // Android fallback logic here if needed
+        Alert.alert(
+          t('add.uploadOptional'),
+          undefined,
+          [
+            { text: t('common.cancel'), style: 'cancel' },
+            { text: t('add.actionSheet.takePhoto'), onPress: () => void pickFromCamera() },
+            { text: t('add.actionSheet.chooseFromLibrary'), onPress: () => void pickFromLibrary() },
+          ]
+        )
     }
   }
 
@@ -465,12 +599,25 @@ export default function Index() {
 
     // Gate: Pro users bypass, otherwise check credits
     if (!isPro && credits < 1) {
+      posthog?.capture('roast_generation_blocked', {
+        reason: 'no_credits',
+        screen_name: 'add',
+      })
       router.push('/(paywalls)')
       return
     }
     
     if (selectedTag === 'text') {
       const text = inputText.trim() || targetFreeGenerationPrompt
+      posthog?.capture('roast_generation_started', {
+        input_type: 'text',
+        audience: resolvedAudience,
+        burn_level: burnPercent,
+        requested_count: roastCount,
+        has_user_text: text !== targetFreeGenerationPrompt,
+        is_pro: isPro,
+        credits_before: credits,
+      })
       generateRoastMutation.mutate({
         inputType: 'text',
         text,
@@ -480,6 +627,14 @@ export default function Index() {
       })
     } else {
       if (image?.base64) {
+        posthog?.capture('roast_generation_started', {
+          input_type: 'image',
+          audience: resolvedAudience,
+          burn_level: burnPercent,
+          requested_count: roastCount,
+          is_pro: isPro,
+          credits_before: credits,
+        })
         generateRoastMutation.mutate({
           inputType: 'image',
           imageBase64: image.base64,
@@ -491,6 +646,16 @@ export default function Index() {
         return
       }
 
+      posthog?.capture('roast_generation_started', {
+        input_type: 'text',
+        source_tab: 'image',
+        used_fallback_prompt: true,
+        audience: resolvedAudience,
+        burn_level: burnPercent,
+        requested_count: roastCount,
+        is_pro: isPro,
+        credits_before: credits,
+      })
       generateRoastMutation.mutate({
         inputType: 'text',
         text: targetFreeGenerationPrompt,
@@ -598,7 +763,10 @@ export default function Index() {
 
           {/* SECTION 2: AUDIENCE */}
           <Animated.View layout={LinearTransition.springify()}>
-            <SectionHeader title={t('add.sections.target')} rightText={selectedAudience || ''} />
+            <SectionHeader
+              title={t('add.sections.target')}
+              rightText={selectedAudience ? getAudienceLabel(selectedAudience) : ''}
+            />
             <View>
               <ScrollView 
                   horizontal 
@@ -608,7 +776,7 @@ export default function Index() {
                   {audienceOptions.map((option) => (
                       <AudienceChip
                           key={option}
-                          option={option}
+                          label={getAudienceLabel(option)}
                           isSelected={selectedAudience === option}
                           onPress={() => toggleAudience(option)}
                       />

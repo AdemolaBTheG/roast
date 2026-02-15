@@ -13,7 +13,8 @@
     "error": "Erro",
     "pro": "Pro",
     "free": "Gratis",
-    "selected": "Selecionado"
+    "selected": "Selecionado",
+    "openSettings": "Open Settings"
   },
   "add": {
     "tabs": {
@@ -40,7 +41,11 @@
       "imageErrorTitle": "Erro de imagem",
       "imageErrorBody": "Nao foi possivel processar a imagem.",
       "chooseAudienceTitle": "Escolha o publico",
-      "chooseAudienceBody": "Selecione um publico antes de gerar."
+      "chooseAudienceBody": "Selecione um publico antes de gerar.",
+      "cameraPermissionTitle": "Camera Permission Needed",
+      "cameraPermissionBody": "Please allow camera access in Settings to take photos.",
+      "photoPermissionTitle": "Photo Library Permission Needed",
+      "photoPermissionBody": "Please allow photo library access in Settings to choose images."
     },
     "prompts": {
       "noTarget": "Nenhum alvo especifico foi fornecido. Gere um roast independente."
@@ -48,6 +53,14 @@
     "actionSheet": {
       "takePhoto": "Tirar foto",
       "chooseFromLibrary": "Escolher da biblioteca"
+    },
+    "audiences": {
+      "bestie": "Melhor amigo",
+      "sibling": "Irmao",
+      "ex": "Ex",
+      "coworker": "Colega de trabalho",
+      "self": "Eu",
+      "stranger": "Desconhecido"
     }
   },
   "home": {
@@ -133,6 +146,98 @@
       "clearHistoryBody": "Isso excluira permanentemente todos os roasts salvos neste dispositivo.",
       "clearHistoryErrorTitle": "Nao foi possivel limpar o historico",
       "clearHistoryErrorBody": "Tente novamente."
+    }
+  },
+  "onboarding": {
+    "notifications": {
+      "title": "Nao perca o roast perfeito",
+      "subtitle": "Ative as notificacoes e vamos te avisar nos momentos certos.",
+      "continue": "Continuar",
+      "item_0": {
+        "title": "Roast pronto",
+        "body": "Sua proxima resposta esta a um toque.",
+        "time": "Agora"
+      },
+      "item_1": {
+        "title": "Mantenha sua sequencia",
+        "body": "Teste hoje um novo prompt savage.",
+        "time": "2m"
+      },
+      "item_2": {
+        "title": "Ideias novas",
+        "body": "Novos pacotes de estilo para burns rapidos.",
+        "time": "5m"
+      }
+    },
+    "carousel": {
+      "title": "Welcome to Roast",
+      "subtitle": "Snap it, paste it, and get instant burns with style.",
+      "cta": "Build My Profile",
+      "slides": {
+        "scan": "Scan anything in seconds",
+        "ai": "Get AI analysis instantly",
+        "confidence": "Roast with confidence",
+        "breakdown": "Break down every detail",
+        "crew": "Built for your whole crew"
+      }
+    },
+    "rating": {
+      "title": "You are all set",
+      "subtitle": "Thanks for setting up Roast. Your quick rating helps us keep improving.",
+      "continue": "Continue"
+    },
+    "quiz": {
+      "q1": {
+        "title": "What's your biggest roast struggle?",
+        "subtitle": "Build your roast style in 30 seconds.",
+        "cta": "This is me",
+        "options": {
+          "blank_replies": "I blank on replies",
+          "too_harsh": "I go too far",
+          "repetitive": "My jokes feel repetitive",
+          "too_slow": "It takes too long"
+        }
+      },
+      "q2": {
+        "title": "Where do you use roasts most?",
+        "cta": "Next",
+        "options": {
+          "group_chat": "Group chats",
+          "comments": "Comments",
+          "dm": "DMs",
+          "irl": "IRL banter"
+        }
+      },
+      "q3": {
+        "title": "Pick your default intensity",
+        "subtitle": "You stay in control. You can always switch tone later.",
+        "cta": "Lock it in",
+        "options": {
+          "playful": "Playful",
+          "savage": "Savage",
+          "unhinged": "Unhinged"
+        }
+      },
+      "q4": {
+        "title": "What result do you want this week?",
+        "subtitle": "Pick one outcome and we will optimize for it right away.",
+        "cta": "Unlock my setup",
+        "options": {
+          "never_blank": "Never blank on replies",
+          "more_reactions": "Get more reactions",
+          "funny_not_toxic": "Stay funny, not toxic",
+          "save_time": "Save time"
+        }
+      },
+      "dynamic": {
+        "q1_pain": {
+          "blank_replies": "Good call. We'll focus on instant comebacks so you're never stuck.",
+          "too_harsh": "Great choice. We'll keep your roasts sharp without crossing the line.",
+          "repetitive": "Nice. We'll keep your burns fresh so your style never feels recycled.",
+          "too_slow": "Perfect. We'll optimize for speed so you can roast in seconds.",
+          "default": "We'll tune Roast to your style in a few quick taps."
+        }
+      }
     }
   },
   "languages": {
