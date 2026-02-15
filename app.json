@@ -35,9 +35,8 @@
         "aps-environment": "production",
         "com.apple.security.application-groups": [
           "group.flingex.roast.onesignal",
-          "group.group.flingex.roast.app",
-          "group.flingex.roast.onesignal",
           "group.group.flingex.roast.app"
+      
         ]
       }
     },
