@@ -1,6 +1,6 @@
 import { NutrientsCarousel } from '@/components/nutrients-carousel';
 import type { NutrientsItem } from '@/components/nutrients-carousel/types';
-import { AppTheme } from '@/constants/theme';
+import { AppTheme } from '@/constants/Theme';
 import { Button as AndroidButton } from '@expo/ui/jetpack-compose';
 import { Button, Host, Text as IOSText } from '@expo/ui/swift-ui';
 import {

@@ -3,14 +3,13 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
-import Purchases from 'react-native-purchases';
 import RevenueCatUI from 'react-native-purchases-ui';
 
 const HOME_ROUTE = '/(home)';
 const OFFERING_PAYWALL_ONBOARDING_ROUTE = '/(paywalls)/offeringPaywall?source=onboarding_quiz';
 
 export default function Paywall() {
-  const restoreCredits = useCreditStore((state) => state.restoreCredits);
+  const addCredits = useCreditStore((state) => state.addCredits);
   const posthog = usePostHog();
   const { source } = useLocalSearchParams<{ source?: string | string[] }>();
   const sourceParam = Array.isArray(source) ? source[0] : source;
@@ -31,25 +30,6 @@ export default function Paywall() {
     if (didNavigateRef.current) return;
     didNavigateRef.current = true;
     router.replace(route as any);
-  };
-
-  const syncCreditsFromRevenueCat = async () => {
-    try {
-      const customerInfo = await Purchases.getCustomerInfo();
-      const txns = customerInfo.nonSubscriptionTransactions ?? [];
-      if (txns.length > 0) {
-        restoreCredits(
-          txns.map((tx) => ({
-            productIdentifier: tx.productIdentifier,
-            transactionIdentifier: tx.transactionIdentifier,
-          })),
-        );
-      }
-      return txns.length;
-    } catch (error) {
-      console.warn('Could not sync purchased credits from RevenueCat', error);
-      return 0;
-    }
   };
 
   const handleDefaultExit = () => {
@@ -79,14 +59,25 @@ export default function Paywall() {
     handleDefaultExit();
   };
 
-  const handlePurchaseCompleted = async () => {
+  const handlePurchaseCompleted = async ({
+    storeTransaction,
+  }: {
+    storeTransaction?: { productIdentifier?: string; transactionIdentifier?: string };
+  }) => {
     purchaseOrRestoreCompletedRef.current = true;
-    const syncedTransactions = await syncCreditsFromRevenueCat();
+
+    if (storeTransaction?.productIdentifier && storeTransaction?.transactionIdentifier) {
+      addCredits(storeTransaction.productIdentifier, storeTransaction.transactionIdentifier);
+    } else {
+      console.warn('Missing store transaction in paywall purchase callback; skipping credit grant.');
+    }
+
     posthog?.capture('paywall_purchase_completed', {
       source: paywallSource,
       paywall_variant: 'default',
       onboarding_flow: isOnboardingQuizFlow,
-      synced_transactions: syncedTransactions,
+      product_identifier: storeTransaction?.productIdentifier ?? null,
+      transaction_identifier: storeTransaction?.transactionIdentifier ?? null,
     });
 
     if (isOnboardingQuizFlow) {
@@ -98,12 +89,10 @@ export default function Paywall() {
 
   const handleRestoreCompleted = async () => {
     purchaseOrRestoreCompletedRef.current = true;
-    const syncedTransactions = await syncCreditsFromRevenueCat();
     posthog?.capture('paywall_restore_completed', {
       source: paywallSource,
       paywall_variant: 'default',
       onboarding_flow: isOnboardingQuizFlow,
-      synced_transactions: syncedTransactions,
     });
 
     if (isOnboardingQuizFlow) {
@@ -119,8 +108,8 @@ export default function Paywall() {
         onDismiss={() => {
           handleDismiss();
         }}
-        onPurchaseCompleted={() => {
-          void handlePurchaseCompleted();
+        onPurchaseCompleted={(event) => {
+          void handlePurchaseCompleted(event);
         }}
         onRestoreCompleted={() => {
           void handleRestoreCompleted();

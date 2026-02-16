@@ -36,7 +36,6 @@
         "com.apple.security.application-groups": [
           "group.flingex.roast.onesignal",
           "group.group.flingex.roast.app"
-      
         ]
       }
     },
@@ -49,9 +48,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
       "output": "static",
@@ -87,24 +84,8 @@
         "expo-localization",
         {
           "supportedLocales": {
-            "ios": [
-              "en",
-              "de",
-              "fr",
-              "es",
-              "ja",
-              "pt",
-              "it"
-            ],
-            "android": [
-              "en",
-              "de",
-              "fr",
-              "es",
-              "ja",
-              "pt",
-              "it"
-            ]
+            "ios": ["en", "de", "fr", "es", "ja", "pt", "it"],
+            "android": ["en", "de", "fr", "es", "ja", "pt", "it"]
           }
         }
       ],
@@ -146,15 +127,6 @@
                   "targetName": "expo-sharing-extension",
                   "bundleIdentifier": "group.flingex.roast.app.expo-sharing-extension",
                   "entitlements": []
-                },
-                {
-                  "targetName": "OneSignalNotificationServiceExtension",
-                  "bundleIdentifier": "group.flingex.roast.app.OneSignalNotificationServiceExtension",
-                  "entitlements": {
-                    "com.apple.security.application-groups": [
-                      "group.group.flingex.roast.app.onesignal"
-                    ]
-                  }
                 }
               ]
             }

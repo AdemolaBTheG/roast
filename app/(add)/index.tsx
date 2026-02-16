@@ -20,11 +20,12 @@ import * as Linking from 'expo-linking'
 import { useRouter } from 'expo-router'
 import { usePostHog } from 'posthog-react-native'
 import { PressableScale } from 'pressto'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Alert,
   ActionSheetIOS,
+  Keyboard,
   Platform,
   ScrollView,
   StyleProp,
@@ -34,9 +35,7 @@ import {
   View,
   ViewStyle
 } from 'react-native'
-import {
-  KeyboardAwareScrollView
-} from "react-native-keyboard-controller"
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
 import Animated, {
   cancelAnimation,
   Easing,
@@ -52,7 +51,7 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { AppTheme } from '../../constants/theme'
+import { AppTheme } from '../../constants/Theme'
 
 const AnimatedScrollView = Animated.createAnimatedComponent(KeyboardAwareScrollView)
 // --- CONSTANTS ---
@@ -277,6 +276,7 @@ export default function Index() {
   const [pendingImageAsset, setPendingImageAsset] = useState<ImagePicker.ImagePickerAsset | null>(null)
   const [sliderValue, setSliderValue] = useState(0.5) // Default to 0.5 for UX
   const [roastCount, setRoastCount] = useState<RoastCountOption>(3)
+  const textInputRef = useRef<TextInput>(null)
   
   // Layout
   const { width } = useWindowDimensions()
@@ -325,6 +325,35 @@ export default function Index() {
   const ctaAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: ctaPulse.value }],
   }))
+
+  const navigateToGeneratedRoast = (savedRoastId: number) => {
+    const navigate = () => {
+      requestAnimationFrame(() => {
+        router.replace({
+          pathname: '/(item)/[id]',
+          params: { id: savedRoastId.toString(), celebrate: '1' },
+        })
+      })
+    }
+
+    const shouldWaitForKeyboardHide =
+      Platform.OS === 'ios' && typeof Keyboard.metrics === 'function' && Boolean(Keyboard.metrics())
+
+    if (!shouldWaitForKeyboardHide) {
+      textInputRef.current?.blur()
+      Keyboard.dismiss()
+      navigate()
+      return
+    }
+
+    const keyboardDidHideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      keyboardDidHideSubscription.remove()
+      navigate()
+    })
+
+    textInputRef.current?.blur()
+    Keyboard.dismiss()
+  }
 
   // --- MUTATION & LOGIC ---
   const generateRoastMutation = useGenerateRoast({
@@ -399,10 +428,7 @@ export default function Index() {
       // Invalidate list so home screen picks up the new roast
       queryClient.invalidateQueries({ queryKey: ['roast-history'] })
 
-      router.replace({
-        pathname: '/(item)/[id]',
-        params: { id: savedRoastId.toString(), celebrate: '1' },
-      })
+      navigateToGeneratedRoast(savedRoastId)
     },
     onError: (error, variables) => {
       posthog?.capture('roast_generation_failed', {
@@ -719,6 +745,7 @@ export default function Index() {
               {selectedTag === 'text' ? (
                 <View>
                     <TextInput
+                        ref={textInputRef}
                         placeholder={t('add.placeholder')}
                         placeholderTextColor="#9CA3AF"
                         numberOfLines={6}
@@ -894,4 +921,3 @@ export default function Index() {
     </View>
   )
 }
-

@@ -1,4 +1,3 @@
-import { useCreditStore } from '@/stores/creditStore';
 import { useDbStore } from '@/stores/dbStore';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
@@ -39,26 +38,6 @@ export function useAppInitialization() {
             }
         };
 
-        const restoreCreditsFromRC = async () => {
-            try {
-                const isConfigured = await Purchases.isConfigured();
-                if (!isConfigured) return;
-
-                const customerInfo = await Purchases.getCustomerInfo();
-                const txns = customerInfo.nonSubscriptionTransactions ?? [];
-                if (txns.length > 0) {
-                    useCreditStore.getState().restoreCredits(
-                        txns.map((tx) => ({
-                            productIdentifier: tx.productIdentifier,
-                            transactionIdentifier: tx.transactionIdentifier,
-                        }))
-                    );
-                }
-            } catch (e) {
-                console.warn('Credit restore from RevenueCat failed', e);
-            }
-        };
-
         const initOneSignal = async () => {
             if (onesignal_app_id) {
                 OneSignal.initialize(onesignal_app_id);
@@ -96,7 +75,6 @@ export function useAppInitialization() {
             try {
                 await initializeDb();
                 await configurePurchases();
-                await restoreCreditsFromRC();
                 await initOneSignal();
                 await syncIdsToRevenueCat();
                 attachObserver();

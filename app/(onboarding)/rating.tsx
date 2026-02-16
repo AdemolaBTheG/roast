@@ -1,5 +1,5 @@
 import { ONBOARDING_NOTIFICATIONS_ROUTE } from '@/constants/onboarding-quiz';
-import { AppTheme } from '@/constants/theme';
+import { AppTheme } from '@/constants/Theme';
 import { useOnboardingStore } from '@/stores/onboardingStore';
 import { Button as AndroidButton } from '@expo/ui/jetpack-compose';
 import { Button, Host, Text as IOSText } from '@expo/ui/swift-ui';
@@ -44,15 +44,34 @@ export default function OnboardingRatingScreen() {
 
     if (!hasSeenStoreReview) {
       try {
+        const isReviewAvailable = await StoreReview.isAvailableAsync();
         const canRequestReview = await StoreReview.hasAction();
+
+        posthog?.capture('onboarding_store_review_check', {
+          source: 'onboarding_rating',
+          is_available: isReviewAvailable,
+          has_action: canRequestReview,
+        });
+
         if (canRequestReview) {
           await StoreReview.requestReview();
+          setHasSeenStoreReview(true);
           posthog?.capture('onboarding_store_review_requested', {
             source: 'onboarding_rating',
+            is_available: isReviewAvailable,
+            has_action: canRequestReview,
+          });
+        } else {
+          posthog?.capture('onboarding_store_review_skipped', {
+            source: 'onboarding_rating',
+            is_available: isReviewAvailable,
+            has_action: canRequestReview,
           });
         }
-      } catch {} finally {
-        setHasSeenStoreReview(true);
+      } catch {
+        posthog?.capture('onboarding_store_review_failed', {
+          source: 'onboarding_rating',
+        });
       }
     }
 

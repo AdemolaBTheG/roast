@@ -5,7 +5,7 @@ import zustandStorage from './storage'
 
 interface CreditState {
   credits: number
-  /** Transaction IDs already claimed (prevents double-grant on restore). */
+  /** Transaction IDs already claimed (prevents double-grant across repeated callbacks). */
   claimedTransactionIds: string[]
   /** Whether the user has already claimed the one-time share bonus. */
   hasClaimedShareBonus: boolean;
@@ -15,9 +15,6 @@ interface CreditState {
   hasCredits: () => boolean
   /** Awards 3 bonus credits for the first time the user shares a roast image. */
   grantShareBonus: () => boolean
-  restoreCredits: (
-    transactions: { productIdentifier: string; transactionIdentifier: string }[]
-  ) => void
 }
 
 export const useCreditStore = create<CreditState>()(
@@ -69,37 +66,6 @@ export const useCreditStore = create<CreditState>()(
         return true
       },
 
-      /**
-       * Best-effort credit recovery on reinstall.
-       * Replays all non-subscription transactions from RevenueCat that
-       * haven't already been claimed locally.
-       */
-      restoreCredits: (transactions) => {
-        set((state) => {
-          const claimedIds = new Set(state.claimedTransactionIds)
-          let creditsToAdd = 0
-
-          for (const tx of transactions) {
-            const txId = tx.transactionIdentifier
-            if (!txId || claimedIds.has(txId)) continue
-
-            const amount = CREDIT_PACKAGES[tx.productIdentifier]
-            if (!amount) continue
-
-            creditsToAdd += amount
-            claimedIds.add(txId)
-          }
-
-          if (creditsToAdd <= 0) {
-            return state
-          }
-
-          return {
-            credits: state.credits + creditsToAdd,
-            claimedTransactionIds: Array.from(claimedIds),
-          }
-        })
-      },
     }),
     {
       name: 'credit-store',

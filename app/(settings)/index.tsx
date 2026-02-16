@@ -1,4 +1,4 @@
-import { AppTheme } from '@/constants/theme'
+import { AppTheme } from '@/constants/Theme'
 import {
   SUPPORTED_LANGUAGES,
   getCurrentAppLanguage,

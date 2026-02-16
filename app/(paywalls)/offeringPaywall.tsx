@@ -1,4 +1,5 @@
 import { useSubscription } from '@/context/SubscriptionContext';
+import { useCreditStore } from '@/stores/creditStore';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import React, { useEffect } from 'react';
@@ -9,6 +10,7 @@ import RevenueCatUI from 'react-native-purchases-ui';
 const HOME_ROUTE = '/(home)';
 
 export default function Paywall() {
+  const addCredits = useCreditStore((state) => state.addCredits);
   const posthog = usePostHog();
   const [promoOffering, setPromoOffering] = React.useState<PurchasesOffering | null>(null);
   const { isPro } = useSubscription();
@@ -57,10 +59,18 @@ export default function Paywall() {
             });
             router.replace(HOME_ROUTE);
           }}
-          onPurchaseCompleted={async () => {
+          onPurchaseCompleted={async ({ storeTransaction }) => {
+            if (storeTransaction?.productIdentifier && storeTransaction?.transactionIdentifier) {
+              addCredits(storeTransaction.productIdentifier, storeTransaction.transactionIdentifier);
+            } else {
+              console.warn('Missing store transaction in offering paywall purchase callback; skipping credit grant.');
+            }
+
             posthog?.capture('paywall_purchase_completed', {
               source: paywallSource,
               paywall_variant: 'offering',
+              product_identifier: storeTransaction?.productIdentifier ?? null,
+              transaction_identifier: storeTransaction?.transactionIdentifier ?? null,
             });
             router.replace(HOME_ROUTE);
           }}

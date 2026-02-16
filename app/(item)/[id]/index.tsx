@@ -52,7 +52,7 @@ import Animated, {
 } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { AppTheme } from '@/constants/theme'
+import { AppTheme } from '@/constants/Theme'
 import { useSubscription } from '@/context/SubscriptionContext'
 import {
   deleteRoastById,
@@ -219,6 +219,11 @@ export default function RoastItemScreen() {
   const { width } = useWindowDimensions()
   const insets = useSafeAreaInsets()
   const horizontalPadding = AppTheme.spacing.md
+  const iosMajorVersion =
+    Platform.OS === 'ios'
+      ? Number.parseInt(String(Platform.Version).split('.')[0] ?? '0', 10) || 0
+      : 0
+  const isIOS26OrNewer = Platform.OS === 'ios' && iosMajorVersion >= 26
   
   // "Polaroid" Card Dimensions
   const cardWidth = Math.min(width - horizontalPadding * 2, 400)
@@ -244,6 +249,7 @@ export default function RoastItemScreen() {
   const maxVariantIndex = Math.max(0, variants.length - 1)
   const currentVariant = variants[currentIndex] ?? null
   const burnMeta = getBurnMeta(roast?.burnLevel ?? 0, t)
+  const showShareBonusBadge = !isPro && !hasClaimedShareBonus
 
   useEffect(() => {
     if (!roast) return
@@ -573,8 +579,8 @@ export default function RoastItemScreen() {
             unstable_headerRightItems: () => [
               {
                 type: 'menu',
-                variant:'prominent',
-                tintColor:AppTheme.colors.primary,
+                variant: 'prominent',
+                tintColor: AppTheme.colors.primary,
                 label: t('item.menu.actions'),
                 icon: { type: 'sfSymbol', name: 'ellipsis.circle' },
                 menu: {
@@ -627,7 +633,7 @@ export default function RoastItemScreen() {
               },
             ],
           }
-        : {}),
+          : {}),
     })
   }, [
     burnMeta.label,
@@ -836,7 +842,31 @@ export default function RoastItemScreen() {
           flexDirection: 'row', alignItems: 'center', gap: 16
         }}
       >
-        {Platform.OS === 'ios' ? (
+        {showShareBonusBadge ? (
+          <View
+            pointerEvents="none"
+            style={{
+              position: 'absolute',
+              top: -12,
+              right: 24,
+              backgroundColor: AppTheme.colors.primary,
+              paddingHorizontal: 10,
+              paddingVertical: 4,
+              borderRadius: 999,
+              borderCurve: 'continuous',
+              borderWidth: 2,
+              borderColor: '#FFFFFF',
+              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.12)',
+              zIndex: 2,
+            }}
+          >
+            <Text style={{ color: '#FFFFFF', fontSize: 11, fontWeight: '900' }}>
+              {t('item.labels.shareBonus')}
+            </Text>
+          </View>
+        ) : null}
+
+        {Platform.OS === 'ios' && !isIOS26OrNewer ? (
           <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: 12 }}>
             <PressableScale
               onPress={() => void handleFavoritePress()}
@@ -896,31 +926,6 @@ export default function RoastItemScreen() {
                       disabled(isDeleting),
                     ]}
                   />
-                  {!isPro && !hasClaimedShareBonus && (
-                    <View
-                      pointerEvents="none"
-                      style={{
-                        position: 'absolute',
-                        top: -8,
-                        right: -4,
-                        backgroundColor: AppTheme.colors.primary,
-                        paddingHorizontal: 6,
-                        paddingVertical: 2,
-                        borderRadius: 10,
-                        borderWidth: 2,
-                        borderColor: '#FFFFFF',
-                        shadowColor: '#000',
-                        shadowOffset: { width: 0, height: 2 },
-                        shadowOpacity: 0.15,
-                        shadowRadius: 2,
-                        elevation: 3,
-                      }}
-                    >
-                      <Text style={{ color: '#FFFFFF', fontSize: 10, fontWeight: '900' }}>
-                        {t('item.labels.shareBonus')}
-                      </Text>
-                    </View>
-                  )}
                 </View>
                 <IOSButton
                   onPress={() => void handleCopyPress()}
@@ -991,21 +996,6 @@ export default function RoastItemScreen() {
               <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>
                 {t('item.labels.shareImage')}
               </Text>
-              {!isPro && !hasClaimedShareBonus && (
-                <View
-                  style={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                    paddingHorizontal: 6,
-                    paddingVertical: 2,
-                    borderRadius: 8,
-                    marginLeft: 4,
-                  }}
-                >
-                  <Text style={{ color: 'white', fontSize: 11, fontWeight: '900' }}>
-                    {t('item.labels.shareBonus')}
-                  </Text>
-                </View>
-              )}
             </PressableScale>
 
             <PressableScale 

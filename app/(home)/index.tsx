@@ -1,4 +1,4 @@
-import { AppTheme } from '@/constants/theme'
+import { AppTheme } from '@/constants/Theme'
 import { listRoastHistory, type RoastWithVariants } from '@/services/roast-db'
 import { useDbStore } from '@/stores/dbStore'
 import { Ionicons } from '@expo/vector-icons'

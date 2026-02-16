@@ -1,6 +1,6 @@
 import { isLiquidGlassAvailable } from 'expo-glass-effect'
 import { Stack, useRouter } from 'expo-router'
-import { AppTheme } from '@/constants/theme'
+import { AppTheme } from '@/constants/Theme'
 import { useTranslation } from 'react-i18next'
 
 export default function SettingsLayout() {
@@ -17,7 +17,7 @@ export default function SettingsLayout() {
                     headerLargeTitleEnabled: true,
                     headerTransparent: isLiquidGlassAvailable(),
                     headerStyle: {
-                        backgroundColor: isLiquidGlassAvailable() ? 'transparent' : undefined,
+                        backgroundColor: isLiquidGlassAvailable() ? 'transparent' : '#f2f2f2',
                     },
                     unstable_headerLeftItems: () => [
                         {

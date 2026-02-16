@@ -1,4 +1,4 @@
-import { theme } from '@/constants/theme'
+import { theme } from '@/constants/Theme'
 import { useSubscription } from '@/context/SubscriptionContext'
 import { useCreditStore } from '@/stores/creditStore'
 import { isLiquidGlassAvailable } from 'expo-glass-effect'
@@ -18,7 +18,7 @@ export default function HomeLayout() {
                 name="index"
                 options={{
                     headerTransparent:isLiquidGlassAvailable(),
-                    headerStyle:{backgroundColor:isLiquidGlassAvailable()?'transparent':undefined,},
+                    headerStyle:{backgroundColor:isLiquidGlassAvailable()?'transparent':'#f2f2f2',},
                     headerShown: true,
                     headerTitle: t('navigation.roast'),
                     unstable_headerLeftItems: () => [

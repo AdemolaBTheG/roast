@@ -14,7 +14,7 @@ export default function AddLayout() {
                     headerTitle:'New Roast',
                     headerTransparent:isLiquidGlassAvailable(),
                     headerStyle:{
-                        backgroundColor:isLiquidGlassAvailable()?"transparent":'#FFFFFF',
+                        backgroundColor:isLiquidGlassAvailable()?"transparent":'#f2f2f2',
                     }
                   
                 }}

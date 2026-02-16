@@ -1,5 +1,5 @@
 import { ONBOARDING_PAYWALL_ROUTE } from '@/constants/onboarding-quiz';
-import { AppTheme } from '@/constants/theme';
+import { AppTheme } from '@/constants/Theme';
 import { Button as AndroidButton } from '@expo/ui/jetpack-compose';
 import { Button, Host, Text as IOSText } from '@expo/ui/swift-ui';
 import {
@@ -15,12 +15,15 @@ import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { OneSignal } from 'react-native-onesignal';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+const NOTIFICATION_CARD_ICON = require('../../assets/images/roast.icon/Assets/ChatGPT Image 14. Feb. 2026, 19_41_11.png');
+const NOTIFICATION_CARD_ICON_FALLBACK = require('../../assets/images/splash-icon.png');
 
 export default function OnboardingNotificationsScreen() {
   const { t } = useTranslation();
@@ -148,6 +151,7 @@ function PreviewItem({
   width: number;
 }) {
   const appear = useSharedValue(0);
+  const [useFallbackIcon, setUseFallbackIcon] = useState(false);
 
   useEffect(() => {
     appear.value = withDelay(index * 300, withTiming(1, { duration: 450 }));
@@ -176,7 +180,10 @@ function PreviewItem({
         animatedStyle,
       ]}>
       <Image
-        source={require('../../assets/images/icon.png')}
+        source={useFallbackIcon ? NOTIFICATION_CARD_ICON_FALLBACK : NOTIFICATION_CARD_ICON}
+        onError={() => {
+          setUseFallbackIcon(true);
+        }}
         style={{
           width: 48,
           height: 48,

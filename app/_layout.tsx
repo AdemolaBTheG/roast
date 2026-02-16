@@ -1,15 +1,14 @@
-import { SubscriptionProvider } from "@/context/SubscriptionContext";
-import { useAppInitialization } from "@/hooks/useAppInitialization";
-import { useSubscriptionStatus } from "@/hooks/useSubscriptionStatus";
-import "@/i18n";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Stack } from "expo-router";
-import { PostHogProvider } from "posthog-react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { KeyboardProvider } from "react-native-keyboard-controller";
-import { enableScreens } from "react-native-screens";
-import "../global.css";
+import { SubscriptionProvider } from '@/context/SubscriptionContext';
+import { useAppInitialization } from '@/hooks/useAppInitialization';
+import { useSubscriptionStatus } from '@/hooks/useSubscriptionStatus';
+import '@/i18n';
 import * as Sentry from '@sentry/react-native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Stack } from 'expo-router';
+import { PostHogProvider } from 'posthog-react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+import '../global.css';
 
 Sentry.init({
   dsn: 'https://379e05fe47d7a52753f131a7da77f013@o4509184946536448.ingest.de.sentry.io/4510886638321744',
@@ -27,9 +26,7 @@ Sentry.init({
 
 const queryClient = new QueryClient();
 const posthogApiKey = process.env.EXPO_PUBLIC_POSTHOG_API_KEY;
-const posthogHost = process.env.EXPO_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com';
-
-enableScreens();
+const posthogHost = process.env.EXPO_PUBLIC_POSTHOG_HOST ?? 'https://eu.i.posthog.com';
 
 export default Sentry.wrap(function RootLayout() {
   const { isReady } = useAppInitialization();
@@ -43,14 +40,17 @@ export default Sentry.wrap(function RootLayout() {
         <QueryClientProvider client={queryClient}>
           <KeyboardProvider>
             <Stack>
-              <Stack.Screen name="(add)" options={{ headerShown: false,presentation:'modal' }} />
               <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="(add)" options={{ headerShown: false, presentation: 'modal' }} />
+
               <Stack.Screen name="(home)" options={{ headerShown: false }} />
-              <Stack.Screen name="(item)" options={{ headerShown: false,presentation:'modal' }} />
+              <Stack.Screen name="(item)" options={{ headerShown: false, presentation: 'modal' }} />
               <Stack.Screen name="(settings)" options={{ headerShown: false }} />
               <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-              <Stack.Screen name="(paywalls)" options={{ headerShown: false,presentation:'fullScreenModal' }} />
-
+              <Stack.Screen
+                name="(paywalls)"
+                options={{ headerShown: false, presentation: 'fullScreenModal' }}
+              />
             </Stack>
           </KeyboardProvider>
         </QueryClientProvider>
@@ -67,8 +67,7 @@ export default Sentry.wrap(function RootLayout() {
       apiKey={posthogApiKey}
       options={{
         host: posthogHost,
-      }}
-    >
+      }}>
       {appTree}
     </PostHogProvider>
   );

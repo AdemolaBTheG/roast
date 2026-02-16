@@ -1,4 +1,4 @@
-import { AppTheme } from '@/constants/theme';
+import { AppTheme } from '@/constants/Theme';
 import { useOnboardingStore } from '@/stores/onboardingStore';
 import { Button as AndroidButton } from '@expo/ui/jetpack-compose';
 import { Button, Host, Text as IOSText } from '@expo/ui/swift-ui';
