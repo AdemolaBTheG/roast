@@ -1,5 +1,5 @@
 ﻿import { useSubscription } from '@/context/SubscriptionContext'
-import { useGenerateRoast } from '@/hooks/useGenerateRoast'
+import { AiConsentDeclinedError, useGenerateRoast } from '@/hooks/useGenerateRoast'
 import { ROAST_AUDIENCES, type RoastAudience } from '@/services/roast-api'
 import { saveRoastGeneration } from '@/services/roast-db'
 import { useCreditStore } from '@/stores/creditStore'
@@ -431,6 +431,14 @@ export default function Index() {
       navigateToGeneratedRoast(savedRoastId)
     },
     onError: (error, variables) => {
+      if (error instanceof AiConsentDeclinedError) {
+        posthog?.capture('ai_data_consent_declined', {
+          screen_name: 'add',
+          input_type: variables.inputType,
+        })
+        return
+      }
+
       posthog?.capture('roast_generation_failed', {
         stage: 'api_request',
         reason: error.message || 'unknown_error',

@@ -34,6 +34,12 @@
       "processingImage": "Traitement de l image...",
       "generating": "Generation du roast..."
     },
+    "aiConsent": {
+      "title": "Autoriser le traitement IA ?",
+      "body": "Pour generer des roasts, Roast envoie ton texte, les images selectionnees et les reglages (cible, intensite, langue) a notre backend securise et a Google Gemini (fournisseur IA). Autorises-tu ce traitement des donnees ?",
+      "allow": "Autoriser",
+      "decline": "Ne pas autoriser"
+    },
     "alerts": {
       "generationFailedTitle": "Echec de generation",
       "generationFailedEmpty": "Le modele n a renvoye aucun texte.",

@@ -34,6 +34,12 @@
       "processingImage": "画像を処理中...",
       "generating": "ローストを生成中..."
     },
+    "aiConsent": {
+      "title": "AI処理を許可しますか？",
+      "body": "ローストを生成するため、Roast は入力テキスト、選択した画像、設定（対象・強度・言語）を当社の安全なバックエンドと Google Gemini（AI プロバイダー）に送信します。このデータ処理を許可しますか？",
+      "allow": "許可",
+      "decline": "許可しない"
+    },
     "alerts": {
       "generationFailedTitle": "生成に失敗しました",
       "generationFailedEmpty": "モデルがロースト文を返しませんでした。",
