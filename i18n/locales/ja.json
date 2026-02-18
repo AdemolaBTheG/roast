@@ -4,7 +4,7 @@
     "add": "追加",
     "back": "戻る",
     "actions": "操作",
-    "roast": "ロースト"
+    "roast": "Replies"
   },
   "common": {
     "cancel": "キャンセル",
@@ -22,7 +22,7 @@
       "image": "画像"
     },
     "sections": {
-      "target": "対象",
+      "target": "Context",
       "configuration": "設定"
     },
     "placeholder": "ここにcringeを貼り付け（任意）...",
@@ -30,20 +30,20 @@
     "uploadOptional": "スクショまたは写真をアップロード（任意）",
     "variantCount": "バリエーション数",
     "cta": {
-      "default": "ローストを生成",
+      "default": "Generate Reply",
       "processingImage": "画像を処理中...",
-      "generating": "ローストを生成中..."
+      "generating": "Generating reply..."
     },
     "aiConsent": {
-      "title": "AI処理を許可しますか？",
-      "body": "ローストを生成するため、Roast は入力テキスト、選択した画像、設定（対象・強度・言語）を当社の安全なバックエンドと Google Gemini（AI プロバイダー）に送信します。このデータ処理を許可しますか？",
+      "title": "Allow AI processing?",
+      "body": "To generate playful replies, Banter sends your text and selected images, plus settings (context, style, language), to our secure backend and Google Gemini (AI provider). Do you allow this data processing?",
       "allow": "許可",
       "decline": "許可しない"
     },
     "alerts": {
       "generationFailedTitle": "生成に失敗しました",
-      "generationFailedEmpty": "モデルがロースト文を返しませんでした。",
-      "generationFailedGeneric": "ローストを生成できませんでした。",
+      "generationFailedEmpty": "Model returned no reply text.",
+      "generationFailedGeneric": "Could not generate reply.",
       "imageErrorTitle": "画像エラー",
       "imageErrorBody": "画像を処理できませんでした。",
       "chooseAudienceTitle": "対象を選択",
@@ -54,73 +54,73 @@
       "photoPermissionBody": "Please allow photo library access in Settings to choose images."
     },
     "prompts": {
-      "noTarget": "?????????????????????????????"
+      "noTarget": "No specific context was provided. Generate a standalone playful reply."
     },
     "actionSheet": {
       "takePhoto": "?????",
       "chooseFromLibrary": "?????????"
     },
     "audiences": {
-      "bestie": "Shin'yu",
-      "sibling": "Kyodai",
-      "ex": "Moto",
-      "coworker": "Doryo",
-      "self": "Jibun",
-      "stranger": "Mishiranu hito"
+      "bestie": "Friend",
+      "sibling": "Family",
+      "ex": "Dating",
+      "coworker": "Work",
+      "self": "Self",
+      "stranger": "General"
     }
   },
   "home": {
     "burn": {
-      "playful": "ライト",
-      "savage": "辛口",
-      "unhinged": "全開"
+      "playful": "Light",
+      "savage": "Bold",
+      "unhinged": "Creative"
     },
     "status": {
-      "generating": "ローストを生成中...",
-      "loading": "ローストを読み込み中...",
-      "loadError": "履歴を読み込めませんでした。",
-      "empty": "まだローストがありません。追加から生成してください。"
+      "generating": "Generating reply...",
+      "loading": "Loading replies...",
+      "loadError": "Could not load reply history.",
+      "empty": "No replies yet. Generate one from Add."
     }
   },
   "item": {
     "alerts": {
       "shareImageFailed": "共有用画像の作成に失敗しました。",
-      "shareTextFailed": "ロースト文を共有できませんでした。",
-      "copiedBody": "ローストをクリップボードにコピーしました。",
+      "shareTextFailed": "Could not share reply text.",
+      "copiedBody": "Reply copied to clipboard.",
       "favoriteFailed": "お気に入りを更新できませんでした。",
       "deleteFailedTitle": "削除に失敗しました",
-      "deleteFailedBody": "このローストを今は削除できません。",
-      "shareBonusTitle": "+3 ロースト獲得！",
-      "shareBonusBody": "シェアありがとう！3回分のボーナスローストを獲得しました。"
+      "deleteFailedBody": "Could not delete this reply right now.",
+      "shareBonusTitle": "+3 Replies Earned!",
+      "shareBonusBody": "Thanks for sharing! You earned 3 bonus replies."
     },
     "delete": {
-      "title": "ローストを削除しますか？",
-      "body": "この操作でローストと全バリエーションが完全に削除されます。"
+      "title": "Delete reply?",
+      "body": "This removes the reply and all of its variants permanently."
     },
     "menu": {
       "actions": "操作",
-      "actionsTitle": "ロースト操作",
-      "copyRoast": "ローストをコピー",
+      "actionsTitle": "Reply Actions",
+      "copyRoast": "Copy Reply",
       "shareText": "テキスト共有",
       "favorite": "お気に入り",
       "unfavorite": "お気に入り解除",
-      "deleteRoast": "ローストを削除"
+      "deleteRoast": "Delete Reply"
     },
     "status": {
-      "loading": "ローストを読み込み中...",
-      "notFound": "ローストが見つかりません。",
-      "noVariants": "ローストが生成されていません。"
+      "loading": "Loading reply...",
+      "notFound": "Reply not found.",
+      "noVariants": "No replies generated."
     },
     "labels": {
       "for": "対象",
       "shareImage": "画像を共有",
-      "shareBonus": "+3 ロースト",
+      "shareBonus": "+3 Replies",
       "copy": "コピー",
-      "shareTitle": "ロースト",
-      "brand": "Roast App",
-      "playful": "ライト",
-      "savage": "辛口",
-      "unhinged": "全開"
+      "shareTitle": "Reply",
+      "brand": "Banter App",
+      "playful": "LIGHT",
+      "savage": "BOLD",
+      "unhinged": "CREATIVE"
     }
   },
   "settings": {
@@ -134,68 +134,68 @@
     "rows": {
       "manageSubscription": "サブスクを管理",
       "upgradeToPro": "Proにアップグレード",
-      "clearHistory": "履歴を削除",
+      "clearHistory": "Clear Reply History",
       "rateApp": "アプリを評価",
       "contactSupport": "サポートに連絡",
       "terms": "利用規約",
       "privacy": "プライバシーポリシー"
     },
     "creditsCard": {
-      "title": "ローストを購入",
-      "subtitle": "残り{{count}}回のローストがあります。タップして追加購入。"
+      "title": "Buy Replies",
+      "subtitle": "You have {{count}} replies remaining. Tap to get more."
     },
     "alerts": {
       "cannotOpenLinkTitle": "リンクを開けません",
       "unavailableTitle": "利用できません",
       "unavailableBody": "サブスク設定を開けませんでした。",
-      "clearHistoryTitle": "履歴を削除",
-      "clearHistoryBody": "この端末の保存済みローストをすべて削除します。",
+      "clearHistoryTitle": "Clear Reply History",
+      "clearHistoryBody": "This will permanently delete all saved replies from this device.",
       "clearHistoryErrorTitle": "履歴を削除できませんでした",
       "clearHistoryErrorBody": "もう一度お試しください。"
     }
   },
   "onboarding": {
     "notifications": {
-      "title": "Never miss the perfect roast",
+      "title": "Never miss the perfect reply",
       "subtitle": "Turn on notifications and we will send timely prompts when inspiration hits.",
       "continue": "Continue",
       "item_0": {
-        "title": "Roast ready",
+        "title": "Reply ready",
         "body": "Your next comeback is one tap away.",
         "time": "Now"
       },
       "item_1": {
         "title": "Keep your streak",
-        "body": "Try one new savage roast prompt today.",
+        "body": "Try one new playful prompt today.",
         "time": "2m"
       },
       "item_2": {
         "title": "Fresh ideas",
-        "body": "New style packs just dropped for quick burns.",
+        "body": "New style packs just dropped for quick ideas.",
         "time": "5m"
       }
     },
     "carousel": {
-      "title": "Welcome to Roast",
-      "subtitle": "Snap it, paste it, and get instant burns with style.",
+      "title": "Welcome to Banter",
+      "subtitle": "Snap it, paste it, and get playful replies with style.",
       "cta": "Build My Profile",
       "slides": {
         "scan": "Scan anything in seconds",
         "ai": "Get AI analysis instantly",
-        "confidence": "Roast with confidence",
+        "confidence": "Reply with confidence",
         "breakdown": "Break down every detail",
         "crew": "Built for your whole crew"
       }
     },
     "rating": {
       "title": "You are all set",
-      "subtitle": "Thanks for setting up Roast. Your quick rating helps us keep improving.",
+      "subtitle": "Thanks for setting up Banter. Your quick rating helps us keep improving.",
       "continue": "Continue"
     },
     "quiz": {
       "q1": {
-        "title": "What's your biggest roast struggle?",
-        "subtitle": "Build your roast style in 30 seconds.",
+        "title": "What's your biggest reply challenge?",
+        "subtitle": "Build your reply style in 30 seconds.",
         "cta": "This is me",
         "options": {
           "blank_replies": "I blank on replies",
@@ -205,7 +205,7 @@
         }
       },
       "q2": {
-        "title": "Where do you use roasts most?",
+        "title": "Where do you use quick replies most?",
         "cta": "Next",
         "options": {
           "group_chat": "Group chats",
@@ -220,8 +220,8 @@
         "cta": "Lock it in",
         "options": {
           "playful": "Playful",
-          "savage": "Savage",
-          "unhinged": "Unhinged"
+          "savage": "Bold",
+          "unhinged": "Creative"
         }
       },
       "q4": {
@@ -238,10 +238,10 @@
       "dynamic": {
         "q1_pain": {
           "blank_replies": "Good call. We'll focus on instant comebacks so you're never stuck.",
-          "too_harsh": "Great choice. We'll keep your roasts sharp without crossing the line.",
-          "repetitive": "Nice. We'll keep your burns fresh so your style never feels recycled.",
-          "too_slow": "Perfect. We'll optimize for speed so you can roast in seconds.",
-          "default": "We'll tune Roast to your style in a few quick taps."
+          "too_harsh": "Great choice. We'll keep your replies sharp without crossing the line.",
+          "repetitive": "Nice. We'll keep your replies fresh so your style never feels recycled.",
+          "too_slow": "Perfect. We'll optimize for speed so you can reply in seconds.",
+          "default": "We'll tune Banter to your style in a few quick taps."
         }
       }
     }
@@ -257,6 +257,6 @@
   },
   "credits": {
     "unlimited": "無制限",
-    "roastsCount": "{{count}} ロースト"
+    "roastsCount": "{{count}} Replies"
   }
 }

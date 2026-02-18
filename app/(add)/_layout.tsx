@@ -11,7 +11,7 @@ export default function AddLayout() {
                 name="index"
                 options={{
                     headerShown: true,
-                    headerTitle:'New Roast',
+                    headerTitle:'New Reply',
                     headerTransparent:isLiquidGlassAvailable(),
                     headerStyle:{
                         backgroundColor:isLiquidGlassAvailable()?"transparent":'#f2f2f2',

@@ -26,8 +26,32 @@ function getBurnMeta(burnLevel: number, t: (key: string) => string) {
   }
 
   return {
-    color: burnLevel >= 85 ? AppTheme.colors.danger : AppTheme.colors.secondary,
+    color: AppTheme.colors.secondary,
     label: t('home.burn.unhinged'),
+  }
+}
+
+function getAudienceLabel(audience: string, t: (key: string) => string) {
+  switch (audience) {
+    case 'Bestie':
+    case 'Friend':
+      return t('add.audiences.bestie')
+    case 'Sibling':
+    case 'Family':
+      return t('add.audiences.sibling')
+    case 'Ex':
+    case 'Partner':
+      return t('add.audiences.ex')
+    case 'Coworker':
+    case 'Work':
+      return t('add.audiences.coworker')
+    case 'Self':
+      return t('add.audiences.self')
+    case 'Stranger':
+    case 'General':
+      return t('add.audiences.stranger')
+    default:
+      return audience
   }
 }
 
@@ -77,6 +101,7 @@ export default function Index() {
         const selectedVariant =
           item.variants[item.selectedVariantIndex] ?? item.variants[0] ?? null
         const burnMeta = getBurnMeta(item.burnLevel, t)
+        const audienceLabel = getAudienceLabel(item.audience, t)
         const extraVariants = Math.max(0, item.variants.length - 1)
 
         return (
@@ -156,7 +181,7 @@ export default function Index() {
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
           <View style={{ backgroundColor: '#F3F4F6', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
              <Text style={{ fontSize: 10, fontWeight: '700', color: AppTheme.colors.text.secondary }}>
-               {item.audience.toUpperCase()}
+               {audienceLabel.toUpperCase()}
              </Text>
           </View>
           <Text style={{ fontSize: 10, color: AppTheme.colors.text.muted }}>

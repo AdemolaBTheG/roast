@@ -1,4 +1,4 @@
-import { ONBOARDING_PAYWALL_ROUTE } from '@/constants/onboarding-quiz';
+import { ONBOARDING_AI_CONSENT_ROUTE } from '@/constants/onboarding-quiz';
 import { AppTheme } from '@/constants/Theme';
 import { Button as AndroidButton } from '@expo/ui/jetpack-compose';
 import { Button, Host, Text as IOSText } from '@expo/ui/swift-ui';
@@ -68,7 +68,7 @@ export default function OnboardingNotificationsScreen() {
       });
     } catch {}
 
-    router.replace(ONBOARDING_PAYWALL_ROUTE as any);
+    router.replace(ONBOARDING_AI_CONSENT_ROUTE as any);
   };
 
   return (

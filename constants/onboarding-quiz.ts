@@ -5,6 +5,7 @@ const TOTAL_STEPS = 4;
 export const ONBOARDING_PAYWALL_ROUTE = '/(paywalls)?source=onboarding_quiz';
 export const ONBOARDING_RATING_ROUTE = '/(onboarding)/rating';
 export const ONBOARDING_NOTIFICATIONS_ROUTE = '/(onboarding)/notifications';
+export const ONBOARDING_AI_CONSENT_ROUTE = '/(onboarding)/ai-consent';
 
 const painSupportMap: Record<string, string> = {
   blank_replies: 'onboarding.quiz.dynamic.q1_pain.blank_replies',
@@ -87,7 +88,6 @@ export function getOnboardingQuizConfigs(
       ctaLabel: t('onboarding.quiz.q4.cta'),
       nextRoute: ONBOARDING_RATING_ROUTE,
       source: 'onboarding_quiz',
-      completeOnContinue: true,
     },
   ];
 }

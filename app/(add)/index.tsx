@@ -1,5 +1,5 @@
 ﻿import { useSubscription } from '@/context/SubscriptionContext'
-import { AiConsentDeclinedError, useGenerateRoast } from '@/hooks/useGenerateRoast'
+import { AiConsentRequiredError, useGenerateRoast } from '@/hooks/useGenerateRoast'
 import { ROAST_AUDIENCES, type RoastAudience } from '@/services/roast-api'
 import { saveRoastGeneration } from '@/services/roast-db'
 import { useCreditStore } from '@/stores/creditStore'
@@ -289,8 +289,8 @@ export default function Index() {
     burnPercent < 30
       ? `${t('home.burn.playful')} 😇`
       : burnPercent < 75
-        ? `${t('home.burn.savage')} 🔥`
-        : `${t('home.burn.unhinged')} 💀`
+        ? `${t('home.burn.savage')} ✨`
+        : `${t('home.burn.unhinged')} 🎨`
   const burnColor = burnPercent < 30 ? '#34D399' : burnPercent < 75 ? '#F59E0B' : '#EF4444'
   const burnProgress = useSharedValue(sliderValue)
   const ctaPulse = useSharedValue(1)
@@ -431,11 +431,12 @@ export default function Index() {
       navigateToGeneratedRoast(savedRoastId)
     },
     onError: (error, variables) => {
-      if (error instanceof AiConsentDeclinedError) {
-        posthog?.capture('ai_data_consent_declined', {
+      if (error instanceof AiConsentRequiredError) {
+        posthog?.capture('ai_data_consent_required', {
           screen_name: 'add',
           input_type: variables.inputType,
         })
+        router.push('/(onboarding)/ai-consent?source=generate_gate')
         return
       }
 
@@ -630,6 +631,7 @@ export default function Index() {
   const handleGeneratePress = () => {
     if (isGenerating || isPreparingImage) return
     const resolvedAudience: AudienceOption = selectedAudience ?? 'Stranger'
+    const safeBurnLevel = Math.min(burnPercent, 60)
 
     // Gate: Pro users bypass, otherwise check credits
     if (!isPro && credits < 1) {
@@ -646,7 +648,7 @@ export default function Index() {
       posthog?.capture('roast_generation_started', {
         input_type: 'text',
         audience: resolvedAudience,
-        burn_level: burnPercent,
+        burn_level: safeBurnLevel,
         requested_count: roastCount,
         has_user_text: text !== targetFreeGenerationPrompt,
         is_pro: isPro,
@@ -656,7 +658,7 @@ export default function Index() {
         inputType: 'text',
         text,
         audience: resolvedAudience,
-        burnLevel: burnPercent,
+        burnLevel: safeBurnLevel,
         count: roastCount,
       })
     } else {
@@ -664,7 +666,7 @@ export default function Index() {
         posthog?.capture('roast_generation_started', {
           input_type: 'image',
           audience: resolvedAudience,
-          burn_level: burnPercent,
+          burn_level: safeBurnLevel,
           requested_count: roastCount,
           is_pro: isPro,
           credits_before: credits,
@@ -674,7 +676,7 @@ export default function Index() {
           imageBase64: image.base64,
           imageMimeType: image.mimeType || 'image/jpeg',
           audience: resolvedAudience,
-          burnLevel: burnPercent,
+          burnLevel: safeBurnLevel,
           count: roastCount,
         })
         return
@@ -685,7 +687,7 @@ export default function Index() {
         source_tab: 'image',
         used_fallback_prompt: true,
         audience: resolvedAudience,
-        burn_level: burnPercent,
+        burn_level: safeBurnLevel,
         requested_count: roastCount,
         is_pro: isPro,
         credits_before: credits,
@@ -694,7 +696,7 @@ export default function Index() {
         inputType: 'text',
         text: targetFreeGenerationPrompt,
         audience: resolvedAudience,
-        burnLevel: burnPercent,
+        burnLevel: safeBurnLevel,
         count: roastCount,
       })
     }

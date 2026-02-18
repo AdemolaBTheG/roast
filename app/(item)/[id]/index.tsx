@@ -92,9 +92,33 @@ function getBurnMeta(burnLevel: number, t: (key: string) => string) {
     return { color: '#F59E0B', label: t('item.labels.savage'), fillPercent: 66 }
   }
   return {
-    color: burnLevel >= 85 ? AppTheme.colors.danger : AppTheme.colors.secondary,
+    color: AppTheme.colors.secondary,
     label: t('item.labels.unhinged'),
     fillPercent: 100,
+  }
+}
+
+function getAudienceLabel(audience: string, t: (key: string) => string) {
+  switch (audience) {
+    case 'Bestie':
+    case 'Friend':
+      return t('add.audiences.bestie')
+    case 'Sibling':
+    case 'Family':
+      return t('add.audiences.sibling')
+    case 'Ex':
+    case 'Partner':
+      return t('add.audiences.ex')
+    case 'Coworker':
+    case 'Work':
+      return t('add.audiences.coworker')
+    case 'Self':
+      return t('add.audiences.self')
+    case 'Stranger':
+    case 'General':
+      return t('add.audiences.stranger')
+    default:
+      return audience
   }
 }
 
@@ -249,6 +273,7 @@ export default function RoastItemScreen() {
   const maxVariantIndex = Math.max(0, variants.length - 1)
   const currentVariant = variants[currentIndex] ?? null
   const burnMeta = getBurnMeta(roast?.burnLevel ?? 0, t)
+  const audienceLabel = roast ? getAudienceLabel(roast.audience, t) : ''
   const showShareBonusBadge = !isPro && !hasClaimedShareBonus
 
   useEffect(() => {
@@ -568,7 +593,7 @@ export default function RoastItemScreen() {
 
   useEffect(() => {
     const headerTitle = roast
-      ? `${roast.audience} | ${burnMeta.label} ${currentIndex + 1}/${Math.max(variants.length, 1)}`
+      ? `${audienceLabel} | ${burnMeta.label} ${currentIndex + 1}/${Math.max(variants.length, 1)}`
       : t('navigation.roast')
 
     navigation.setOptions({
@@ -647,6 +672,7 @@ export default function RoastItemScreen() {
     isTogglingFavorite,
     navigation,
     roast,
+    audienceLabel,
     t,
     variants.length,
   ])
@@ -738,7 +764,7 @@ export default function RoastItemScreen() {
                 boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.10)',
               }}>
                 <Text style={{ fontSize: 11, fontWeight: '900', color: '#1A1A1A', textTransform: 'uppercase' }}>
-                  {t('item.labels.for')}: {roast.audience}
+                  {t('item.labels.for')}: {audienceLabel}
                 </Text>
               </View>
             </View>

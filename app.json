@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "roast",
+    "name": "Banter",
     "slug": "roast",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,13 +14,6 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Location is used to support features that may require it, such as localized services.",
         "CFBundleLocalizations": [
-          "en",
-          "de",
-          "fr",
-          "es",
-          "ja",
-          "pt",
-          "it",
           "en",
           "de",
           "fr",
@@ -48,7 +41,11 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "permissions": ["android.permission.RECORD_AUDIO"]
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "group.flingex.roast.app"
     },
     "web": {
       "output": "static",
@@ -71,7 +68,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "The roast app accesses your photos to take pictures of your colleagues and roast them"
+          "photosPermission": "Banter uses your photos only when you choose to generate playful reply suggestions."
         }
       ],
       "expo-font",
@@ -84,8 +81,24 @@
         "expo-localization",
         {
           "supportedLocales": {
-            "ios": ["en", "de", "fr", "es", "ja", "pt", "it"],
-            "android": ["en", "de", "fr", "es", "ja", "pt", "it"]
+            "ios": [
+              "en",
+              "de",
+              "fr",
+              "es",
+              "ja",
+              "pt",
+              "it"
+            ],
+            "android": [
+              "en",
+              "de",
+              "fr",
+              "es",
+              "ja",
+              "pt",
+              "it"
+            ]
           }
         }
       ],
@@ -100,7 +113,8 @@
       [
         "onesignal-expo-plugin",
         {
-          "mode": "production"
+          "mode": "production",
+          "iPhoneDeploymentTarget": "16.2"
         }
       ],
       [

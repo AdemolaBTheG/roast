@@ -4,7 +4,7 @@
     "add": "Adicionar",
     "back": "Voltar",
     "actions": "Acoes",
-    "roast": "Roast"
+    "roast": "Replies"
   },
   "common": {
     "cancel": "Cancelar",
@@ -22,7 +22,7 @@
       "image": "Imagem"
     },
     "sections": {
-      "target": "Alvo",
+      "target": "Context",
       "configuration": "Configuracao"
     },
     "placeholder": "Cole o cringe aqui (opcional)...",
@@ -30,20 +30,20 @@
     "uploadOptional": "Enviar screenshot ou foto (opcional)",
     "variantCount": "Quantidade de variantes",
     "cta": {
-      "default": "Gerar roast",
+      "default": "Generate Reply",
       "processingImage": "Processando imagem...",
-      "generating": "Gerando roast..."
+      "generating": "Generating reply..."
     },
     "aiConsent": {
-      "title": "Permitir processamento com IA?",
-      "body": "Para gerar roasts, o Roast envia seu texto, imagens selecionadas e configuracoes (alvo, intensidade, idioma) para nosso backend seguro e para o Google Gemini (provedor de IA). Voce permite esse processamento de dados?",
+      "title": "Allow AI processing?",
+      "body": "To generate playful replies, Banter sends your text and selected images, plus settings (context, style, language), to our secure backend and Google Gemini (AI provider). Do you allow this data processing?",
       "allow": "Permitir",
       "decline": "Nao permitir"
     },
     "alerts": {
       "generationFailedTitle": "Falha na geracao",
-      "generationFailedEmpty": "O modelo nao retornou texto de roast.",
-      "generationFailedGeneric": "Nao foi possivel gerar o roast.",
+      "generationFailedEmpty": "Model returned no reply text.",
+      "generationFailedGeneric": "Could not generate reply.",
       "imageErrorTitle": "Erro de imagem",
       "imageErrorBody": "Nao foi possivel processar a imagem.",
       "chooseAudienceTitle": "Escolha o publico",
@@ -54,73 +54,73 @@
       "photoPermissionBody": "Please allow photo library access in Settings to choose images."
     },
     "prompts": {
-      "noTarget": "Nenhum alvo especifico foi fornecido. Gere um roast independente."
+      "noTarget": "No specific context was provided. Generate a standalone playful reply."
     },
     "actionSheet": {
       "takePhoto": "Tirar foto",
       "chooseFromLibrary": "Escolher da biblioteca"
     },
     "audiences": {
-      "bestie": "Melhor amigo",
-      "sibling": "Irmao",
-      "ex": "Ex",
-      "coworker": "Colega de trabalho",
-      "self": "Eu",
-      "stranger": "Desconhecido"
+      "bestie": "Friend",
+      "sibling": "Family",
+      "ex": "Dating",
+      "coworker": "Work",
+      "self": "Self",
+      "stranger": "General"
     }
   },
   "home": {
     "burn": {
-      "playful": "Leve",
-      "savage": "Pesado",
-      "unhinged": "Sem freio"
+      "playful": "Light",
+      "savage": "Bold",
+      "unhinged": "Creative"
     },
     "status": {
-      "generating": "Gerando roast...",
-      "loading": "Carregando roasts...",
-      "loadError": "Nao foi possivel carregar o historico.",
-      "empty": "Ainda nao ha roasts. Gere um em Adicionar."
+      "generating": "Generating reply...",
+      "loading": "Loading replies...",
+      "loadError": "Could not load reply history.",
+      "empty": "No replies yet. Generate one from Add."
     }
   },
   "item": {
     "alerts": {
       "shareImageFailed": "Falha ao capturar imagem para compartilhamento.",
-      "shareTextFailed": "Nao foi possivel compartilhar o texto.",
-      "copiedBody": "Roast copiado para a area de transferencia.",
+      "shareTextFailed": "Could not share reply text.",
+      "copiedBody": "Reply copied to clipboard.",
       "favoriteFailed": "Nao foi possivel atualizar favorito.",
       "deleteFailedTitle": "Falha ao excluir",
-      "deleteFailedBody": "Nao foi possivel excluir este roast agora.",
-      "shareBonusTitle": "+3 Roasts ganhos!",
-      "shareBonusBody": "Obrigado por compartilhar! Voce ganhou 3 roasts bonus."
+      "deleteFailedBody": "Could not delete this reply right now.",
+      "shareBonusTitle": "+3 Replies Earned!",
+      "shareBonusBody": "Thanks for sharing! You earned 3 bonus replies."
     },
     "delete": {
-      "title": "Excluir roast?",
-      "body": "Isso remove permanentemente o roast e todas as variantes."
+      "title": "Delete reply?",
+      "body": "This removes the reply and all of its variants permanently."
     },
     "menu": {
       "actions": "Acoes",
-      "actionsTitle": "Acoes do roast",
-      "copyRoast": "Copiar roast",
+      "actionsTitle": "Reply Actions",
+      "copyRoast": "Copy Reply",
       "shareText": "Compartilhar texto",
       "favorite": "Favoritar",
       "unfavorite": "Remover favorito",
-      "deleteRoast": "Excluir roast"
+      "deleteRoast": "Delete Reply"
     },
     "status": {
-      "loading": "Carregando roast...",
-      "notFound": "Roast nao encontrado.",
-      "noVariants": "Nenhum roast gerado."
+      "loading": "Loading reply...",
+      "notFound": "Reply not found.",
+      "noVariants": "No replies generated."
     },
     "labels": {
       "for": "PARA",
       "shareImage": "Compartilhar imagem",
-      "shareBonus": "+3 Roasts",
+      "shareBonus": "+3 Replies",
       "copy": "Copiar",
-      "shareTitle": "Roast",
-      "brand": "Roast App",
-      "playful": "LEVE",
-      "savage": "PESADO",
-      "unhinged": "SEM FREIO"
+      "shareTitle": "Reply",
+      "brand": "Banter App",
+      "playful": "LIGHT",
+      "savage": "BOLD",
+      "unhinged": "CREATIVE"
     }
   },
   "settings": {
@@ -134,68 +134,68 @@
     "rows": {
       "manageSubscription": "Gerenciar assinatura",
       "upgradeToPro": "Fazer upgrade para Pro",
-      "clearHistory": "Limpar historico",
+      "clearHistory": "Clear Reply History",
       "rateApp": "Avaliar app",
       "contactSupport": "Contato com suporte",
       "terms": "Termos de servico",
       "privacy": "Politica de privacidade"
     },
     "creditsCard": {
-      "title": "Comprar roasts",
-      "subtitle": "Voce tem {{count}} roasts restantes. Toque para obter mais."
+      "title": "Buy Replies",
+      "subtitle": "You have {{count}} replies remaining. Tap to get more."
     },
     "alerts": {
       "cannotOpenLinkTitle": "Nao foi possivel abrir o link",
       "unavailableTitle": "Indisponivel",
       "unavailableBody": "Nao foi possivel abrir as configuracoes de assinatura.",
-      "clearHistoryTitle": "Limpar historico",
-      "clearHistoryBody": "Isso excluira permanentemente todos os roasts salvos neste dispositivo.",
+      "clearHistoryTitle": "Clear Reply History",
+      "clearHistoryBody": "This will permanently delete all saved replies from this device.",
       "clearHistoryErrorTitle": "Nao foi possivel limpar o historico",
       "clearHistoryErrorBody": "Tente novamente."
     }
   },
   "onboarding": {
     "notifications": {
-      "title": "Nao perca o roast perfeito",
+      "title": "Never miss the perfect reply",
       "subtitle": "Ative as notificacoes e vamos te avisar nos momentos certos.",
       "continue": "Continuar",
       "item_0": {
-        "title": "Roast pronto",
+        "title": "Reply ready",
         "body": "Sua proxima resposta esta a um toque.",
         "time": "Agora"
       },
       "item_1": {
         "title": "Mantenha sua sequencia",
-        "body": "Teste hoje um novo prompt savage.",
+        "body": "Try one new playful prompt today.",
         "time": "2m"
       },
       "item_2": {
         "title": "Ideias novas",
-        "body": "Novos pacotes de estilo para burns rapidos.",
+        "body": "New style packs just dropped for quick ideas.",
         "time": "5m"
       }
     },
     "carousel": {
-      "title": "Welcome to Roast",
-      "subtitle": "Snap it, paste it, and get instant burns with style.",
+      "title": "Welcome to Banter",
+      "subtitle": "Snap it, paste it, and get playful replies with style.",
       "cta": "Build My Profile",
       "slides": {
         "scan": "Scan anything in seconds",
         "ai": "Get AI analysis instantly",
-        "confidence": "Roast with confidence",
+        "confidence": "Reply with confidence",
         "breakdown": "Break down every detail",
         "crew": "Built for your whole crew"
       }
     },
     "rating": {
       "title": "You are all set",
-      "subtitle": "Thanks for setting up Roast. Your quick rating helps us keep improving.",
+      "subtitle": "Thanks for setting up Banter. Your quick rating helps us keep improving.",
       "continue": "Continue"
     },
     "quiz": {
       "q1": {
-        "title": "What's your biggest roast struggle?",
-        "subtitle": "Build your roast style in 30 seconds.",
+        "title": "What's your biggest reply challenge?",
+        "subtitle": "Build your reply style in 30 seconds.",
         "cta": "This is me",
         "options": {
           "blank_replies": "I blank on replies",
@@ -205,7 +205,7 @@
         }
       },
       "q2": {
-        "title": "Where do you use roasts most?",
+        "title": "Where do you use quick replies most?",
         "cta": "Next",
         "options": {
           "group_chat": "Group chats",
@@ -220,8 +220,8 @@
         "cta": "Lock it in",
         "options": {
           "playful": "Playful",
-          "savage": "Savage",
-          "unhinged": "Unhinged"
+          "savage": "Bold",
+          "unhinged": "Creative"
         }
       },
       "q4": {
@@ -238,10 +238,10 @@
       "dynamic": {
         "q1_pain": {
           "blank_replies": "Good call. We'll focus on instant comebacks so you're never stuck.",
-          "too_harsh": "Great choice. We'll keep your roasts sharp without crossing the line.",
-          "repetitive": "Nice. We'll keep your burns fresh so your style never feels recycled.",
-          "too_slow": "Perfect. We'll optimize for speed so you can roast in seconds.",
-          "default": "We'll tune Roast to your style in a few quick taps."
+          "too_harsh": "Great choice. We'll keep your replies sharp without crossing the line.",
+          "repetitive": "Nice. We'll keep your replies fresh so your style never feels recycled.",
+          "too_slow": "Perfect. We'll optimize for speed so you can reply in seconds.",
+          "default": "We'll tune Banter to your style in a few quick taps."
         }
       }
     }
@@ -257,6 +257,6 @@
   },
   "credits": {
     "unlimited": "Ilimitado",
-    "roastsCount": "{{count}} Roasts"
+    "roastsCount": "{{count}} Replies"
   }
 }
