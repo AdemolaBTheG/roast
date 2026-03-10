@@ -22,10 +22,10 @@
       "image": "Imagen"
     },
     "sections": {
-      "target": "Context",
+      "target": "Scenario",
       "configuration": "Configuracion"
     },
-    "placeholder": "Pega el cringe aqui (opcional)...",
+    "placeholder": "Paste text to rewrite (optional)...",
     "tapToChange": "Toca para cambiar",
     "uploadOptional": "Sube captura o foto (opcional)",
     "variantCount": "Cantidad de variantes",
@@ -46,15 +46,15 @@
       "generationFailedGeneric": "Could not generate reply.",
       "imageErrorTitle": "Error de imagen",
       "imageErrorBody": "No se pudo procesar la imagen.",
-      "chooseAudienceTitle": "Elige audiencia",
-      "chooseAudienceBody": "Selecciona una audiencia antes de generar.",
+      "chooseAudienceTitle": "Choose Scenario",
+      "chooseAudienceBody": "Pick one scenario before generating.",
       "cameraPermissionTitle": "Camera Permission Needed",
       "cameraPermissionBody": "Please allow camera access in Settings to take photos.",
       "photoPermissionTitle": "Photo Library Permission Needed",
       "photoPermissionBody": "Please allow photo library access in Settings to choose images."
     },
     "prompts": {
-      "noTarget": "No specific context was provided. Generate a standalone playful reply."
+      "noTarget": "No specific scenario was provided. Generate a standalone friendly reply idea."
     },
     "actionSheet": {
       "takePhoto": "Tomar foto",
@@ -72,8 +72,8 @@
   "home": {
     "burn": {
       "playful": "Light",
-      "savage": "Bold",
-      "unhinged": "Creative"
+      "savage": "Sharp",
+      "unhinged": "Expressive"
     },
     "status": {
       "generating": "Generating reply...",
@@ -112,15 +112,15 @@
       "noVariants": "No replies generated."
     },
     "labels": {
-      "for": "PARA",
+      "for": "CONTEXT",
       "shareImage": "Compartir imagen",
       "shareBonus": "+3 Replies",
       "copy": "Copiar",
       "shareTitle": "Reply",
       "brand": "Banter App",
       "playful": "LIGHT",
-      "savage": "BOLD",
-      "unhinged": "CREATIVE"
+      "savage": "SHARP",
+      "unhinged": "EXPRESSIVE"
     }
   },
   "settings": {
@@ -161,7 +161,7 @@
       "continue": "Continuar",
       "item_0": {
         "title": "Reply ready",
-        "body": "Tu proxima respuesta esta a un toque.",
+        "body": "Your next reply idea is one tap away.",
         "time": "Ahora"
       },
       "item_1": {
@@ -199,7 +199,7 @@
         "cta": "This is me",
         "options": {
           "blank_replies": "I blank on replies",
-          "too_harsh": "I go too far",
+          "too_harsh": "My tone can miss the mark",
           "repetitive": "My jokes feel repetitive",
           "too_slow": "It takes too long"
         }
@@ -220,8 +220,8 @@
         "cta": "Lock it in",
         "options": {
           "playful": "Playful",
-          "savage": "Bold",
-          "unhinged": "Creative"
+          "savage": "Sharp",
+          "unhinged": "Expressive"
         }
       },
       "q4": {
@@ -237,8 +237,8 @@
       },
       "dynamic": {
         "q1_pain": {
-          "blank_replies": "Good call. We'll focus on instant comebacks so you're never stuck.",
-          "too_harsh": "Great choice. We'll keep your replies sharp without crossing the line.",
+          "blank_replies": "Good call. We'll focus on quick reply ideas so you're never stuck.",
+          "too_harsh": "Great choice. We'll keep your replies clear and respectful.",
           "repetitive": "Nice. We'll keep your replies fresh so your style never feels recycled.",
           "too_slow": "Perfect. We'll optimize for speed so you can reply in seconds.",
           "default": "We'll tune Banter to your style in a few quick taps."
