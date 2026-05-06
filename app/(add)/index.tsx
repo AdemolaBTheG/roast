@@ -4,6 +4,13 @@ import { ROAST_AUDIENCES, type RoastAudience } from '@/services/roast-api'
 import { saveRoastGeneration } from '@/services/roast-db'
 import { useCreditStore } from '@/stores/creditStore'
 import { useDbStore } from '@/stores/dbStore'
+import {
+  Button as AndroidButton,
+  SegmentedButton,
+  SingleChoiceSegmentedButtonRow,
+  Slider as AndroidSlider,
+  Text as AndroidText,
+} from '@expo/ui/jetpack-compose'
 import { Button, Host, Text as IOSText, Picker, Slider } from '@expo/ui/swift-ui'
 import { buttonStyle, controlSize, font, frame, padding, pickerStyle, tag, tint } from '@expo/ui/swift-ui/modifiers'
 import { Ionicons } from '@expo/vector-icons'
@@ -277,6 +284,7 @@ export default function Index() {
   const [sliderValue, setSliderValue] = useState(0.5) // Default to 0.5 for UX
   const [roastCount, setRoastCount] = useState<RoastCountOption>(3)
   const textInputRef = useRef<TextInput>(null)
+  const isIOS = Platform.OS === 'ios'
   
   // Layout
   const { width } = useWindowDimensions()
@@ -722,19 +730,56 @@ export default function Index() {
           <Animated.View
             style={{ marginHorizontal: 16, marginBottom: 8 }}
           >
-             <Host useViewportSizeMeasurement matchContents style={{ width: '100%',flex:1 }}>
-                <Picker
-                  modifiers={[pickerStyle('segmented')]}
-                  selection={selectedTag}
-                  onSelectionChange={(val) => {
-                    selectionAsync()
-                    setSelectedTag(val)
-                  }}
-                >
-                  <IOSText modifiers={[tag('text')]}>{t('add.tabs.text')}</IOSText>
-                  <IOSText modifiers={[tag('image')]}>{t('add.tabs.image')}</IOSText>
-                </Picker>
-             </Host>
+             {isIOS ? (
+               <Host useViewportSizeMeasurement matchContents style={{ width: '100%', flex: 1 }}>
+                  <Picker
+                    modifiers={[pickerStyle('segmented')]}
+                    selection={selectedTag}
+                    onSelectionChange={(val) => {
+                      selectionAsync()
+                      setSelectedTag(val)
+                    }}
+                  >
+                    <IOSText modifiers={[tag('text')]}>{t('add.tabs.text')}</IOSText>
+                    <IOSText modifiers={[tag('image')]}>{t('add.tabs.image')}</IOSText>
+                  </Picker>
+               </Host>
+             ) : (
+               <SingleChoiceSegmentedButtonRow>
+                 <SegmentedButton
+                   selected={selectedTag === 'text'}
+                   onClick={() => {
+                     selectionAsync()
+                     setSelectedTag('text')
+                   }}
+                   colors={{
+                     activeContainerColor: AppTheme.colors.primary,
+                     activeContentColor: '#FFFFFF',
+                     inactiveContentColor: '#374151',
+                   }}
+                 >
+                   <SegmentedButton.Label>
+                     <AndroidText>{t('add.tabs.text')}</AndroidText>
+                   </SegmentedButton.Label>
+                 </SegmentedButton>
+                 <SegmentedButton
+                   selected={selectedTag === 'image'}
+                   onClick={() => {
+                     selectionAsync()
+                     setSelectedTag('image')
+                   }}
+                   colors={{
+                     activeContainerColor: AppTheme.colors.primary,
+                     activeContentColor: '#FFFFFF',
+                     inactiveContentColor: '#374151',
+                   }}
+                 >
+                   <SegmentedButton.Label>
+                     <AndroidText>{t('add.tabs.image')}</AndroidText>
+                   </SegmentedButton.Label>
+                 </SegmentedButton>
+               </SingleChoiceSegmentedButtonRow>
+             )}
           </Animated.View>
 
           {/* Main Card */}
@@ -854,13 +899,25 @@ export default function Index() {
             </View>
 
             {/* Slider */}
-            <Host matchContents style={{ width: '100%' }}>
-              <Slider
+            {isIOS ? (
+              <Host matchContents style={{ width: '100%' }}>
+                <Slider
+                  value={sliderValue}
+                  onValueChange={handleSliderChange}
+                  modifiers={[tint(burnColor)]}
+                />
+              </Host>
+            ) : (
+              <AndroidSlider
                 value={sliderValue}
                 onValueChange={handleSliderChange}
-                modifiers={[tint(burnColor)]}
+                colors={{
+                  thumbColor: burnColor,
+                  activeTrackColor: burnColor,
+                  inactiveTrackColor: '#E5E7EB',
+                }}
               />
-            </Host>
+            )}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, marginBottom: 24 }}>
                 <Text style={{ fontSize: 11, fontWeight: '600', color: '#D1D5DB' }}>
                   {t('home.burn.playful')}
@@ -878,19 +935,40 @@ export default function Index() {
                 <Text style={{ fontSize: 15, fontWeight: '600', color: '#1F2937' }}>
                   {t('add.variantCount')}
                 </Text>
-                <Host matchContents>
-                    <Picker<RoastCountOption>
-                        modifiers={[pickerStyle('menu'), frame({ width: 100 })]}
-                        selection={roastCount}
-                        onSelectionChange={setRoastCount}
-                    >
-                        {roastCountOptions.map(opt => (
-                            <IOSText key={opt} modifiers={[tag(opt)]}>
-                              {opt}
-                            </IOSText>
-                        ))}
-                    </Picker>
-                </Host>
+                {isIOS ? (
+                  <Host matchContents>
+                      <Picker<RoastCountOption>
+                          modifiers={[pickerStyle('menu'), frame({ width: 100 })]}
+                          selection={roastCount}
+                          onSelectionChange={setRoastCount}
+                      >
+                          {roastCountOptions.map(opt => (
+                              <IOSText key={opt} modifiers={[tag(opt)]}>
+                                {opt}
+                              </IOSText>
+                          ))}
+                      </Picker>
+                  </Host>
+                ) : (
+                  <SingleChoiceSegmentedButtonRow>
+                    {roastCountOptions.map((opt) => (
+                      <SegmentedButton
+                        key={opt}
+                        selected={roastCount === opt}
+                        onClick={() => setRoastCount(opt)}
+                        colors={{
+                          activeContainerColor: AppTheme.colors.primary,
+                          activeContentColor: '#FFFFFF',
+                          inactiveContentColor: '#374151',
+                        }}
+                      >
+                        <SegmentedButton.Label>
+                          <AndroidText>{opt}</AndroidText>
+                        </SegmentedButton.Label>
+                      </SegmentedButton>
+                    ))}
+                  </SingleChoiceSegmentedButtonRow>
+                )}
             </View>
           </Animated.View>
           </Animated.View>
@@ -910,21 +988,38 @@ export default function Index() {
         boxShadow: '0px -4px 10px rgba(0, 0, 0, 0.05)',
       }}>
         <Animated.View style={[{ width: '100%', alignItems: 'center' }, ctaAnimatedStyle]}>
-         <Host matchContents style={{ width: '100%', alignItems: 'center' }}>
-            <Button
-                onPress={handleGeneratePress}
-                modifiers={[
-                    buttonStyle(isLiquidGlassAvailable() ? "glassProminent" : "borderedProminent"),
-                    tint(AppTheme.colors.primary),
-                    controlSize("large"),
-                    frame({ width: width - 40 })
-                ]}
-            >
-                <IOSText modifiers={[font({ size: 19, weight: "bold" }), padding({ vertical: 4 })]}>
-                    {isPreparingImage ? t('add.cta.processingImage') : isGenerating ? t('add.cta.generating') : t('add.cta.default')}
-                </IOSText>
-            </Button>
-         </Host>
+         {isIOS ? (
+           <Host matchContents style={{ width: '100%', alignItems: 'center' }}>
+              <Button
+                  onPress={handleGeneratePress}
+                  modifiers={[
+                      buttonStyle(isLiquidGlassAvailable() ? "glassProminent" : "borderedProminent"),
+                      tint(AppTheme.colors.primary),
+                      controlSize("large"),
+                      frame({ width: width - 40 })
+                  ]}
+              >
+                  <IOSText modifiers={[font({ size: 19, weight: "bold" }), padding({ vertical: 4 })]}>
+                      {isPreparingImage ? t('add.cta.processingImage') : isGenerating ? t('add.cta.generating') : t('add.cta.default')}
+                  </IOSText>
+              </Button>
+           </Host>
+         ) : (
+           <View style={{ width: '100%' }}>
+             <AndroidButton
+               onClick={handleGeneratePress}
+               enabled={!isBusy}
+               colors={{
+                 containerColor: AppTheme.colors.primary,
+                 contentColor: '#FFFFFF',
+                 disabledContainerColor: '#F3F4F6',
+                 disabledContentColor: '#9CA3AF',
+               }}
+             >
+               {isPreparingImage ? t('add.cta.processingImage') : isGenerating ? t('add.cta.generating') : t('add.cta.default')}
+             </AndroidButton>
+           </View>
+         )}
         </Animated.View>
       </View>
       

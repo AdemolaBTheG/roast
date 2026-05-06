@@ -8,6 +8,12 @@ import {
 import { clearRoastHistory } from '@/services/roast-db'
 import { useCreditStore } from '@/stores/creditStore'
 import { useDbStore } from '@/stores/dbStore'
+import {
+  DropdownMenu as AndroidDropdownMenu,
+  DropdownMenuItem as AndroidDropdownMenuItem,
+  FilledTonalButton as AndroidFilledTonalButton,
+  Text as AndroidText,
+} from '@expo/ui/jetpack-compose'
 import { Host, Text as IOSText, Picker } from '@expo/ui/swift-ui'
 import { frame, pickerStyle, tag } from '@expo/ui/swift-ui/modifiers'
 import { Ionicons } from '@expo/vector-icons'
@@ -21,7 +27,7 @@ import { usePostHog } from 'posthog-react-native'
 import { PressableScale } from 'pressto'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Alert, SectionList, Text, View } from 'react-native'
+import { Alert, Platform, SectionList, Text, View } from 'react-native'
 import RevenueCatUI from 'react-native-purchases-ui'
 import { Easing, useDerivedValue, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated'
 
@@ -54,6 +60,8 @@ export default function SettingsScreen() {
   const { t } = useTranslation()
   const [cardSize, setCardSize] = React.useState({ width: 0, height: 0 })
   const [currentLanguage, setCurrentLanguage] = React.useState<AppLanguage>(getCurrentAppLanguage())
+  const [isLanguageMenuExpanded, setIsLanguageMenuExpanded] = React.useState(false)
+  const isIOS = Platform.OS === 'ios'
 
   React.useEffect(() => {
     posthog?.capture('screen_viewed', {
@@ -353,21 +361,55 @@ export default function SettingsScreen() {
                     </Text>
                   </View>
 
-                  <Host matchContents useViewportSizeMeasurement style={{ alignItems: 'flex-end' }}>
-                    <Picker<AppLanguage>
-                      modifiers={[pickerStyle('menu'), frame({ width: 170 })]}
-                      selection={currentLanguage}
-                      onSelectionChange={(selection) => {
-                        void handleLanguageChange(selection)
-                      }}
+                  {isIOS ? (
+                    <Host matchContents useViewportSizeMeasurement style={{ alignItems: 'flex-end' }}>
+                      <Picker<AppLanguage>
+                        modifiers={[pickerStyle('menu'), frame({ width: 170 })]}
+                        selection={currentLanguage}
+                        onSelectionChange={(selection) => {
+                          void handleLanguageChange(selection)
+                        }}
+                      >
+                        {SUPPORTED_LANGUAGES.map((lang) => (
+                          <IOSText key={lang} modifiers={[tag(lang)]}>
+                            {t(`languages.${lang}`)}
+                          </IOSText>
+                        ))}
+                      </Picker>
+                    </Host>
+                  ) : (
+                    <AndroidDropdownMenu
+                      expanded={isLanguageMenuExpanded}
+                      onDismissRequest={() => setIsLanguageMenuExpanded(false)}
                     >
-                      {SUPPORTED_LANGUAGES.map((lang) => (
-                        <IOSText key={lang} modifiers={[tag(lang)]}>
-                          {t(`languages.${lang}`)}
-                        </IOSText>
-                      ))}
-                    </Picker>
-                  </Host>
+                      <AndroidDropdownMenu.Trigger>
+                        <AndroidFilledTonalButton
+                          onClick={() => setIsLanguageMenuExpanded((value) => !value)}
+                          colors={{
+                            containerColor: 'rgba(234, 88, 12, 0.12)',
+                            contentColor: AppTheme.colors.primary,
+                          }}
+                        >
+                          {t(`languages.${currentLanguage}`)}
+                        </AndroidFilledTonalButton>
+                      </AndroidDropdownMenu.Trigger>
+                      <AndroidDropdownMenu.Items>
+                        {SUPPORTED_LANGUAGES.map((lang) => (
+                          <AndroidDropdownMenuItem
+                            key={lang}
+                            onClick={() => {
+                              setIsLanguageMenuExpanded(false)
+                              void handleLanguageChange(lang)
+                            }}
+                          >
+                            <AndroidDropdownMenuItem.Text>
+                              <AndroidText>{t(`languages.${lang}`)}</AndroidText>
+                            </AndroidDropdownMenuItem.Text>
+                          </AndroidDropdownMenuItem>
+                        ))}
+                      </AndroidDropdownMenu.Items>
+                    </AndroidDropdownMenu>
+                  )}
                 </View>
               </View>
             )

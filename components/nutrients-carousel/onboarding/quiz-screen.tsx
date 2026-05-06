@@ -150,11 +150,11 @@ export default function QuizScreenView({ config }: { config: QuizScreenConfig })
             alignSelf: 'center',
           }}>
           <AndroidButton
-            onPress={() => {
+            onClick={() => {
               void handleContinue();
             }}
-            disabled={selected === null}
-            color={ACCENT}>
+            enabled={selected !== null}
+            colors={{ containerColor: ACCENT, contentColor: '#FFFFFF' }}>
             {config.ctaLabel}
           </AndroidButton>
         </View>

@@ -129,10 +129,10 @@ export default function OnboardingNotificationsScreen() {
             zIndex: 10,
           }}>
           <AndroidButton
-            onPress={() => {
+            onClick={() => {
               void handleContinue();
             }}
-            color={AppTheme.colors.primary}>
+            colors={{ containerColor: AppTheme.colors.primary, contentColor: '#FFFFFF' }}>
             {t('onboarding.notifications.continue')}
           </AndroidButton>
         </View>

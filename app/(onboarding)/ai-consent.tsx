@@ -157,18 +157,18 @@ export default function OnboardingAiConsentScreen() {
         ) : (
           <>
             <AndroidButton
-              onPress={() => {
+              onClick={() => {
                 void handleAllow();
               }}
-              color={AppTheme.colors.primary}
+              colors={{ containerColor: AppTheme.colors.primary, contentColor: '#FFFFFF' }}
             >
               {t('add.aiConsent.allow')}
             </AndroidButton>
             <AndroidButton
-              onPress={() => {
+              onClick={() => {
                 void handleDecline();
               }}
-              color="#6B7280"
+              colors={{ containerColor: '#6B7280', contentColor: '#FFFFFF' }}
             >
               {t('add.aiConsent.decline')}
             </AndroidButton>

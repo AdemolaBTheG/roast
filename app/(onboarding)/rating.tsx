@@ -135,10 +135,10 @@ export default function OnboardingRatingScreen() {
             zIndex: 10,
           }}>
           <AndroidButton
-            onPress={() => {
+            onClick={() => {
               void handleContinue();
             }}
-            color={AppTheme.colors.primary}>
+            colors={{ containerColor: AppTheme.colors.primary, contentColor: '#FFFFFF' }}>
             {t('onboarding.rating.continue')}
           </AndroidButton>
         </View>

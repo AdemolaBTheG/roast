@@ -183,10 +183,10 @@ export default function OnboardingScreen() {
           }}
         >
           <AndroidButton
-            onPress={() => {
+            onClick={() => {
               void handleContinue();
             }}
-            color={AppTheme.colors.primary}
+            colors={{ containerColor: AppTheme.colors.primary, contentColor: '#FFFFFF' }}
           >
             {t('onboarding.carousel.cta')}
           </AndroidButton>
