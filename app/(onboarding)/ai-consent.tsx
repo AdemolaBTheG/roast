@@ -2,20 +2,13 @@ import { ONBOARDING_PAYWALL_ROUTE } from '@/constants/onboarding-quiz';
 import { AppTheme } from '@/constants/Theme';
 import { useAiConsentStore } from '@/stores/aiConsentStore';
 import { useOnboardingStore } from '@/stores/onboardingStore';
-import { Button as AndroidButton } from '@expo/ui/jetpack-compose';
 import { Button, Host, Text as IOSText } from '@expo/ui/swift-ui';
-import {
-  buttonStyle,
-  controlSize,
-  font,
-  frame,
-  padding,
-  tint,
-} from '@expo/ui/swift-ui/modifiers';
+import { buttonStyle, controlSize, font, frame, padding, tint } from '@expo/ui/swift-ui/modifiers';
 import { isLiquidGlassAvailable } from 'expo-glass-effect';
 import * as Haptics from 'expo-haptics';
 import { router, useLocalSearchParams } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
+import { PressableScale } from 'pressto';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
@@ -106,8 +99,7 @@ export default function OnboardingAiConsentScreen() {
           width: width * 0.8,
           alignSelf: 'center',
           gap: 12,
-        }}
-      >
+        }}>
         {isIOS ? (
           <>
             <Host matchContents useViewportSizeMeasurement style={{ alignSelf: 'center' }}>
@@ -119,15 +111,13 @@ export default function OnboardingAiConsentScreen() {
                   buttonStyle(isLiquidGlassAvailable() ? 'glassProminent' : 'borderedProminent'),
                   tint(AppTheme.colors.primary),
                   controlSize('regular'),
-                ]}
-              >
+                ]}>
                 <IOSText
                   modifiers={[
                     font({ size: 17, weight: 'medium' }),
                     padding({ horizontal: 12, vertical: 6 }),
                     frame({ width: width * 0.8 }),
-                  ]}
-                >
+                  ]}>
                   {t('add.aiConsent.allow')}
                 </IOSText>
               </Button>
@@ -140,15 +130,13 @@ export default function OnboardingAiConsentScreen() {
                 modifiers={[
                   buttonStyle(isLiquidGlassAvailable() ? 'glass' : 'plain'),
                   controlSize('regular'),
-                ]}
-              >
+                ]}>
                 <IOSText
                   modifiers={[
                     font({ size: 16, weight: 'regular' }),
                     padding({ horizontal: 12, vertical: 4 }),
                     frame({ width: width * 0.8 }),
-                  ]}
-                >
+                  ]}>
                   {t('add.aiConsent.decline')}
                 </IOSText>
               </Button>
@@ -156,22 +144,36 @@ export default function OnboardingAiConsentScreen() {
           </>
         ) : (
           <>
-            <AndroidButton
-              onClick={() => {
+            <PressableScale
+              onPress={() => {
                 void handleAllow();
               }}
-              colors={{ containerColor: AppTheme.colors.primary, contentColor: '#FFFFFF' }}
-            >
-              {t('add.aiConsent.allow')}
-            </AndroidButton>
-            <AndroidButton
-              onClick={() => {
+              style={{
+                backgroundColor: AppTheme.colors.primary,
+                borderRadius: 9999,
+                paddingVertical: 16,
+
+                alignItems: 'center',
+              }}>
+              <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: 'semibold' }}>
+                {t('add.aiConsent.allow')}
+              </Text>
+            </PressableScale>
+            <PressableScale
+              onPress={() => {
                 void handleDecline();
               }}
-              colors={{ containerColor: '#6B7280', contentColor: '#FFFFFF' }}
-            >
-              {t('add.aiConsent.decline')}
-            </AndroidButton>
+              style={{
+                backgroundColor: AppTheme.colors.secondary,
+                borderRadius: 9999,
+                paddingVertical: 16,
+
+                alignItems: 'center',
+              }}>
+              <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: 'semibold' }}>
+                {t('add.aiConsent.decline')}
+              </Text>
+            </PressableScale>
           </>
         )}
       </View>

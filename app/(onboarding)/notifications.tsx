@@ -1,25 +1,24 @@
 import { ONBOARDING_AI_CONSENT_ROUTE } from '@/constants/onboarding-quiz';
 import { AppTheme } from '@/constants/Theme';
-import { Button as AndroidButton } from '@expo/ui/jetpack-compose';
 import { Button, Host, Text as IOSText } from '@expo/ui/swift-ui';
-import {
-  buttonStyle,
-  controlSize,
-  font,
-  frame,
-  padding,
-  tint,
-} from '@expo/ui/swift-ui/modifiers';
+import { buttonStyle, controlSize, font, frame, padding, tint } from '@expo/ui/swift-ui/modifiers';
 import { isLiquidGlassAvailable } from 'expo-glass-effect';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
+import { PressableScale } from 'pressto';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { OneSignal } from 'react-native-onesignal';
-import Animated, { interpolate, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const NOTIFICATION_CARD_ICON = require('../../assets/images/roast.icon/Assets/ChatGPT Image 14. Feb. 2026, 19_41_11.png');
@@ -128,13 +127,21 @@ export default function OnboardingNotificationsScreen() {
             alignSelf: 'center',
             zIndex: 10,
           }}>
-          <AndroidButton
-            onClick={() => {
+          <PressableScale
+            onPress={() => {
               void handleContinue();
             }}
-            colors={{ containerColor: AppTheme.colors.primary, contentColor: '#FFFFFF' }}>
-            {t('onboarding.notifications.continue')}
-          </AndroidButton>
+            style={{
+              backgroundColor: AppTheme.colors.primary,
+              borderRadius: 9999,
+              paddingVertical: 16,
+
+              alignItems: 'center',
+            }}>
+            <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: 'semibold' }}>
+              {t('onboarding.notifications.continue')}
+            </Text>
+          </PressableScale>
         </View>
       )}
     </View>

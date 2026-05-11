@@ -1,22 +1,15 @@
-import { ONBOARDING_NOTIFICATIONS_ROUTE } from '@/constants/onboarding-quiz';
+import { ONBOARDING_AI_CONSENT_ROUTE } from '@/constants/onboarding-quiz';
 import { AppTheme } from '@/constants/Theme';
 import { useOnboardingStore } from '@/stores/onboardingStore';
-import { Button as AndroidButton } from '@expo/ui/jetpack-compose';
 import { Button, Host, Text as IOSText } from '@expo/ui/swift-ui';
-import {
-  buttonStyle,
-  controlSize,
-  font,
-  frame,
-  padding,
-  tint,
-} from '@expo/ui/swift-ui/modifiers';
+import { buttonStyle, controlSize, font, frame, padding, tint } from '@expo/ui/swift-ui/modifiers';
 import { isLiquidGlassAvailable } from 'expo-glass-effect';
 import * as Haptics from 'expo-haptics';
-import * as StoreReview from 'expo-store-review';
 import { router } from 'expo-router';
+import * as StoreReview from 'expo-store-review';
 import LottieView from 'lottie-react-native';
 import { usePostHog } from 'posthog-react-native';
+import { PressableScale } from 'pressto';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
@@ -75,7 +68,7 @@ export default function OnboardingRatingScreen() {
       }
     }
 
-    router.replace(ONBOARDING_NOTIFICATIONS_ROUTE as any);
+    router.replace(ONBOARDING_AI_CONSENT_ROUTE as any);
   };
 
   return (
@@ -134,13 +127,21 @@ export default function OnboardingRatingScreen() {
             alignSelf: 'center',
             zIndex: 10,
           }}>
-          <AndroidButton
-            onClick={() => {
+          <PressableScale
+            onPress={() => {
               void handleContinue();
             }}
-            colors={{ containerColor: AppTheme.colors.primary, contentColor: '#FFFFFF' }}>
-            {t('onboarding.rating.continue')}
-          </AndroidButton>
+            style={{
+              backgroundColor: AppTheme.colors.primary,
+              borderRadius: 9999,
+              paddingVertical: 16,
+
+              alignItems: 'center',
+            }}>
+            <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: 'semibold' }}>
+              {t('onboarding.rating.continue')}
+            </Text>
+          </PressableScale>
         </View>
       )}
     </View>

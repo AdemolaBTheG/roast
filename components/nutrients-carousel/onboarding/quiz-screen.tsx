@@ -1,6 +1,5 @@
 import { AppTheme } from '@/constants/Theme';
 import { useOnboardingStore } from '@/stores/onboardingStore';
-import { Button as AndroidButton } from '@expo/ui/jetpack-compose';
 import { Button, Host, Text as IOSText } from '@expo/ui/swift-ui';
 import {
   buttonStyle,
@@ -14,8 +13,9 @@ import {
 import { isLiquidGlassAvailable } from 'expo-glass-effect';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
-import { SymbolView } from 'expo-symbols';
+import { SymbolView, type SymbolViewProps } from 'expo-symbols';
 import { usePostHog } from 'posthog-react-native';
+import { PressableScale } from 'pressto';
 import { useEffect, useState } from 'react';
 import { Pressable, Text, useWindowDimensions, View } from 'react-native';
 import Animated, {
@@ -34,7 +34,7 @@ const ACCENT = AppTheme.colors.primary;
 export type QuizOption = {
   id: string;
   label: string;
-  icon: string;
+  icon: SymbolViewProps['name'];
 };
 
 export type QuizScreenConfig = {
@@ -55,7 +55,9 @@ export default function QuizScreenView({ config }: { config: QuizScreenConfig })
   const { width } = useWindowDimensions();
   const isIOS = process.env.EXPO_OS === 'ios';
   const posthog = usePostHog();
-  const storedSelection = useOnboardingStore((state) => state.quizAnswers[config.questionId] ?? null);
+  const storedSelection = useOnboardingStore(
+    (state) => state.quizAnswers[config.questionId] ?? null,
+  );
   const setQuizAnswer = useOnboardingStore((state) => state.setQuizAnswer);
   const setOnboardingCompleted = useOnboardingStore((state) => state.setOnboardingCompleted);
   const [selected, setSelected] = useState<string | null>(storedSelection);
@@ -149,14 +151,21 @@ export default function QuizScreenView({ config }: { config: QuizScreenConfig })
             bottom: insets.bottom + 12,
             alignSelf: 'center',
           }}>
-          <AndroidButton
-            onClick={() => {
+          <PressableScale
+            onPress={() => {
               void handleContinue();
             }}
-            enabled={selected !== null}
-            colors={{ containerColor: ACCENT, contentColor: '#FFFFFF' }}>
-            {config.ctaLabel}
-          </AndroidButton>
+            style={{
+              backgroundColor: AppTheme.colors.primary,
+              borderRadius: 9999,
+              paddingVertical: 16,
+
+              alignItems: 'center',
+            }}>
+            <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: 'semibold' }}>
+              {config.ctaLabel}
+            </Text>
+          </PressableScale>
         </View>
       )}
     </View>
@@ -207,7 +216,7 @@ function AnswerCard({
           backgroundColor: isSelected ? ACCENT : `${ACCENT}18`,
         }}>
         <SymbolView
-          name={{ ios: option.icon as any, android: 'circle' }}
+          name={option.icon}
           size={22}
           tintColor={isSelected ? '#FFFFFF' : ACCENT}
         />
@@ -219,7 +228,7 @@ function AnswerCard({
       </Text>
       {isSelected && (
         <SymbolView
-          name={{ ios: 'checkmark.circle.fill', android: 'check_circle' }}
+          name={{ ios: 'checkmark.circle.fill', android: 'check_circle', web: 'check_circle' }}
           size={22}
           tintColor={ACCENT}
         />

@@ -1,27 +1,19 @@
 import { NutrientsCarousel } from '@/components/nutrients-carousel';
 import type { NutrientsItem } from '@/components/nutrients-carousel/types';
 import { AppTheme } from '@/constants/Theme';
-import { Button as AndroidButton } from '@expo/ui/jetpack-compose';
 import { Button, Host, Text as IOSText } from '@expo/ui/swift-ui';
-import {
-  buttonStyle,
-  controlSize,
-  font,
-  frame,
-  padding,
-  tint,
-} from '@expo/ui/swift-ui/modifiers';
+import { buttonStyle, controlSize, font, frame, padding, tint } from '@expo/ui/swift-ui/modifiers';
 import { isLiquidGlassAvailable } from 'expo-glass-effect';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import { usePostHog } from 'posthog-react-native';
+import { PressableScale } from 'pressto';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import Animated, { FadeInUp, useReducedMotion, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 const carouselBg = StyleSheet.create({
   container: {
     width: 140,
@@ -58,7 +50,7 @@ export default function OnboardingScreen() {
         backgroundElement: (
           <View style={carouselBg.container}>
             <SymbolView
-              name={{ ios: 'barcode.viewfinder' as any, android: 'circle' }}
+              name={{ ios: 'barcode.viewfinder', android: 'qr_code_scanner', web: 'qr_code_scanner' }}
               size={80}
               tintColor={AppTheme.colors.primary}
             />
@@ -70,7 +62,11 @@ export default function OnboardingScreen() {
         description: t('onboarding.carousel.slides.ai'),
         backgroundElement: (
           <View style={carouselBg.container}>
-            <SymbolView name={{ ios: 'sparkles' as any, android: 'circle' }} size={80} tintColor="#8B5CF6" />
+            <SymbolView
+              name={{ ios: 'sparkles', android: 'auto_awesome', web: 'auto_awesome' }}
+              size={80}
+              tintColor="#8B5CF6"
+            />
           </View>
         ),
       },
@@ -80,7 +76,7 @@ export default function OnboardingScreen() {
         backgroundElement: (
           <View style={carouselBg.container}>
             <SymbolView
-              name={{ ios: 'shield.checkered' as any, android: 'circle' }}
+              name={{ ios: 'shield.checkered', android: 'shield', web: 'shield' }}
               size={80}
               tintColor="#3B82F6"
             />
@@ -93,7 +89,7 @@ export default function OnboardingScreen() {
         backgroundElement: (
           <View style={carouselBg.container}>
             <SymbolView
-              name={{ ios: 'list.bullet.rectangle.fill' as any, android: 'circle' }}
+              name={{ ios: 'list.bullet.rectangle.fill', android: 'list_alt', web: 'list_alt' }}
               size={80}
               tintColor="#F59E0B"
             />
@@ -105,7 +101,11 @@ export default function OnboardingScreen() {
         description: t('onboarding.carousel.slides.crew'),
         backgroundElement: (
           <View style={carouselBg.container}>
-            <SymbolView name={{ ios: 'person.3.fill' as any, android: 'circle' }} size={80} tintColor="#EC4899" />
+            <SymbolView
+              name={{ ios: 'person.3.fill', android: 'groups', web: 'groups' }}
+              size={80}
+              tintColor="#EC4899"
+            />
           </View>
         ),
       },
@@ -126,12 +126,15 @@ export default function OnboardingScreen() {
 
   return (
     <View style={styles.container}>
-      <NutrientsCarousel slides={slides} animatedIndex={animatedIndex} currentIndex={currentIndex} />
+      <NutrientsCarousel
+        slides={slides}
+        animatedIndex={animatedIndex}
+        currentIndex={currentIndex}
+      />
 
       <Animated.View
         entering={reduceMotion ? undefined : FadeInUp.duration(600).delay(200)}
-        style={[styles.topContent, { paddingTop: insets.top + 60 }]}
-      >
+        style={[styles.topContent, { paddingTop: insets.top + 60 }]}>
         <Text selectable style={styles.title}>
           {t('onboarding.carousel.title')}
         </Text>
@@ -149,8 +152,7 @@ export default function OnboardingScreen() {
             bottom: insets.bottom + AppTheme.spacing.lg,
             alignSelf: 'center',
             zIndex: 10,
-          }}
-        >
+          }}>
           <Button
             onPress={() => {
               void handleContinue();
@@ -159,15 +161,13 @@ export default function OnboardingScreen() {
               buttonStyle(isLiquidGlassAvailable() ? 'glassProminent' : 'borderedProminent'),
               tint(AppTheme.colors.primary),
               controlSize('regular'),
-            ]}
-          >
+            ]}>
             <IOSText
               modifiers={[
                 font({ size: 17, weight: 'medium' }),
                 padding({ horizontal: 12, vertical: 6 }),
                 frame({ width: width * 0.8 }),
-              ]}
-            >
+              ]}>
               {t('onboarding.carousel.cta')}
             </IOSText>
           </Button>
@@ -180,16 +180,22 @@ export default function OnboardingScreen() {
             bottom: insets.bottom + AppTheme.spacing.lg,
             alignSelf: 'center',
             zIndex: 10,
-          }}
-        >
-          <AndroidButton
-            onClick={() => {
+          }}>
+          <PressableScale
+            onPress={() => {
               void handleContinue();
             }}
-            colors={{ containerColor: AppTheme.colors.primary, contentColor: '#FFFFFF' }}
-          >
-            {t('onboarding.carousel.cta')}
-          </AndroidButton>
+            style={{
+              backgroundColor: AppTheme.colors.primary,
+              borderRadius: 9999,
+              paddingVertical: 16,
+
+              alignItems: 'center',
+            }}>
+            <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: 'semibold' }}>
+              {t('onboarding.carousel.cta')}
+            </Text>
+          </PressableScale>
         </View>
       )}
     </View>

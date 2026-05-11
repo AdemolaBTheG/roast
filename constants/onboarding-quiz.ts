@@ -31,10 +31,26 @@ export function getOnboardingQuizConfigs(
       title: t('onboarding.quiz.q1.title'),
       subtitle: t('onboarding.quiz.q1.subtitle'),
       options: [
-        { id: 'blank_replies', label: t('onboarding.quiz.q1.options.blank_replies'), icon: 'brain.head.profile' },
-        { id: 'too_harsh', label: t('onboarding.quiz.q1.options.too_harsh'), icon: 'exclamationmark.triangle.fill' },
-        { id: 'repetitive', label: t('onboarding.quiz.q1.options.repetitive'), icon: 'repeat' },
-        { id: 'too_slow', label: t('onboarding.quiz.q1.options.too_slow'), icon: 'timer' },
+        {
+          id: 'blank_replies',
+          label: t('onboarding.quiz.q1.options.blank_replies'),
+          icon: { ios: 'brain.head.profile', android: 'neurology', web: 'neurology' },
+        },
+        {
+          id: 'too_harsh',
+          label: t('onboarding.quiz.q1.options.too_harsh'),
+          icon: { ios: 'exclamationmark.triangle.fill', android: 'warning', web: 'warning' },
+        },
+        {
+          id: 'repetitive',
+          label: t('onboarding.quiz.q1.options.repetitive'),
+          icon: { ios: 'repeat', android: 'repeat', web: 'repeat' },
+        },
+        {
+          id: 'too_slow',
+          label: t('onboarding.quiz.q1.options.too_slow'),
+          icon: { ios: 'timer', android: 'timer', web: 'timer' },
+        },
       ],
       step: 1,
       totalSteps: TOTAL_STEPS,
@@ -47,10 +63,26 @@ export function getOnboardingQuizConfigs(
       title: t('onboarding.quiz.q2.title'),
       subtitle: painSupportSubtitle,
       options: [
-        { id: 'group_chat', label: t('onboarding.quiz.q2.options.group_chat'), icon: 'bubble.left.and.bubble.right.fill' },
-        { id: 'comments', label: t('onboarding.quiz.q2.options.comments'), icon: 'text.bubble.fill' },
-        { id: 'dm', label: t('onboarding.quiz.q2.options.dm'), icon: 'paperplane.fill' },
-        { id: 'irl', label: t('onboarding.quiz.q2.options.irl'), icon: 'person.2.fill' },
+        {
+          id: 'group_chat',
+          label: t('onboarding.quiz.q2.options.group_chat'),
+          icon: { ios: 'bubble.left.and.bubble.right.fill', android: 'forum', web: 'forum' },
+        },
+        {
+          id: 'comments',
+          label: t('onboarding.quiz.q2.options.comments'),
+          icon: { ios: 'text.bubble.fill', android: 'chat', web: 'chat' },
+        },
+        {
+          id: 'dm',
+          label: t('onboarding.quiz.q2.options.dm'),
+          icon: { ios: 'paperplane.fill', android: 'send', web: 'send' },
+        },
+        {
+          id: 'irl',
+          label: t('onboarding.quiz.q2.options.irl'),
+          icon: { ios: 'person.2.fill', android: 'groups', web: 'groups' },
+        },
       ],
       step: 2,
       totalSteps: TOTAL_STEPS,
@@ -63,9 +95,25 @@ export function getOnboardingQuizConfigs(
       title: t('onboarding.quiz.q3.title'),
       subtitle: t('onboarding.quiz.q3.subtitle'),
       options: [
-        { id: 'playful', label: t('onboarding.quiz.q3.options.playful'), icon: 'face.smiling.fill' },
-        { id: 'savage', label: t('onboarding.quiz.q3.options.savage'), icon: 'flame.fill' },
-        { id: 'unhinged', label: t('onboarding.quiz.q3.options.unhinged'), icon: 'bolt.fill' },
+        {
+          id: 'playful',
+          label: t('onboarding.quiz.q3.options.playful'),
+          icon: { ios: 'face.smiling.fill', android: 'mood', web: 'mood' },
+        },
+        {
+          id: 'savage',
+          label: t('onboarding.quiz.q3.options.savage'),
+          icon: {
+            ios: 'flame.fill',
+            android: 'local_fire_department',
+            web: 'local_fire_department',
+          },
+        },
+        {
+          id: 'unhinged',
+          label: t('onboarding.quiz.q3.options.unhinged'),
+          icon: { ios: 'bolt.fill', android: 'bolt', web: 'bolt' },
+        },
       ],
       step: 3,
       totalSteps: TOTAL_STEPS,
@@ -78,10 +126,26 @@ export function getOnboardingQuizConfigs(
       title: t('onboarding.quiz.q4.title'),
       subtitle: t('onboarding.quiz.q4.subtitle'),
       options: [
-        { id: 'never_blank', label: t('onboarding.quiz.q4.options.never_blank'), icon: 'bolt.badge.clock.fill' },
-        { id: 'more_reactions', label: t('onboarding.quiz.q4.options.more_reactions'), icon: 'hand.thumbsup.fill' },
-        { id: 'funny_not_toxic', label: t('onboarding.quiz.q4.options.funny_not_toxic'), icon: 'checkmark.shield.fill' },
-        { id: 'save_time', label: t('onboarding.quiz.q4.options.save_time'), icon: 'clock.fill' },
+        {
+          id: 'never_blank',
+          label: t('onboarding.quiz.q4.options.never_blank'),
+          icon: { ios: 'bolt.badge.clock.fill', android: 'offline_bolt', web: 'offline_bolt' },
+        },
+        {
+          id: 'more_reactions',
+          label: t('onboarding.quiz.q4.options.more_reactions'),
+          icon: { ios: 'hand.thumbsup.fill', android: 'thumb_up', web: 'thumb_up' },
+        },
+        {
+          id: 'funny_not_toxic',
+          label: t('onboarding.quiz.q4.options.funny_not_toxic'),
+          icon: { ios: 'checkmark.shield.fill', android: 'verified_user', web: 'verified_user' },
+        },
+        {
+          id: 'save_time',
+          label: t('onboarding.quiz.q4.options.save_time'),
+          icon: { ios: 'clock.fill', android: 'schedule', web: 'schedule' },
+        },
       ],
       step: 4,
       totalSteps: TOTAL_STEPS,
